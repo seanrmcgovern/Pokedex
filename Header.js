@@ -15,10 +15,13 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "white"
+  },
+  wrapper: {
+    backgroundColor: "#DE5C58"
   }
 });
 
-const Header = () => {
+const Header = props => {
   const [search, setSearch] = useState("");
 
   const updateSearch = search => {
@@ -34,11 +37,12 @@ const Header = () => {
         onChangeText={updateSearch}
         value={search}
         containerStyle={styles.container}
-        //inputStyle={styles.input}
         inputContainerStyle={styles.input}
       />
-      {/* <TouchableOpacity onPress={console.log(search)}></TouchableOpacity> */}
-      <Results search={search.toLowerCase()}></Results>
+      <Results
+        search={search.toLowerCase()}
+        navigation={props.navigation}
+      ></Results>
     </View>
   );
 };
