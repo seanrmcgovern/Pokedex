@@ -12,22 +12,25 @@ import {
   FlatList
 } from "react-native";
 import { ButtonGroup } from "react-native-elements";
+import { Dimensions } from "react-native";
+
+const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: "#DE5C58",
-    width: "100%"
+    width: width
   },
   container: {
     flex: 1,
-    backgroundColor: "#DE5C58"
+    width: width
+    //width: "100%",
     //margin: 14
     // marginHorizontal: "2%"
   },
   scrollView: {
     backgroundColor: "#DE5C58",
-    marginHorizontal: 20,
-    //width: "100%",
+    //marginHorizontal: 20,
     height: 1000,
     position: "absolute",
     top: 0,

@@ -9,11 +9,14 @@ const styles = StyleSheet.create({
     height: 130,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 4,
-    borderColor: "blue",
+    borderWidth: 6,
+    borderColor: "#2189DC",
+    // borderColor: "#00C49A",
     margin: "1%",
     borderRadius: 20,
-    backgroundColor: "white"
+    //backgroundColor: "#283961"
+    backgroundColor: "#485873",
+    backgroundColor: "#425069"
   },
   button: {
     padding: 0,
@@ -21,13 +24,25 @@ const styles = StyleSheet.create({
   },
   title: {
     // fontFamily: "PingFangHK-Semibold"
-    fontFamily: "Verdana-Bold"
+    fontFamily: "Verdana-Bold",
+    color: "white"
+  },
+  number: {
+    // height: "10%",
+    color: "white",
+    position: "absolute",
+    top: 0,
+    left: 10,
+    right: 0,
+    bottom: 0,
+    fontFamily: "PingFangHK-Semibold"
   }
 });
 
 const PokeCard = props => {
   // { name, url, navigation }
   const [imageUrl, setImageUrl] = useState();
+  const [id, setId] = useState();
 
   const name = props.name;
   const url = props.url;
@@ -38,6 +53,7 @@ const PokeCard = props => {
 
   useEffect(() => {
     axios.get(url).then(res => {
+      setId(res.data.id);
       setImageUrl(res.data.sprites.front_default);
     });
   }, []);
@@ -49,12 +65,17 @@ const PokeCard = props => {
       }
     >
       <View style={styles.card}>
+        <Text style={styles.number}>{id}</Text>
         <Image
           resizeMode="cover"
           source={{
             uri: imageUrl
           }}
-          style={{ width: 100, height: 100, resizeMode: "contain" }}
+          style={{
+            width: 100,
+            height: 100,
+            resizeMode: "contain"
+          }}
         />
         <Text style={styles.title}>{capitalize(name)}</Text>
       </View>
