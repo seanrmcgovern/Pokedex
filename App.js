@@ -15,13 +15,29 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerShown: false
+          headerBackTitle: "Back",
+          headerBackTitleStyle: {
+            color: "black"
+          },
+          headerStyle: {
+            backgroundColor: "#2189DC"
+          },
+          headerTintColor: "black",
+          headerTitleStyle: {
+            fontWeight: "bold"
+          }
         }}
       >
-        <Stack.Screen name="Header" component={Header} />
+        <Stack.Screen name="Pokedex" component={Header} />
         <Stack.Screen name="Results" component={Results} />
         <Stack.Screen name="PokeCard" component={PokeCard} />
-        <Stack.Screen name="Details" component={Details} />
+        <Stack.Screen
+          name="Details"
+          component={Details}
+          options={({ route }) => ({
+            title: route.params.name
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

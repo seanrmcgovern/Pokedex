@@ -42,24 +42,29 @@ const styles = StyleSheet.create({
 
 const Results = props => {
   const [pokemon, setPokemon] = useState([]);
-  const [generation, setGeneration] = useState(0);
+  const [generation, setGeneration] = useState(2);
+  const [index, setIndex] = useState(0);
 
   const updateGen = index => {
-    setGeneration(index);
+    setIndex(index);
+    if (index <= 3) {
+      setGeneration(index + 2);
+    } else if (index === 4) {
+      setGeneration(8); // unova dex
+    } else if (index === 5) {
+      setGeneration(12); // kalos dex
+    } else if (index === 6) {
+      setGeneration(16); // original alola dex
+    }
   };
 
   // axios/fetching is asynchronous, so while fetch is running, react will keep executing code, meaning console.log will run before we actually give response a value
   // fetching data is dependent on real world time, fetching data from another site, so when you compare this to how code runs, it is magnitudes slower
   // Overall: axios/fetch makes the request for the response, takes the result and passes it to the function defined in .then()
-  // const url = "https://pokeapi.co/api/v2/pokemon?limit=50";
-  // const url = "https://pokeapi.co/api/v2/generation/1/";
-  const url = "https://pokeapi.co/api/v2/pokedex/" + (generation + 2) + "/";
-  // const url = "https://pokeapi.co/api/v2/pokedex/2";
+  const url = "https://pokeapi.co/api/v2/pokedex/" + generation + "/";
 
   useEffect(() => {
     axios.get(url).then(res => {
-      // setPokemon(res.data.results);
-      // setPokemon(res.data.pokemon_species);
       setPokemon(res.data.pokemon_entries);
     });
   }, []);
@@ -82,27 +87,29 @@ const Results = props => {
     { element: button2 },
     { element: button3 },
     { element: button4 },
-    { element: button5 },
-    { element: button6 },
-    { element: button7 }
+    { element: button5 }
+    // { element: button6 },
+    // { element: button7 }
   ];
 
   return (
     <View style={styles.wrapper}>
       <ButtonGroup
         onPress={updateGen}
-        selectedIndex={generation}
+        selectedIndex={index}
         buttons={buttons}
         containerStyle={{ height: 30 }}
       />
       <SafeAreaView style={styles.container}>
         <FlatList
           data={pokemon}
+          //removeClippedSubviews={true}
+          maxToRenderPerBatch={150}
           style={styles.scrollView}
           contentContainerStyle={{
             flexDirection: "row",
             flexWrap: "wrap",
-            paddingBottom: 250,
+            paddingBottom: 300,
             flexGrow: 1,
             justifyContent: "center"
           }}
@@ -117,6 +124,7 @@ const Results = props => {
                     item.pokemon_species.url.slice(41)
                   }
                   key={index}
+                  gen={generation}
                 ></PokeCard>
               );
           }}
@@ -124,36 +132,6 @@ const Results = props => {
         ></FlatList>
       </SafeAreaView>
     </View>
-
-    // <SafeAreaView style={styles.container}>
-    //   <ScrollView
-    //     style={styles.scrollView}
-    //     contentContainerStyle={{ paddingBottom: 200 }}
-    //   >
-    //     <View
-    //       style={{
-    //         display: "flex",
-    //         flexDirection: "row",
-    //         flexWrap: "wrap"
-    //       }}
-    //     >
-    //       {pokemon.map((poke, index) => {
-    //         if (poke.pokemon_species.name.includes(search))
-    //           return (
-    //             <PokeCard
-    //               key={index}
-    //               name={poke.pokemon_species.name}
-    //               // url={poke.url.slice(0, 33) + poke.url.slice(41)}
-    //               url={
-    //                 poke.pokemon_species.url.slice(0, 33) +
-    //                 poke.pokemon_species.url.slice(41)
-    //               }
-    //             ></PokeCard>
-    //           );
-    //       })}
-    //     </View>
-    //   </ScrollView>
-    // </SafeAreaView>
   );
 };
 

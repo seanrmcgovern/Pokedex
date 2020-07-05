@@ -5,18 +5,15 @@ import { Card, ListItem, Icon, Button } from "react-native-elements";
 
 const styles = StyleSheet.create({
   card: {
-    //width: "31%",
     height: 130,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 6,
     borderColor: "#2189DC",
-    // borderColor: "#00C49A",
     margin: "1%",
     borderRadius: 20,
-    //backgroundColor: "#283961"
-    backgroundColor: "#485873",
-    backgroundColor: "#425069"
+    // backgroundColor: "#425069",
+    backgroundColor: "#3F4448"
   },
   button: {
     padding: 0,
@@ -43,6 +40,7 @@ const PokeCard = props => {
   // { name, url, navigation }
   const [imageUrl, setImageUrl] = useState();
   const [id, setId] = useState();
+  const [pokemon, setPokemon] = useState();
 
   const name = props.name;
   const url = props.url;
@@ -53,6 +51,7 @@ const PokeCard = props => {
 
   useEffect(() => {
     axios.get(url).then(res => {
+      setPokemon(res.data);
       setId(res.data.id);
       setImageUrl(res.data.sprites.front_default);
     });
@@ -61,7 +60,13 @@ const PokeCard = props => {
   return (
     <TouchableOpacity
       onPress={() =>
-        props.navigation.navigate("Details", { name: capitalize(name) })
+        props.navigation.navigate("Details", {
+          name: capitalize(name),
+          pokemon: pokemon,
+          image: imageUrl,
+          id: id,
+          gen: props.gen
+        })
       }
     >
       <View style={styles.card}>
