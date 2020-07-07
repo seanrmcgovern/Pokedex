@@ -14,6 +14,7 @@ import {
 import { ListItem } from "react-native-elements";
 import Pokeball from "./assets/pokeball.png";
 import { Divider } from "react-native-elements";
+import Stats from "./Stats";
 
 const styles = StyleSheet.create({
   buffer: {
@@ -182,7 +183,7 @@ const Details = props => {
           <View style={styles.header}>
             {/* <Button
               title="log"
-              onPress={() => console.log(pokemon.stats[0])}
+              onPress={() => console.log(pokemon.stats[6])}
             ></Button> */}
             <ImageBackground source={Pokeball} style={styles.image}>
               <Image
@@ -229,6 +230,7 @@ const Details = props => {
           >
             {types.map((item, index) => (
               <ListItem
+                key={index}
                 title={"Type " + (index + 1).toString()}
                 contentContainerStyle={{
                   display: "flex"
@@ -277,11 +279,29 @@ const Details = props => {
                 color: "white"
               }}
             >
+              Stats
+            </Text>
+            <Stats
+              hp={pokemon.stats[0].base_stat}
+              attack={pokemon.stats[1].base_stat}
+              defense={pokemon.stats[2].base_stat}
+              specialAttack={pokemon.stats[3].base_stat}
+              specialDefense={pokemon.stats[4].base_stat}
+              speed={pokemon.stats[5].base_stat}
+            ></Stats>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 20,
+                marginLeft: 10,
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
               Abilities
             </Text>
-            <Divider style={{ backgroundColor: "#2189DC", height: 5 }} />
             <View>
-              {/* <ListItem title={"Abilities"} bottomDivider></ListItem> */}
               {abilities.map((a, index) => (
                 <ListItem
                   title={capitalize(a.name)}
