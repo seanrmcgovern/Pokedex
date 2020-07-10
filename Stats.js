@@ -29,7 +29,8 @@ const Stats = props => {
             backgroundColor: "#1CA94C",
             flex: 0.05 * (props.hp / 10),
             margin: 20,
-            marginLeft: 0
+            marginLeft: 0,
+            borderRadius: 5
           }}
         ></View>
       </View>
@@ -42,7 +43,8 @@ const Stats = props => {
             backgroundColor: "#1CA94C",
             flex: 0.05 * (props.attack / 10),
             margin: 20,
-            marginLeft: 0
+            marginLeft: 0,
+            borderRadius: 5
           }}
         ></View>
       </View>
@@ -55,7 +57,8 @@ const Stats = props => {
             backgroundColor: "#1CA94C",
             flex: 0.05 * (props.defense / 10),
             margin: 20,
-            marginLeft: 0
+            marginLeft: 0,
+            borderRadius: 5
           }}
         ></View>
       </View>
@@ -68,7 +71,8 @@ const Stats = props => {
             backgroundColor: "#1CA94C",
             flex: 0.05 * (props.specialAttack / 10),
             margin: 20,
-            marginLeft: 0
+            marginLeft: 0,
+            borderRadius: 5
           }}
         ></View>
       </View>
@@ -81,7 +85,8 @@ const Stats = props => {
             backgroundColor: "#1CA94C",
             flex: 0.05 * (props.specialDefense / 10),
             margin: 20,
-            marginLeft: 0
+            marginLeft: 0,
+            borderRadius: 5
           }}
         ></View>
       </View>
@@ -94,7 +99,8 @@ const Stats = props => {
             backgroundColor: "#1CA94C",
             flex: 0.05 * (props.speed / 10),
             margin: 20,
-            marginLeft: 0
+            marginLeft: 0,
+            borderRadius: 5
           }}
         ></View>
       </View>

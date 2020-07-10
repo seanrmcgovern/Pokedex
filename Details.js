@@ -15,6 +15,7 @@ import { ListItem } from "react-native-elements";
 import Pokeball from "./assets/pokeball.png";
 import { Divider } from "react-native-elements";
 import Stats from "./Stats";
+import { Avatar } from "react-native-elements";
 
 const styles = StyleSheet.create({
   buffer: {
@@ -56,6 +57,11 @@ const Details = props => {
   const [flavor, setFlavor] = useState();
   const [catchRate, setCatchRate] = useState("");
   const [happiness, setHappiness] = useState("");
+  const [varieties, setVarieties] = useState([]);
+  const [formImages, setFormImages] = useState([]);
+
+  const [variant1, setVariant1] = useState();
+  const [variant2, setVariant2] = useState();
 
   const capitalize = str => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -160,9 +166,36 @@ const Details = props => {
         setFlavor(englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " "));
         setCatchRate(res.data.capture_rate);
         setHappiness(res.data.base_happiness);
+        setVarieties(res.data.varieties);
       })
-      .then(res => setIsLoading(false));
+      .then(res => {
+        setIsLoading(false);
+      });
   }, [id]);
+
+  useEffect(() => {
+    for (let i = 0; i < varieties.length; i++) {
+      if (i == 1) {
+        axios.get(varieties[i].pokemon.url).then(res => {
+          setVariant1(res.data.sprites.front_default);
+          // images.push(res.data.sprites.front_default);
+        });
+      } else if (i == 2) {
+        axios.get(varieties[i].pokemon.url).then(res => {
+          setVariant2(res.data.sprites.front_default);
+        });
+      }
+    }
+    //   let images = [];
+    //   for (let i = 0; i < varieties.length; i++) {
+    //     if (!varieties[i].is_default) {
+    //       axios.get(varieties[i].pokemon.url).then(res => {
+    //         images.push(res.data.sprites.front_default);
+    //       });
+    //     }
+    //   }
+    //   setFormImages(images);
+  }, [varieties]);
 
   return (
     <ScrollView style={{ backgroundColor: "#DE5C58" }}>
@@ -181,10 +214,10 @@ const Details = props => {
       {!isLoading && (
         <View>
           <View style={styles.header}>
-            {/* <Button
+            <Button
               title="log"
-              onPress={() => console.log(pokemon.stats[6])}
-            ></Button> */}
+              onPress={() => console.log(variant1, variant2)}
+            ></Button>
             <ImageBackground source={Pokeball} style={styles.image}>
               <Image
                 resizeMode="cover"
@@ -289,6 +322,90 @@ const Details = props => {
               specialDefense={pokemon.stats[4].base_stat}
               speed={pokemon.stats[5].base_stat}
             ></Stats>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 20,
+                marginLeft: 10,
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              Forms
+            </Text>
+            {varieties.length >= 2 && (
+              <ListItem
+                // leftAvatar={{
+                //   source: {
+                //     uri:
+                //       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10034.png"
+                //   }
+                // }}
+                key={variant1}
+                //key={{ formImages, index }}
+                leftAvatar={
+                  <Avatar
+                    rounded
+                    source={{
+                      uri: variant1
+                    }}
+                  />
+                }
+                title={capitalize(varieties[1].pokemon.name)}
+                // onPress={() => console.log(formImages[0])}
+              ></ListItem>
+            )}
+            {varieties.length >= 3 && (
+              <ListItem
+                // leftAvatar={{
+                //   source: {
+                //     uri:
+                //       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10034.png"
+                //   }
+                // }}
+                key={variant2}
+                //key={{ formImages, index }}
+                leftAvatar={
+                  <Avatar
+                    rounded
+                    source={{
+                      uri: variant2
+                    }}
+                  />
+                }
+                title={capitalize(varieties[2].pokemon.name)}
+                // onPress={() => console.log(formImages[0])}
+              ></ListItem>
+            )}
+            {/* {varieties.map(
+              (v, index) =>
+                !index == 0 && (
+                  <ListItem
+                    // leftAvatar={{
+                    //   source: {
+                    //     uri:
+                    //       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10034.png"
+                    //   }
+                    // }}
+                    key={formImages[index]}
+                    //key={{ formImages, index }}
+                    leftAvatar={
+                      <Avatar
+                        rounded
+                        source={
+                          formImages[index] && {
+                            uri: formImages[index]
+                          }
+                        }
+                      />
+                    }
+                    title={capitalize(v.pokemon.name)}
+                    subtitle={formImages[0]}
+                    onPress={() => console.log(formImages[0])}
+                  ></ListItem>
+                )
+            )} */}
           </View>
           <View>
             <Text
