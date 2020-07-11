@@ -42,31 +42,18 @@ const styles = StyleSheet.create({
   }
 });
 
-const Details = props => {
+const MegaDetails = props => {
   const { name } = props.route.params;
-  const { pokemon } = props.route.params;
+  let { pokemon } = props.route.params;
   const { image } = props.route.params;
   const { id } = props.route.params;
-  const { gen } = props.route.params;
+  const { flavor } = props.route.params;
 
   const [isLoading, setIsLoading] = useState(true);
 
+  //const [pokemon, setPokemon] = useState();
   const [abilities, setAbilities] = useState([]);
   const [types, setTypes] = useState([]);
-  const [flavor, setFlavor] = useState();
-  const [catchRate, setCatchRate] = useState("");
-  const [happiness, setHappiness] = useState("");
-  const [varieties, setVarieties] = useState([]);
-  const [formImages, setFormImages] = useState([]);
-
-  const [variant1, setVariant1] = useState();
-  const [variantData1, setVariantData1] = useState();
-  const [variant2, setVariant2] = useState();
-  const [variantData2, setVariantData2] = useState();
-  const [variant3, setVariant3] = useState();
-  const [variantData3, setVariantData3] = useState();
-  const [variant4, setVariant4] = useState();
-  const [variantData4, setVariantData4] = useState();
 
   const capitalize = str => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -150,53 +137,14 @@ const Details = props => {
 
   useEffect(() => {
     axios
-      .get("https://pokeapi.co/api/v2/pokemon-species/" + id)
+      .get("https://pokeapi.co/api/v2/pokemon/" + id)
       .then(res => {
-        let englishText;
-        if (gen === 2) {
-          englishText = res.data.flavor_text_entries[44];
-        } else if (gen === 3) {
-          englishText = res.data.flavor_text_entries[41];
-        } else if (gen === 4) {
-          englishText = res.data.flavor_text_entries[46];
-        } else if (gen === 5) {
-          englishText = res.data.flavor_text_entries[2];
-        } else if (gen === 8) {
-          englishText = res.data.flavor_text_entries[28];
-        } else if (gen === 12) {
-          englishText = res.data.flavor_text_entries[6];
-        } else {
-          englishText = res.data.flavor_text_entries[7];
-        }
-        setFlavor(englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " "));
-        setCatchRate(res.data.capture_rate);
-        setHappiness(res.data.base_happiness);
-        setVarieties(res.data.varieties);
+        pokemon = res.data;
       })
       .then(res => {
         setIsLoading(false);
       });
   }, [id]);
-
-  useEffect(() => {
-    for (let i = 0; i < varieties.length; i++) {
-      axios.get(varieties[i].pokemon.url).then(res => {
-        if (i === 1) {
-          setVariantData1(res.data);
-          setVariant1(res.data.sprites.front_default);
-        } else if (i === 2) {
-          setVariantData2(res.data);
-          setVariant2(res.data.sprites.front_default);
-        } else if (i === 3) {
-          setVariantData3(res.data);
-          setVariant3(res.data.sprites.front_default);
-        } else if (i === 4) {
-          setVariantData4(res.data);
-          setVariant4(res.data.sprites.front_default);
-        }
-      });
-    }
-  }, [varieties]);
 
   return (
     <ScrollView style={{ backgroundColor: "#DE5C58" }}>
@@ -218,9 +166,13 @@ const Details = props => {
             <ImageBackground source={Pokeball} style={styles.image}>
               <Image
                 resizeMode="cover"
-                source={{
-                  uri: image
-                }}
+                source={
+                  image
+                    ? {
+                        uri: image
+                      }
+                    : PokeballSprite
+                }
                 style={{
                   width: 200,
                   height: 200,
@@ -289,16 +241,6 @@ const Details = props => {
               rightTitle={pokemon.weight}
               bottomDivider
             ></ListItem>
-            <ListItem
-              title={"Catch Rate"}
-              rightTitle={catchRate + " / 255"}
-              bottomDivider
-            ></ListItem>
-            <ListItem
-              title={"Base Friendship"}
-              rightTitle={happiness + " / 255"}
-              bottomDivider
-            ></ListItem>
           </View>
           <View>
             <Text
@@ -319,112 +261,6 @@ const Details = props => {
               specialDefense={pokemon.stats[4].base_stat}
               speed={pokemon.stats[5].base_stat}
             ></Stats>
-          </View>
-          <View>
-            {varieties.length > 1 && (
-              <Text
-                style={{
-                  fontSize: 20,
-                  marginLeft: 10,
-                  fontWeight: "bold",
-                  color: "white"
-                }}
-              >
-                Forms
-              </Text>
-            )}
-            {varieties.length >= 2 && (
-              <ListItem
-                leftAvatar={{
-                  source: variant1
-                    ? {
-                        uri: variant1
-                      }
-                    : PokeballSprite
-                }}
-                key={0}
-                title={capitalize(varieties[1].pokemon.name)}
-                onPress={() =>
-                  props.navigation.navigate("MegaDetails", {
-                    name: capitalize(varieties[1].pokemon.name),
-                    pokemon: variantData1,
-                    image: variant1,
-                    id: variantData1.id,
-                    flavor: flavor
-                  })
-                }
-                bottomDivider
-              ></ListItem>
-            )}
-            {varieties.length >= 3 && (
-              <ListItem
-                leftAvatar={{
-                  source: variant2
-                    ? {
-                        uri: variant2
-                      }
-                    : PokeballSprite
-                }}
-                key={1}
-                title={capitalize(varieties[2].pokemon.name)}
-                onPress={() =>
-                  props.navigation.navigate("MegaDetails", {
-                    name: capitalize(varieties[2].pokemon.name),
-                    pokemon: variantData2,
-                    image: variant2,
-                    id: variantData2.id,
-                    flavor: flavor
-                  })
-                }
-                bottomDivider
-              ></ListItem>
-            )}
-            {varieties.length >= 4 && (
-              <ListItem
-                leftAvatar={{
-                  source: variant3
-                    ? {
-                        uri: variant3
-                      }
-                    : PokeballSprite
-                }}
-                key={1}
-                title={capitalize(varieties[3].pokemon.name)}
-                onPress={() =>
-                  props.navigation.navigate("MegaDetails", {
-                    name: capitalize(varieties[3].pokemon.name),
-                    pokemon: variantData3,
-                    image: variant3,
-                    id: variantData3.id,
-                    flavor: flavor
-                  })
-                }
-                bottomDivider
-              ></ListItem>
-            )}
-            {varieties.length >= 5 && (
-              <ListItem
-                leftAvatar={{
-                  source: variant4
-                    ? {
-                        uri: variant4
-                      }
-                    : PokeballSprite
-                }}
-                key={1}
-                title={capitalize(varieties[4].pokemon.name)}
-                onPress={() =>
-                  props.navigation.navigate("MegaDetails", {
-                    name: capitalize(varieties[4].pokemon.name),
-                    pokemon: variantData4,
-                    image: variant4,
-                    id: variantData4.id,
-                    flavor: flavor
-                  })
-                }
-                bottomDivider
-              ></ListItem>
-            )}
           </View>
           <View>
             <Text
@@ -454,4 +290,4 @@ const Details = props => {
   );
 };
 
-export default Details;
+export default MegaDetails;

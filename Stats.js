@@ -7,7 +7,9 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "white",
     flex: 1,
-    flexDirection: "row"
+    flexDirection: "row",
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#D3D3D3"
   }
 });
 
@@ -27,7 +29,7 @@ const Stats = props => {
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.05 * (props.hp / 10),
+            flex: 0.038 * (props.hp / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -41,7 +43,7 @@ const Stats = props => {
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.05 * (props.attack / 10),
+            flex: 0.038 * (props.attack / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -55,7 +57,7 @@ const Stats = props => {
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.05 * (props.defense / 10),
+            flex: 0.038 * (props.defense / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -69,7 +71,7 @@ const Stats = props => {
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.05 * (props.specialAttack / 10),
+            flex: 0.038 * (props.specialAttack / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -83,7 +85,7 @@ const Stats = props => {
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.05 * (props.specialDefense / 10),
+            flex: 0.038 * (props.specialDefense / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -97,7 +99,7 @@ const Stats = props => {
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.05 * (props.speed / 10),
+            flex: 0.038 * (props.speed / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5

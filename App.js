@@ -3,6 +3,7 @@ import Header from "./Header";
 import Results from "./Results";
 import PokeCard from "./PokeCard";
 import Details from "./Details";
+import MegaDetails from "./MegaDetails";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet, Text, View } from "react-native";
@@ -34,6 +35,13 @@ const App = () => {
         <Stack.Screen
           name="Details"
           component={Details}
+          options={({ route }) => ({
+            title: route.params.name
+          })}
+        />
+        <Stack.Screen
+          name="MegaDetails"
+          component={MegaDetails}
           options={({ route }) => ({
             title: route.params.name
           })}
