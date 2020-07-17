@@ -6,12 +6,13 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  Button,
+  //Button,
   ScrollView,
   ImageBackground,
   ActivityIndicator
 } from "react-native";
-import { ListItem } from "react-native-elements";
+import { ListItem, Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 import Pokeball from "./assets/pokeball.png";
 import PokeballSprite from "./assets/pokeballSprite.png";
 import Stats from "./Stats";
@@ -42,12 +43,29 @@ const styles = StyleSheet.create({
   }
 });
 
-const Details = props => {
-  const { name } = props.route.params;
-  const { pokemon } = props.route.params;
-  const { image } = props.route.params;
-  const { id } = props.route.params;
-  const { gen } = props.route.params;
+const Details = ({ navigation, route }) => {
+  const { name } = route.params;
+  const { pokemon } = route.params;
+  const { image } = route.params;
+  const { id } = route.params;
+  const { gen } = route.params;
+  const { shiny } = route.params;
+
+  const [isShiny, setIsShiny] = useState(false);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          onPress={() => {
+            setIsShiny(isShiny => !isShiny);
+          }}
+          title=""
+          icon={<Icon name="star-o" size={15} color="white" />}
+        />
+      )
+    });
+  }, [navigation]);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -218,9 +236,7 @@ const Details = props => {
             <ImageBackground source={Pokeball} style={styles.image}>
               <Image
                 resizeMode="cover"
-                source={{
-                  uri: image
-                }}
+                source={{ uri: isShiny ? shiny : image }}
                 style={{
                   width: 200,
                   height: 200,
@@ -345,7 +361,7 @@ const Details = props => {
                 key={0}
                 title={capitalize(varieties[1].pokemon.name)}
                 onPress={() =>
-                  props.navigation.navigate("MegaDetails", {
+                  navigation.navigate("MegaDetails", {
                     name: capitalize(varieties[1].pokemon.name),
                     pokemon: variantData1,
                     image: variant1,
@@ -368,7 +384,7 @@ const Details = props => {
                 key={1}
                 title={capitalize(varieties[2].pokemon.name)}
                 onPress={() =>
-                  props.navigation.navigate("MegaDetails", {
+                  navigation.navigate("MegaDetails", {
                     name: capitalize(varieties[2].pokemon.name),
                     pokemon: variantData2,
                     image: variant2,
@@ -391,7 +407,7 @@ const Details = props => {
                 key={1}
                 title={capitalize(varieties[3].pokemon.name)}
                 onPress={() =>
-                  props.navigation.navigate("MegaDetails", {
+                  navigation.navigate("MegaDetails", {
                     name: capitalize(varieties[3].pokemon.name),
                     pokemon: variantData3,
                     image: variant3,
@@ -414,7 +430,7 @@ const Details = props => {
                 key={1}
                 title={capitalize(varieties[4].pokemon.name)}
                 onPress={() =>
-                  props.navigation.navigate("MegaDetails", {
+                  navigation.navigate("MegaDetails", {
                     name: capitalize(varieties[4].pokemon.name),
                     pokemon: variantData4,
                     image: variant4,

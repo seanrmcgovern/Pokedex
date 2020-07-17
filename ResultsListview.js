@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PokeCard from "./PokeCard";
 import axios from "axios";
 import {
   StyleSheet,
@@ -11,6 +10,7 @@ import {
   VirtualizedList,
   FlatList
 } from "react-native";
+import { ListItem, Button } from "react-native-elements";
 import { Dimensions } from "react-native";
 
 const width = Dimensions.get("window").width;
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const Results = props => {
+const ResultsListview = props => {
   const [pokemon, setPokemon] = useState([]);
 
   // axios/fetching is asynchronous, so while fetch is running, react will keep executing code, meaning console.log will run before we actually give response a value
@@ -67,26 +67,27 @@ const Results = props => {
           //removeClippedSubviews={true}
           maxToRenderPerBatch={150}
           style={styles.scrollView}
-          contentContainerStyle={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            paddingBottom: 400,
-            flexGrow: 1,
-            justifyContent: "center"
-          }}
+          // contentContainerStyle={{
+          //   flexDirection: "row",
+          //   flexWrap: "wrap",
+          //   paddingBottom: 300,
+          //   flexGrow: 1,
+          //   justifyContent: "center"
+          // }}
           renderItem={({ item, index }) => {
             if (item.pokemon_species.name.includes(props.search))
               return (
-                <PokeCard
-                  navigation={props.navigation}
-                  name={item.pokemon_species.name}
-                  url={
-                    item.pokemon_species.url.slice(0, 33) +
-                    item.pokemon_species.url.slice(41)
-                  }
-                  key={index}
-                  gen={props.generation}
-                ></PokeCard>
+                // <PokeCard
+                //   navigation={props.navigation}
+                //   name={item.pokemon_species.name}
+                //   url={
+                //     item.pokemon_species.url.slice(0, 33) +
+                //     item.pokemon_species.url.slice(41)
+                //   }
+                //   key={index}
+                //   gen={props.generation}
+                // ></PokeCard>
+                <ListItem title={item.pokemon_species.name}></ListItem>
               );
           }}
           keyExtractor={item => item.pokemon_species.name}
@@ -96,4 +97,4 @@ const Results = props => {
   );
 };
 
-export default Results;
+export default ResultsListview;

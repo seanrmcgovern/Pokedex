@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     margin: 0
   },
   title: {
-    // fontFamily: "PingFangHK-Semibold"
-    fontFamily: "Verdana-Bold",
+    fontFamily: "PingFangHK-Semibold",
+    //fontFamily: "Mishafi",
     color: "white"
   },
   number: {
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
 const PokeCard = props => {
   // { name, url, navigation }
   const [imageUrl, setImageUrl] = useState();
+  const [shiny, setShiny] = useState();
   const [id, setId] = useState();
   const [pokemon, setPokemon] = useState();
 
@@ -54,6 +55,7 @@ const PokeCard = props => {
       setPokemon(res.data);
       setId(res.data.id);
       setImageUrl(res.data.sprites.front_default);
+      setShiny(res.data.sprites.front_shiny);
     });
   }, []);
 
@@ -65,7 +67,8 @@ const PokeCard = props => {
           pokemon: pokemon,
           image: imageUrl,
           id: id,
-          gen: props.gen
+          gen: props.gen,
+          shiny: shiny
         })
       }
     >
