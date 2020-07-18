@@ -65,8 +65,7 @@ const ResultsListview = props => {
       <SafeAreaView style={styles.container}>
         <FlatList
           data={pokemon}
-          //removeClippedSubviews={true}
-          maxToRenderPerBatch={150}
+          //maxToRenderPerBatch={150}
           style={styles.scrollView}
           // contentContainerStyle={{
           //   flexDirection: "row",
@@ -75,19 +74,14 @@ const ResultsListview = props => {
           //   flexGrow: 1,
           //   justifyContent: "center"
           // }}
+          contentContainerStyle={{
+            paddingBottom: 370,
+            marginLeft: 10,
+            marginRight: 10
+          }}
           renderItem={({ item, index }) => {
             if (item.pokemon_species.name.includes(props.search))
               return (
-                // <PokeCard
-                //   navigation={props.navigation}
-                //   name={item.pokemon_species.name}
-                //   url={
-                //     item.pokemon_species.url.slice(0, 33) +
-                //     item.pokemon_species.url.slice(41)
-                //   }
-                //   key={index}
-                //   gen={props.generation}
-                // ></PokeCard>
                 <ListRow
                   name={capitalize(item.pokemon_species.name)}
                   url={
@@ -96,6 +90,7 @@ const ResultsListview = props => {
                   }
                   navigation={props.navigation}
                   gen={props.generation}
+                  key={index}
                 ></ListRow>
               );
           }}

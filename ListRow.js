@@ -31,10 +31,13 @@ const ListRow = props => {
       }
       title={props.name}
       leftAvatar={{
-        source: {
-          uri: sprite
-        }
+        source: sprite
+          ? {
+              uri: sprite
+            }
+          : ""
       }}
+      rightSubtitle={id ? `No. ${id}` : ""}
       bottomDivider
     ></ListItem>
   );

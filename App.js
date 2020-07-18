@@ -12,7 +12,6 @@ import { Icon } from "react-native-elements";
 import { StyleSheet, Text, View, Button } from "react-native";
 
 // TODO:
-// 2) Make custom listitem component
 // 3) Abilities don't always load
 console.disableYellowBox = true;
 
@@ -30,10 +29,13 @@ const Pokedex = () => {
         },
         headerStyle: {
           backgroundColor: "#2189DC"
+          //backgroundColor: "white"
         },
         headerTintColor: "black",
         headerTitleStyle: {
           fontWeight: "bold"
+          //
+          //color: "#2189DC"
         }
       }}
     >
@@ -63,22 +65,59 @@ const App = () => {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
+          // tabBarIcon: ({ focused, color, size }) => {
+          //   if (route.name === "Pokedex") {
+          //     if (focused) {
+          //       return <Icon name="th" type="font-awesome" color="white" />;
+          //     }
+          //     return <Icon name="th" type="font-awesome" color="#DE5C58" />;
+          //   } else {
+          //     if (focused) {
+          //       return (
+          //         <Icon name="user-circle" type="font-awesome" color="white" />
+          //       );
+          //     }
+          //     return (
+          //       <Icon name="user-circle" type="font-awesome" color="#DE5C58" />
+          //     );
+          //   }
+          // }
           tabBarIcon: ({ focused, color, size }) => {
             if (route.name === "Pokedex") {
-              return <Icon name="th" type="font-awesome" color="#f50" />;
+              if (focused) {
+                return <Icon name="th" type="font-awesome" color="#2189DC" />;
+              }
+              return <Icon name="th" type="font-awesome" color="#DE5C58" />;
+            } else {
+              if (focused) {
+                return (
+                  <Icon
+                    name="user-circle"
+                    type="font-awesome"
+                    color="#2189DC"
+                  />
+                );
+              }
+              return (
+                <Icon name="user-circle" type="font-awesome" color="#DE5C58" />
+              );
             }
-            return <Icon name="meh-o" type="font-awesome" color="#f50" />;
           }
         })}
-        tabBarOptions={
-          {
-            //activeTintColor: "tomato",
-            //inactiveTintColor: "gray",
-            // style: {
-            //   backgroundColor: "#2189DC",
-            // }
+        tabBarOptions={{
+          activeTintColor: "white",
+          inactiveTintColor: "white",
+          style: {
+            backgroundColor: "#2189DC"
           }
-        }
+        }}
+        tabBarOptions={{
+          activeTintColor: "#2189DC",
+          inactiveTintColor: "#DE5C58",
+          style: {
+            backgroundColor: "white"
+          }
+        }}
       >
         <Tab.Screen name="Pokedex" component={Pokedex} />
         <Tab.Screen name="Tab2" component={Tab2} />
