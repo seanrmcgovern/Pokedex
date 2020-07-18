@@ -12,9 +12,9 @@ import { Icon } from "react-native-elements";
 import { StyleSheet, Text, View, Button } from "react-native";
 
 // TODO:
-// 1) Add Shiny sprites
-// 2) Add Regular list view
+// 2) Make custom listitem component
 // 3) Abilities don't always load
+console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 

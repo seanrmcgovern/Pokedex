@@ -8,10 +8,11 @@ import {
   ScrollView,
   SafeAreaView,
   VirtualizedList,
-  FlatList
+  FlatList,
+  Image
 } from "react-native";
-import { ListItem, Button } from "react-native-elements";
 import { Dimensions } from "react-native";
+import ListRow from "./ListRow";
 
 const width = Dimensions.get("window").width;
 
@@ -23,35 +24,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width
-    //width: "100%",
-    //margin: 14
-    // marginHorizontal: "2%"
   },
   scrollView: {
     backgroundColor: "#DE5C58",
-    //marginHorizontal: 20,
     height: 1000,
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0
+  },
+  row: {
+    width: "100%",
+    height: 70,
+    backgroundColor: "white",
+    flex: 1,
+    flexDirection: "row",
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#D3D3D3"
   }
 });
 
 const ResultsListview = props => {
   const [pokemon, setPokemon] = useState([]);
 
-  // axios/fetching is asynchronous, so while fetch is running, react will keep executing code, meaning console.log will run before we actually give response a value
-  // fetching data is dependent on real world time, fetching data from another site, so when you compare this to how code runs, it is magnitudes slower
-  // Overall: axios/fetch makes the request for the response, takes the result and passes it to the function defined in .then()
   const url = "https://pokeapi.co/api/v2/pokedex/" + props.generation + "/";
 
-  useEffect(() => {
-    axios.get(url).then(res => {
-      setPokemon(res.data.pokemon_entries);
-    });
-  }, []);
+  const capitalize = str => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   useEffect(() => {
     axios.get(url).then(res => {
@@ -87,7 +88,15 @@ const ResultsListview = props => {
                 //   key={index}
                 //   gen={props.generation}
                 // ></PokeCard>
-                <ListItem title={item.pokemon_species.name}></ListItem>
+                <ListRow
+                  name={capitalize(item.pokemon_species.name)}
+                  url={
+                    item.pokemon_species.url.slice(0, 33) +
+                    item.pokemon_species.url.slice(41)
+                  }
+                  navigation={props.navigation}
+                  gen={props.generation}
+                ></ListRow>
               );
           }}
           keyExtractor={item => item.pokemon_species.name}
