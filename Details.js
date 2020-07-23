@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  //Button,
   ScrollView,
   ImageBackground,
   ActivityIndicator
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#DE5C58"
   },
   title: {
-    // fontFamily: "PingFangHK-Semibold"
     fontFamily: "Verdana-Bold",
     fontSize: 30,
     color: "white"
@@ -68,6 +66,7 @@ const Details = ({ navigation, route }) => {
   }, [navigation]);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [abilityLoading, setAbilityLoading] = useState(true);
 
   const [abilities, setAbilities] = useState([]);
   const [types, setTypes] = useState([]);
@@ -75,7 +74,6 @@ const Details = ({ navigation, route }) => {
   const [catchRate, setCatchRate] = useState("");
   const [happiness, setHappiness] = useState("");
   const [varieties, setVarieties] = useState([]);
-  const [formImages, setFormImages] = useState([]);
 
   const [variant1, setVariant1] = useState();
   const [variantData1, setVariantData1] = useState();
@@ -164,6 +162,7 @@ const Details = ({ navigation, route }) => {
     }
     setTypes(pokemon.types);
     setAbilities(abilities);
+    setAbilityLoading(false);
   }, [pokemon]);
 
   useEffect(() => {
@@ -218,7 +217,7 @@ const Details = ({ navigation, route }) => {
 
   return (
     <ScrollView style={{ backgroundColor: "#DE5C58" }}>
-      {isLoading && (
+      {(isLoading || abilityLoading) && (
         <View style={{ height: "100%" }}>
           <View
             style={{
@@ -230,7 +229,7 @@ const Details = ({ navigation, route }) => {
           </View>
         </View>
       )}
-      {!isLoading && (
+      {!isLoading && !abilityLoading && (
         <View>
           <View style={styles.header}>
             <ImageBackground source={Pokeball} style={styles.image}>

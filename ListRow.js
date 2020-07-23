@@ -39,6 +39,7 @@ const ListRow = props => {
       }}
       rightSubtitle={id ? `No. ${id}` : ""}
       bottomDivider
+      style={{ borderBottomWidth: 1, borderBottomColor: "#2189DC" }}
     ></ListItem>
   );
 };

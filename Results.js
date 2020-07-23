@@ -9,7 +9,8 @@ import {
   ScrollView,
   SafeAreaView,
   VirtualizedList,
-  FlatList
+  FlatList,
+  Button
 } from "react-native";
 import { Dimensions } from "react-native";
 
@@ -41,6 +42,8 @@ const styles = StyleSheet.create({
 
 const Results = props => {
   const [pokemon, setPokemon] = useState([]);
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(0);
 
   // axios/fetching is asynchronous, so while fetch is running, react will keep executing code, meaning console.log will run before we actually give response a value
   // fetching data is dependent on real world time, fetching data from another site, so when you compare this to how code runs, it is magnitudes slower
@@ -57,6 +60,13 @@ const Results = props => {
     axios.get(url).then(res => {
       setPokemon(res.data.pokemon_entries);
     });
+    if (props.generation === 2) {
+      setMin(0);
+      setMax(151);
+    } else if (props.generation === 3) {
+      setMin(152);
+      setMax(251);
+    }
   }, [props.generation]);
 
   return (
@@ -86,6 +96,9 @@ const Results = props => {
                   }
                   key={index}
                   gen={props.generation}
+                  min={min}
+                  max={max}
+                  search={props.search}
                 ></PokeCard>
               );
           }}

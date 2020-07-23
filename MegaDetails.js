@@ -50,6 +50,7 @@ const MegaDetails = props => {
   const { flavor } = props.route.params;
 
   const [isLoading, setIsLoading] = useState(true);
+  const [abilityLoading, setAbilityLoading] = useState(true);
 
   //const [pokemon, setPokemon] = useState();
   const [abilities, setAbilities] = useState([]);
@@ -133,6 +134,7 @@ const MegaDetails = props => {
     }
     setTypes(pokemon.types);
     setAbilities(abilities);
+    setAbilityLoading(false);
   }, [pokemon]);
 
   useEffect(() => {
@@ -148,7 +150,7 @@ const MegaDetails = props => {
 
   return (
     <ScrollView style={{ backgroundColor: "#DE5C58" }}>
-      {isLoading && (
+      {(isLoading || abilityLoading) && (
         <View style={{ height: "100%" }}>
           <View
             style={{
@@ -160,7 +162,7 @@ const MegaDetails = props => {
           </View>
         </View>
       )}
-      {!isLoading && (
+      {!isLoading && !abilityLoading && (
         <View>
           <View style={styles.header}>
             <ImageBackground source={Pokeball} style={styles.image}>

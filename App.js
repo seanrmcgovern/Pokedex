@@ -12,7 +12,8 @@ import { Icon } from "react-native-elements";
 import { StyleSheet, Text, View, Button } from "react-native";
 
 // TODO:
-// 3) Abilities don't always load
+// change pokecard background to dark gradient?
+// Firebase functionalities: list of pokemon caught, favorites, parties for different games
 console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
@@ -25,17 +26,14 @@ const Pokedex = () => {
       screenOptions={{
         headerBackTitle: "Back",
         headerBackTitleStyle: {
-          color: "black"
+          color: "white"
         },
         headerStyle: {
           backgroundColor: "#2189DC"
-          //backgroundColor: "white"
         },
-        headerTintColor: "black",
+        headerTintColor: "white",
         headerTitleStyle: {
           fontWeight: "bold"
-          //
-          //color: "#2189DC"
         }
       }}
     >

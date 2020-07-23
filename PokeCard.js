@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     // backgroundColor: "#425069",
     backgroundColor: "#3F4448"
+    // backgroundImage: "linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%)"
   },
   button: {
     padding: 0,

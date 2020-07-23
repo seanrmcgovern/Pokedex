@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 const styles = StyleSheet.create({
   row: {
@@ -10,6 +10,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 0.5,
     borderBottomColor: "#D3D3D3"
+  },
+  num: {
+    marginTop: 16,
+    marginRight: 5
   }
 });
 
@@ -26,10 +30,18 @@ const Stats = props => {
         <View style={{ flex: 0.25, margin: 12 }}>
           <Text style={{ fontSize: 16 }}>HP</Text>
         </View>
+        <Text
+          style={{
+            marginTop: 16,
+            flex: 0.08
+          }}
+        >
+          {props.hp}
+        </Text>
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.038 * (props.hp / 10),
+            flex: 0.035 * (props.hp / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -40,10 +52,18 @@ const Stats = props => {
         <View style={{ flex: 0.25, margin: 12 }}>
           <Text style={{ fontSize: 16 }}>Attack</Text>
         </View>
+        <Text
+          style={{
+            marginTop: 16,
+            flex: 0.08
+          }}
+        >
+          {props.attack}
+        </Text>
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.038 * (props.attack / 10),
+            flex: 0.035 * (props.attack / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -54,10 +74,18 @@ const Stats = props => {
         <View style={{ flex: 0.25, margin: 12 }}>
           <Text style={{ fontSize: 16 }}>Defense</Text>
         </View>
+        <Text
+          style={{
+            marginTop: 16,
+            flex: 0.08
+          }}
+        >
+          {props.defense}
+        </Text>
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.038 * (props.defense / 10),
+            flex: 0.035 * (props.defense / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -68,10 +96,18 @@ const Stats = props => {
         <View style={{ flex: 0.25, margin: 12 }}>
           <Text style={{ fontSize: 16 }}>Sp. Attack</Text>
         </View>
+        <Text
+          style={{
+            marginTop: 16,
+            flex: 0.08
+          }}
+        >
+          {props.specialAttack}
+        </Text>
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.038 * (props.specialAttack / 10),
+            flex: 0.035 * (props.specialAttack / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -82,10 +118,18 @@ const Stats = props => {
         <View style={{ flex: 0.25, margin: 12 }}>
           <Text style={{ fontSize: 16 }}>Sp. Defense</Text>
         </View>
+        <Text
+          style={{
+            flex: 0.08,
+            marginTop: 16
+          }}
+        >
+          {props.specialDefense}
+        </Text>
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.038 * (props.specialDefense / 10),
+            flex: 0.035 * (props.specialDefense / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
@@ -96,10 +140,18 @@ const Stats = props => {
         <View style={{ flex: 0.25, margin: 12 }}>
           <Text style={{ fontSize: 16 }}>Speed</Text>
         </View>
+        <Text
+          style={{
+            marginTop: 16,
+            flex: 0.08
+          }}
+        >
+          {props.speed}
+        </Text>
         <View
           style={{
             backgroundColor: "#1CA94C",
-            flex: 0.038 * (props.speed / 10),
+            flex: 0.035 * (props.speed / 10),
             margin: 20,
             marginLeft: 0,
             borderRadius: 5
