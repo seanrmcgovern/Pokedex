@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PokeCard from "./PokeCard";
 import axios from "axios";
 import {
   StyleSheet,
@@ -10,9 +9,10 @@ import {
   SafeAreaView,
   VirtualizedList,
   FlatList,
-  Button
+  Image
 } from "react-native";
 import { Dimensions } from "react-native";
+import ListRow from "./ListRow";
 
 const width = Dimensions.get("window").width;
 
@@ -24,49 +24,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width
-    //width: "100%",
-    //margin: 14
-    // marginHorizontal: "2%"
   },
   scrollView: {
     backgroundColor: "#DE5C58",
-    //marginHorizontal: 20,
     height: 1000,
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0
+  },
+  row: {
+    width: "100%",
+    height: 70,
+    backgroundColor: "white",
+    flex: 1,
+    flexDirection: "row",
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#D3D3D3"
   }
 });
 
-const Results = props => {
+const ResultsListview = props => {
   const [pokemon, setPokemon] = useState([]);
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(0);
 
-  // axios/fetching is asynchronous, so while fetch is running, react will keep executing code, meaning console.log will run before we actually give response a value
-  // fetching data is dependent on real world time, fetching data from another site, so when you compare this to how code runs, it is magnitudes slower
-  // Overall: axios/fetch makes the request for the response, takes the result and passes it to the function defined in .then()
   const url = "https://pokeapi.co/api/v2/pokedex/" + props.generation + "/";
 
-  useEffect(() => {
-    axios.get(url).then(res => {
-      setPokemon(res.data.pokemon_entries);
-    });
-  }, []);
+  const capitalize = str => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   useEffect(() => {
     axios.get(url).then(res => {
       setPokemon(res.data.pokemon_entries);
     });
-    if (props.generation === 2) {
-      setMin(0);
-      setMax(151);
-    } else if (props.generation === 3) {
-      setMin(152);
-      setMax(251);
-    }
   }, [props.generation]);
 
   return (
@@ -74,32 +65,33 @@ const Results = props => {
       <SafeAreaView style={styles.container}>
         <FlatList
           data={pokemon}
-          //removeClippedSubviews={true}
-          maxToRenderPerBatch={150}
+          //maxToRenderPerBatch={150}
           style={styles.scrollView}
+          // contentContainerStyle={{
+          //   flexDirection: "row",
+          //   flexWrap: "wrap",
+          //   paddingBottom: 300,
+          //   flexGrow: 1,
+          //   justifyContent: "center"
+          // }}
           contentContainerStyle={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            paddingBottom: 400,
-            flexGrow: 1,
-            justifyContent: "center"
+            paddingBottom: 370,
+            marginLeft: 10,
+            marginRight: 10
           }}
           renderItem={({ item, index }) => {
             if (item.pokemon_species.name.includes(props.search))
               return (
-                <PokeCard
-                  navigation={props.navigation}
-                  name={item.pokemon_species.name}
+                <ListRow
+                  name={capitalize(item.pokemon_species.name)}
                   url={
                     item.pokemon_species.url.slice(0, 33) +
                     item.pokemon_species.url.slice(41)
                   }
-                  key={index}
+                  navigation={props.navigation}
                   gen={props.generation}
-                  min={min}
-                  max={max}
-                  search={props.search}
-                ></PokeCard>
+                  key={index}
+                ></ListRow>
               );
           }}
           keyExtractor={item => item.pokemon_species.name}
@@ -109,4 +101,4 @@ const Results = props => {
   );
 };
 
-export default Results;
+export default ResultsListview;
