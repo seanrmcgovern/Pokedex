@@ -23,6 +23,7 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.seanmcgovern.pokedex",
       "supportsTablet": true
     },
     "description": "A Pokedex mobile application, currently including generations 1-5"
