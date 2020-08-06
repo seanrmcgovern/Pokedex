@@ -99,7 +99,11 @@ const App = () => {
         .ref("users/" + user.uid)
         .set({
           username: name,
-          parties: [{ title: "Party 1" }]
+          parties: [
+            { title: "New Party 1", items: [{ name: "head" }] },
+            { title: "New Party 2", items: [{ name: "head" }] },
+            { title: "New Party 3", items: [{ name: "head" }] }
+          ]
         })
         .then(() => {
           user.updateProfile({

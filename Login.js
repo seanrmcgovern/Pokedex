@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { Icon, Input, Button } from "react-native-elements";
 
@@ -36,12 +36,6 @@ const Login = props => {
             }}
             title="Register"
           />
-          {/* <Button
-            onPress={() => {
-              console.log(props.user.displayName);
-            }}
-            title="test"
-          /> */}
         </View>
       </View>
     </View>

@@ -1,75 +1,105 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { View, Text } from "react-native";
+import { ListItem, Button } from "react-native-elements";
 import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  ImageBackground,
-  ActivityIndicator
-} from "react-native";
-import { Button, ListItem, Divider } from "react-native-elements";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+  TouchableWithoutFeedback,
+  TouchableOpacity
+} from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
-//import { Transition, Transitioning } from "react-native-reanimated";
+import { Transition, Transitioning } from "react-native-reanimated";
 
-const styles = StyleSheet.create({
-  container: {
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    backgroundColor: "white"
-  }
-});
+const transition = (
+  <Transition.Together>
+    <Transition.In type="fade" durationMs={200}></Transition.In>
+    <Transition.Change></Transition.Change>
+    <Transition.Out type="fade" durationMs={200}></Transition.Out>
+  </Transition.Together>
+);
 
 const PartyList = props => {
   const [open, setOpen] = useState(false);
-  const bottomRadius = open ? 0 : 8;
   const height = open ? "auto" : 0;
+  const ref = useRef();
+  const currentPartySize = props.party.length;
 
   return (
-    <View style={{ backgroundColor: "white", height: 50 }}>
-      <TouchableWithoutFeedback onPress={() => setOpen(prev => !prev)}>
-        <View
-          style={{
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-            borderBottomLeftRadius: bottomRadius,
-            borderBottomRightRadius: bottomRadius,
-            backgroundColor: "white",
-            padding: 15,
-            display: "flex",
-            //flex: 1,
-            flexDirection: "row",
-            flexGrow: 1
+    <View>
+      <Transitioning.View
+        transition={transition}
+        ref={ref}
+        style={{ backgroundColor: "white" }}
+      >
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setOpen(prev => !prev);
+            ref.current.animateNextTransition();
           }}
         >
-          <Text
+          <View
             style={{
-              fontSize: 16,
-              flex: 1,
-              alignItems: "flex-start"
+              backgroundColor: "white",
+              padding: 15,
+              display: "flex",
+              flexDirection: "row",
+              flexGrow: 1,
+              borderBottomWidth: 0.5,
+              borderBottomColor: "#D3D3D3"
             }}
           >
-            {props.title}
-          </Text>
-          <View style={{ alignItems: "flex-end", flex: 1 }}>
-            <Icon name="chevron-right" size={20}></Icon>
+            <Text
+              style={{
+                fontSize: 16,
+                flex: 1,
+                alignItems: "flex-start"
+              }}
+            >
+              {props.title}
+            </Text>
+            <View
+              style={{
+                alignItems: "flex-end",
+                flex: 1
+              }}
+            >
+              {open ? (
+                <Icon name="chevron-down" size={20} color="#2189DC"></Icon>
+              ) : (
+                <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
+              )}
+            </View>
           </View>
+        </TouchableWithoutFeedback>
+        <View style={{ height: height, overflow: "hidden" }}>
+          {props.party.map(
+            (item, index) => (
+              <ListItem title={item.name} bottomDivider></ListItem>
+            )
+            //   index > 0 && <ListItem title={item.name} bottomDivider></ListItem>
+          )}
+          {/* <ListItem title="Skip" bottomDivider></ListItem>
+        <ListItem title="Cacturne" bottomDivider></ListItem>
+        <ListItem title="Flygon" bottomDivider></ListItem>
+        <ListItem title="Xatu" bottomDivider></ListItem>
+        <ListItem title="Cradily" bottomDivider></ListItem>
+        <ListItem title="Golem" bottomDivider></ListItem> */}
+          {currentPartySize < 6 && (
+            <TouchableOpacity>
+              <View
+                style={{
+                  backgroundColor: "#2189DC",
+                  padding: 15,
+                  display: "flex",
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: "#D3D3D3",
+                  alignItems: "center"
+                }}
+              >
+                <Icon name="pencil-square" size={20} color="white"></Icon>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
-        <View style={{ height: height }}>
-          {props.party &&
-            props.party.map(pokemon => {
-              <ListItem title={pokemon.name}></ListItem>;
-            })}
-          <ListItem title="Skip"></ListItem>
-          <ListItem title="Cacturne"></ListItem>
-          <ListItem title="Flygon"></ListItem>
-          <ListItem title="Xatu"></ListItem>
-          <ListItem title="Cradily"></ListItem>
-          <ListItem title="Golem"></ListItem>
-        </View>
-      </TouchableWithoutFeedback>
+      </Transitioning.View>
     </View>
   );
 };

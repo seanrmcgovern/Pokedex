@@ -6,15 +6,23 @@ import {
   View,
   Animated,
   ScrollView,
-  Image
+  Image,
+  TouchableOpacity
 } from "react-native";
 import PokeballSprite from "./assets/pokeballSprite.png";
-import { Button, ListItem, Divider } from "react-native-elements";
+import {
+  Button,
+  ListItem,
+  Divider,
+  Overlay,
+  Input
+} from "react-native-elements";
 import PartyList from "./PartyList";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const styles = StyleSheet.create({});
 
-const HEADER_MAX_HEIGHT = 120;
+const HEADER_MAX_HEIGHT = 90;
 const HEADER_MIN_HEIGHT = 70;
 const PROFILE_IMAGE_MAX_HEIGHT = 80;
 const PROFILE_IMAGE_MIN_HEIGHT = 40;
@@ -71,6 +79,27 @@ const Tab2 = props => {
   // };
 
   const [parties, setParties] = useState([]);
+
+  const addParty = name => {
+    const newName = name === "" ? "New Party" : name;
+    firebase
+      .database()
+      .ref("users/" + props.userId + "/parties")
+      .set([...parties, { title: newName, items: [{ name: "head" }] }]);
+  };
+
+  const [visible, setVisible] = useState(false);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
+  const close = () => {
+    setNewParty("");
+    toggleOverlay();
+  };
+
+  const [newParty, setNewParty] = useState();
 
   useEffect(() => {
     firebase
@@ -152,33 +181,71 @@ const Tab2 = props => {
             {props.username}
           </Text>
         </View>
-        {/* <Divider
-          style={{ backgroundColor: "#2189DC", height: 5, marginBottom: 10 }}
-        ></Divider> */}
         <View style={{ height: 1000, backgroundColor: "#DE5C58" }}>
-          {/* <Text
-            style={{
-              fontSize: 20,
-              marginLeft: 10,
-              fontWeight: "bold",
-              color: "white"
-            }}
-          >
-            Parties
-          </Text> */}
-          <ListItem title={"Parties"} bottomDivider></ListItem>
-          {parties.map(party => (
-            // <ListItem title={party.title}></ListItem>
-            <PartyList title={party.title} party={party.items}></PartyList>
-          ))}
-          {/* <Button
-            onPress={() => {
-              console.log(parties);
-            }}
-            title="Choose Photo"
-          /> */}
+          <View style={{ backgroundColor: "#2189DC" }}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginLeft: 10,
+                fontWeight: "bold",
+                color: "white"
+              }}
+            >
+              Parties
+            </Text>
+          </View>
+          <View>
+            {parties.map((party, index) => (
+              <PartyList title={party.title} party={party.items}></PartyList>
+            ))}
+            <TouchableOpacity onPress={toggleOverlay} style={{ height: 80 }}>
+              <View
+                style={{
+                  backgroundColor: "#2189DC",
+                  padding: 15,
+                  display: "flex",
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: "#D3D3D3",
+                  alignItems: "center"
+                }}
+              >
+                <Icon name="plus-square" size={40} color="white"></Icon>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
+      <Overlay
+        isVisible={visible}
+        onBackdropPress={close}
+        overlayStyle={{ width: "70%" }}
+      >
+        <Text
+          style={{
+            color: "#2189DC",
+            fontSize: 16,
+            fontWeight: "bold",
+            marginBottom: 10
+          }}
+        >
+          Enter Party Info
+        </Text>
+        <Input
+          placeholder="Ex: New-Party-Name"
+          label="Name"
+          onChangeText={text => setNewParty(text)}
+          value={newParty}
+        />
+        <View>
+          <Button
+            onPress={() => {
+              addParty(newParty);
+              close();
+            }}
+            title="Create Party"
+          />
+        </View>
+      </Overlay>
     </View>
   );
 };
