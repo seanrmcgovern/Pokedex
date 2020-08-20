@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
-import { Card, ListItem, Icon, Button } from "react-native-elements";
 
 const styles = StyleSheet.create({
   card: {
     height: 130,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 6,
+    borderWidth: 5,
     borderColor: "#2189DC",
-    margin: "1%",
+    margin: "2%",
     borderRadius: 20,
     // backgroundColor: "#425069",
-    backgroundColor: "#3F4448"
-    // backgroundImage: "linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%)"
+    backgroundColor: "#EDEBED"
   },
   button: {
     padding: 0,
@@ -22,12 +20,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "PingFangHK-Semibold",
-    //fontFamily: "Mishafi",
-    color: "white"
+    color: "#2189DC"
   },
   number: {
     // height: "10%",
-    color: "white",
+    color: "#DE5C58",
     position: "absolute",
     top: 0,
     left: 10,
@@ -69,7 +66,8 @@ const PokeCard = props => {
           image: imageUrl,
           id: id,
           gen: props.gen,
-          shiny: shiny
+          shiny: shiny,
+          userId: props.userId
         })
       }
     >

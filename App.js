@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as firebase from "firebase";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import Login from "./Login";
 import Header from "./Header";
 import Results from "./Results";
@@ -22,63 +22,73 @@ const firebaseConfig = {
   storageBucket: "pokedex-smcg.appspot.com",
   appId: "1:654908820997:ios:0fb638857d45ca90fc966c"
 };
+// const firebaseConfig = {
+//   apiKey: process.env.REACT_APP_FIREBASE_KEY,
+//   authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
+//   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
+//   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+//   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+//   appId: process.env.REACT_APP_FIREBASE_APP_ID
+// };
 
 firebase.initializeApp(firebaseConfig);
 
 // TODO:
+// make apikey private
 // Firebase functionalities: list of pokemon caught, favorites, parties for different games
-// try to style listitem like pokecard to see if it improves performance
-// change pokecard background to dark gradient, light gradient?
-// try to enforce id range on the generations again
+// toast, button
 // images needed: default profile pic, main logo, loading gif
+// add moves to details page?
 console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
-const Pokedex = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerBackTitle: "Back",
-        headerBackTitleStyle: {
-          color: "white"
-        },
-        headerStyle: {
-          backgroundColor: "#2189DC"
-        },
-        headerTintColor: "white",
-        headerTitleStyle: {
-          fontWeight: "bold"
-        }
-      }}
-    >
-      <Stack.Screen name="Pokedex" component={Header} />
-      <Stack.Screen name="Results" component={Results} />
-      <Stack.Screen name="PokeCard" component={PokeCard} />
-      <Stack.Screen
-        name="Details"
-        component={Details}
-        options={({ navigation, route }) => ({
-          title: route.params.name
-        })}
-      />
-      <Stack.Screen
-        name="MegaDetails"
-        component={MegaDetails}
-        options={({ route }) => ({
-          title: route.params.name
-        })}
-      />
-    </Stack.Navigator>
-  );
-};
-
 const App = () => {
   const [user, setUser] = useState();
   const [userId, setUserId] = useState("");
   const [username, setUsername] = useState();
+
+  const Pokedex = () => {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerBackTitle: "Back",
+          headerBackTitleStyle: {
+            color: "white"
+          },
+          headerStyle: {
+            backgroundColor: "#2189DC"
+          },
+          headerTintColor: "white",
+          headerTitleStyle: {
+            fontWeight: "bold"
+          }
+        }}
+      >
+        <Stack.Screen name="Pokedex">
+          {props => <Header {...props} userId={userId} />}
+        </Stack.Screen>
+        <Stack.Screen name="Results" component={Results} />
+        <Stack.Screen name="PokeCard" component={PokeCard} />
+        <Stack.Screen
+          name="Details"
+          component={Details}
+          options={({ navigation, route }) => ({
+            title: route.params.name
+          })}
+        />
+        <Stack.Screen
+          name="MegaDetails"
+          component={MegaDetails}
+          options={({ route }) => ({
+            title: route.params.name
+          })}
+        />
+      </Stack.Navigator>
+    );
+  };
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -171,13 +181,6 @@ const App = () => {
             }
           })}
           tabBarOptions={{
-            activeTintColor: "white",
-            inactiveTintColor: "white",
-            style: {
-              backgroundColor: "#2189DC"
-            }
-          }}
-          tabBarOptions={{
             activeTintColor: "#2189DC",
             inactiveTintColor: "#DE5C58",
             style: {
@@ -185,12 +188,8 @@ const App = () => {
             }
           }}
         >
-          <Tab.Screen name="Pokedex" component={Pokedex} />
-          <Tab.Screen
-            // name={username && username != "" ? username : "Tab2"}
-            name={"Profile"}
-            component={Profile}
-          />
+          <Tab.Screen name={"Pokedex"} component={Pokedex} />
+          <Tab.Screen name={"Profile"} component={Profile} />
         </Tab.Navigator>
       </NavigationContainer>
     );

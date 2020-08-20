@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PokeCard from "./PokeCard";
 import axios from "axios";
 import {
@@ -42,31 +42,127 @@ const styles = StyleSheet.create({
 
 const Results = props => {
   const [pokemon, setPokemon] = useState([]);
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(0);
 
   // axios/fetching is asynchronous, so while fetch is running, react will keep executing code, meaning console.log will run before we actually give response a value
   // fetching data is dependent on real world time, fetching data from another site, so when you compare this to how code runs, it is magnitudes slower
   // Overall: axios/fetch makes the request for the response, takes the result and passes it to the function defined in .then()
   const url = "https://pokeapi.co/api/v2/pokedex/" + props.generation + "/";
 
+  const flatlistRef = useRef();
+
   useEffect(() => {
     axios.get(url).then(res => {
-      setPokemon(res.data.pokemon_entries);
+      console.log(res.data.pokemon_entries[0].pokemon_species.url);
+      // setPokemon(res.data.pokemon_entries);
+      if (props.generation === 3) {
+        // gen 2
+        let pokeList = [];
+        for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+          if (res.data.pokemon_entries[i].entry_number > 151) {
+            pokeList.push(res.data.pokemon_entries[i]);
+          }
+        }
+        setPokemon(pokeList);
+      } else {
+        // gen 1
+        setPokemon(res.data.pokemon_entries);
+      }
     });
   }, []);
 
   useEffect(() => {
     axios.get(url).then(res => {
-      setPokemon(res.data.pokemon_entries);
+      if (props.generation === 3) {
+        // gen 2
+        let pokeList = [];
+        for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+          const entryId = parseInt(
+            res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+          );
+          if (entryId > 151) {
+            pokeList.push({
+              ...res.data.pokemon_entries[i],
+              entryId: entryId
+            });
+          }
+        }
+        setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
+      } else if (props.generation === 4) {
+        // gen 3
+        let pokeList = [];
+        for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+          const entryId = parseInt(
+            res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+          );
+          if (entryId > 251) {
+            pokeList.push({
+              ...res.data.pokemon_entries[i],
+              entryId: entryId
+            });
+          }
+        }
+        setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
+      } else if (props.generation === 5) {
+        // gen 4
+        let pokeList = [];
+        for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+          const entryId = parseInt(
+            res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+          );
+          if (entryId > 386) {
+            pokeList.push({
+              ...res.data.pokemon_entries[i],
+              entryId: entryId
+            });
+          }
+        }
+        const darkrai = {
+          entryId: 491,
+          pokemon_species: {
+            name: "Darkrai",
+            url: "https://pokeapi.co/api/v2/pokemon-species/491/"
+          }
+        };
+        const shaymin = {
+          entryId: 492,
+          pokemon_species: {
+            name: "Shaymin",
+            url: "https://pokeapi.co/api/v2/pokemon-species/492/"
+          }
+        };
+        const arceus = {
+          entryId: 493,
+          pokemon_species: {
+            name: "Arceus",
+            url: "https://pokeapi.co/api/v2/pokemon-species/493/"
+          }
+        };
+        setPokemon(
+          [...pokeList, darkrai, shaymin, arceus].sort((a, b) =>
+            a.entryId > b.entryId ? 1 : -1
+          )
+        );
+      } else if (props.generation === 8) {
+        // gen 5
+        let pokeList = [];
+        for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+          const entryId = parseInt(
+            res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+          );
+          if (entryId > 494) {
+            pokeList.push({
+              ...res.data.pokemon_entries[i],
+              entryId: entryId
+            });
+          }
+        }
+        setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
+      } else {
+        // gen 1
+        setPokemon(res.data.pokemon_entries);
+      }
     });
-    if (props.generation === 2) {
-      setMin(0);
-      setMax(151);
-    } else if (props.generation === 3) {
-      setMin(152);
-      setMax(251);
-    }
+    flatlistRef.current.scrollToOffset({ animated: true, offset: 0 });
   }, [props.generation]);
 
   return (
@@ -74,6 +170,7 @@ const Results = props => {
       <SafeAreaView style={styles.container}>
         <FlatList
           data={pokemon}
+          ref={flatlistRef}
           //removeClippedSubviews={true}
           maxToRenderPerBatch={150}
           style={styles.scrollView}
@@ -96,9 +193,8 @@ const Results = props => {
                   }
                   key={index}
                   gen={props.generation}
-                  min={min}
-                  max={max}
                   search={props.search}
+                  userId={props.userId}
                 ></PokeCard>
               );
           }}

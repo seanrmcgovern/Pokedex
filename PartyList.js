@@ -37,7 +37,7 @@ const PartyList = props => {
         >
           <View
             style={{
-              backgroundColor: "white",
+              backgroundColor: "#EDEBED",
               padding: 15,
               display: "flex",
               flexDirection: "row",
@@ -71,17 +71,15 @@ const PartyList = props => {
         </TouchableWithoutFeedback>
         <View style={{ height: height, overflow: "hidden" }}>
           {props.party.map(
-            (item, index) => (
-              <ListItem title={item.name} bottomDivider></ListItem>
-            )
-            //   index > 0 && <ListItem title={item.name} bottomDivider></ListItem>
+            (item, index) =>
+              index > 0 && (
+                <ListItem
+                  title={item.name}
+                  bottomDivider
+                  containerStyle={{ backgroundColor: "#F4F3F4" }}
+                ></ListItem>
+              )
           )}
-          {/* <ListItem title="Skip" bottomDivider></ListItem>
-        <ListItem title="Cacturne" bottomDivider></ListItem>
-        <ListItem title="Flygon" bottomDivider></ListItem>
-        <ListItem title="Xatu" bottomDivider></ListItem>
-        <ListItem title="Cradily" bottomDivider></ListItem>
-        <ListItem title="Golem" bottomDivider></ListItem> */}
           {currentPartySize < 6 && (
             <TouchableOpacity>
               <View

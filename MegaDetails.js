@@ -120,21 +120,27 @@ const MegaDetails = props => {
   };
 
   useEffect(() => {
-    let abilities = [];
+    let abilitiesToAdd = [];
     for (let i = 0; i < pokemon.abilities.length; i++) {
-      axios.get(pokemon.abilities[i].ability.url).then(res => {
-        const englishEffect = res.data.effect_entries.find(
-          e => e.language.name === "en"
-        );
-        abilities.push({
-          name: pokemon.abilities[i].ability.name,
-          effect: englishEffect.effect
+      axios
+        .get(pokemon.abilities[i].ability.url)
+        .then(res => {
+          const englishEffect = res.data.effect_entries.find(
+            e => e.language.name === "en"
+          );
+          abilitiesToAdd.push({
+            name: pokemon.abilities[i].ability.name,
+            effect: englishEffect.effect
+          });
+        })
+        .then(() => {
+          if (abilitiesToAdd.length === pokemon.abilities.length) {
+            setAbilities(abilitiesToAdd);
+            setAbilityLoading(false);
+          }
         });
-      });
     }
     setTypes(pokemon.types);
-    setAbilities(abilities);
-    setAbilityLoading(false);
   }, [pokemon]);
 
   useEffect(() => {
@@ -253,7 +259,7 @@ const MegaDetails = props => {
                 color: "white"
               }}
             >
-              Stats
+              Base Stats
             </Text>
             <Stats
               hp={pokemon.stats[0].base_stat}
@@ -279,6 +285,7 @@ const MegaDetails = props => {
               {abilities.map((a, index) => (
                 <ListItem
                   title={capitalize(a.name)}
+                  titleStyle={{ color: "#2189DC" }}
                   subtitle={a.effect}
                   bottomDivider
                   key={index}

@@ -99,7 +99,7 @@ const Tab2 = props => {
     toggleOverlay();
   };
 
-  const [newParty, setNewParty] = useState();
+  const [newParty, setNewParty] = useState("");
 
   useEffect(() => {
     firebase
