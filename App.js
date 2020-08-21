@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as firebase from "firebase";
+import Constants from "expo-constants";
 import { View, ActivityIndicator } from "react-native";
 import Login from "./Login";
 import Header from "./Header";
@@ -15,21 +16,13 @@ import { Icon } from "react-native-elements";
 
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",
-  authDomain: "pokedex-smcg.firebaseapp.com",
-  databaseURL: "https://pokedex-smcg.firebaseio.com",
-  projectId: "pokedex-smcg",
-  storageBucket: "pokedex-smcg.appspot.com",
-  appId: "1:654908820997:ios:0fb638857d45ca90fc966c"
+  apiKey: Constants.manifest.extra.REACT_NATIVE_FIREBASE_KEY,
+  authDomain: Constants.manifest.extra.REACT_NATIVE_FIREBASE_DOMAIN,
+  databaseURL: Constants.manifest.extra.REACT_NATIVE_FIREBASE_URL,
+  projectId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_PROJECT_ID,
+  storageBucket: Constants.manifest.extra.REACT_NATIVE_FIREBASE_BUCKET,
+  appId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_APP_ID
 };
-// const firebaseConfig = {
-//   apiKey: process.env.REACT_APP_FIREBASE_KEY,
-//   authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
-//   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
-//   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-//   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-//   appId: process.env.REACT_APP_FIREBASE_APP_ID
-// };
 
 firebase.initializeApp(firebaseConfig);
 
