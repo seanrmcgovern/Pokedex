@@ -6,6 +6,7 @@ import { Button, ButtonGroup } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Dimensions } from "react-native";
 import ResultsListview from "./ResultsListview";
+import { recoveredProps } from "expo-error-recovery";
 
 const width = Dimensions.get("window").width;
 
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const Header = ({ navigation, route }) => {
+const Header = ({ navigation, route, userId }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -135,6 +136,7 @@ const Header = ({ navigation, route }) => {
           search={search.toLowerCase()}
           navigation={navigation}
           generation={generation}
+          userId={userId}
         ></Results>
       )}
       {!viewCards && (
@@ -142,6 +144,7 @@ const Header = ({ navigation, route }) => {
           search={search.toLowerCase()}
           navigation={navigation}
           generation={generation}
+          userId={userId}
         ></ResultsListview>
       )}
     </View>

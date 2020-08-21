@@ -33,7 +33,8 @@ const Stats = props => {
         <Text
           style={{
             marginTop: 16,
-            flex: 0.08
+            flex: 0.08,
+            color: "#2189DC"
           }}
         >
           {props.hp}
@@ -55,7 +56,8 @@ const Stats = props => {
         <Text
           style={{
             marginTop: 16,
-            flex: 0.08
+            flex: 0.08,
+            color: "#2189DC"
           }}
         >
           {props.attack}
@@ -77,7 +79,8 @@ const Stats = props => {
         <Text
           style={{
             marginTop: 16,
-            flex: 0.08
+            flex: 0.08,
+            color: "#2189DC"
           }}
         >
           {props.defense}
@@ -99,7 +102,8 @@ const Stats = props => {
         <Text
           style={{
             marginTop: 16,
-            flex: 0.08
+            flex: 0.08,
+            color: "#2189DC"
           }}
         >
           {props.specialAttack}
@@ -121,7 +125,8 @@ const Stats = props => {
         <Text
           style={{
             flex: 0.08,
-            marginTop: 16
+            marginTop: 16,
+            color: "#2189DC"
           }}
         >
           {props.specialDefense}
@@ -143,7 +148,8 @@ const Stats = props => {
         <Text
           style={{
             marginTop: 16,
-            flex: 0.08
+            flex: 0.08,
+            color: "#2189DC"
           }}
         >
           {props.speed}

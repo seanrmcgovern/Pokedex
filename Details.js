@@ -4,17 +4,20 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
   Image,
   ScrollView,
   ImageBackground,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity
 } from "react-native";
-import { ListItem, Button } from "react-native-elements";
+import { ListItem, Button, Tooltip, Overlay } from "react-native-elements";
+// import { Toast } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
+import * as WebBrowser from "expo-web-browser";
 import Pokeball from "./assets/pokeball.png";
 import PokeballSprite from "./assets/pokeballSprite.png";
 import Stats from "./Stats";
+import Popover from "./Popover";
 
 const styles = StyleSheet.create({
   buffer: {
@@ -27,6 +30,9 @@ const styles = StyleSheet.create({
     margin: 0,
     backgroundColor: "#3F4448",
     backgroundColor: "#DE5C58"
+  },
+  headerIcon: {
+    paddingRight: 10
   },
   title: {
     fontFamily: "Verdana-Bold",
@@ -48,6 +54,16 @@ const Details = ({ navigation, route }) => {
   const { id } = route.params;
   const { gen } = route.params;
   const { shiny } = route.params;
+  const { userId } = route.params;
+
+  const pokeObject = {
+    name: name,
+    pokemon: pokemon,
+    image: image,
+    id: id,
+    gen: gen,
+    shiny: shiny
+  };
 
   const [isShiny, setIsShiny] = useState(false);
 
@@ -55,15 +71,25 @@ const Details = ({ navigation, route }) => {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          onPress={() => {
-            setIsShiny(isShiny => !isShiny);
-          }}
-          title=""
-          icon={<Icon name="star-o" size={15} color="white" />}
-        />
+          onPress={togglePopover}
+          icon={<Icon name="star-o" size={20} color="white" />}
+        ></Button>
+        // <Tooltip popover={<Text>Add to Party</Text>}>
+        //   <Icon
+        //     name="star-o"
+        //     size={20}
+        //     color="white"
+        //     style={styles.headerIcon}
+        //   />
+        // </Tooltip>
       )
     });
   }, [navigation]);
+
+  const [popVisible, setPopVisible] = useState(false);
+  const togglePopover = () => {
+    setPopVisible(!popVisible);
+  };
 
   const [isLoading, setIsLoading] = useState(true);
   const [abilityLoading, setAbilityLoading] = useState(true);
@@ -147,22 +173,52 @@ const Details = ({ navigation, route }) => {
     }
   };
 
+  const openStrategy = () => {
+    if (gen === 2) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/rb/pokemon/" + name
+      );
+    } else if (gen === 3) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/gs/pokemon/" + name
+      );
+    } else if (gen === 4) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/rs/pokemon/" + name
+      );
+    } else if (gen === 5) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/dp/pokemon/" + name
+      );
+    } else if (gen === 8) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/bw/pokemon/" + name
+      );
+    }
+  };
+
   useEffect(() => {
-    let abilities = [];
+    let abilitiesToAdd = [];
     for (let i = 0; i < pokemon.abilities.length; i++) {
-      axios.get(pokemon.abilities[i].ability.url).then(res => {
-        const englishEffect = res.data.effect_entries.find(
-          e => e.language.name === "en"
-        );
-        abilities.push({
-          name: pokemon.abilities[i].ability.name,
-          effect: englishEffect.effect
+      axios
+        .get(pokemon.abilities[i].ability.url)
+        .then(res => {
+          const englishEffect = res.data.effect_entries.find(
+            e => e.language.name === "en"
+          );
+          abilitiesToAdd.push({
+            name: pokemon.abilities[i].ability.name,
+            effect: englishEffect.effect
+          });
+        })
+        .then(() => {
+          if (abilitiesToAdd.length === pokemon.abilities.length) {
+            setAbilities(abilitiesToAdd);
+            setAbilityLoading(false);
+          }
         });
-      });
     }
     setTypes(pokemon.types);
-    setAbilities(abilities);
-    setAbilityLoading(false);
   }, [pokemon]);
 
   useEffect(() => {
@@ -233,16 +289,22 @@ const Details = ({ navigation, route }) => {
         <View>
           <View style={styles.header}>
             <ImageBackground source={Pokeball} style={styles.image}>
-              <Image
-                resizeMode="cover"
-                source={{ uri: isShiny ? shiny : image }}
-                style={{
-                  width: 200,
-                  height: 200,
-                  alignSelf: "center",
-                  padding: 0
+              <TouchableOpacity
+                onPress={() => {
+                  setIsShiny(isShiny => !isShiny);
                 }}
-              />
+              >
+                <Image
+                  resizeMode="cover"
+                  source={{ uri: isShiny ? shiny : image }}
+                  style={{
+                    width: 200,
+                    height: 200,
+                    alignSelf: "center",
+                    padding: 0
+                  }}
+                />
+              </TouchableOpacity>
             </ImageBackground>
           </View>
           <View>
@@ -324,7 +386,7 @@ const Details = ({ navigation, route }) => {
                 color: "white"
               }}
             >
-              Stats
+              Base Stats
             </Text>
             <Stats
               hp={pokemon.stats[0].base_stat}
@@ -446,6 +508,7 @@ const Details = ({ navigation, route }) => {
               style={{
                 fontSize: 20,
                 marginLeft: 10,
+                marginTop: 5,
                 fontWeight: "bold",
                 color: "white"
               }}
@@ -456,6 +519,7 @@ const Details = ({ navigation, route }) => {
               {abilities.map((a, index) => (
                 <ListItem
                   title={capitalize(a.name)}
+                  titleStyle={{ color: "#2189DC" }}
                   subtitle={a.effect}
                   bottomDivider
                   key={index}
@@ -463,8 +527,21 @@ const Details = ({ navigation, route }) => {
               ))}
             </View>
           </View>
+          <ListItem
+            title="Competitive Strategies"
+            onPress={openStrategy}
+            rightIcon={
+              <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
+            }
+          ></ListItem>
         </View>
       )}
+      <Popover
+        visible={popVisible}
+        close={togglePopover}
+        userId={userId}
+        pokeObject={pokeObject}
+      ></Popover>
     </ScrollView>
   );
 };
