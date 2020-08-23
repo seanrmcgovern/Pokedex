@@ -4,7 +4,7 @@ import Constants from "expo-constants";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { View, ActivityIndicator } from "react-native";
 import Login from "./Login";
-import Header from "./Header";
+import Dashboard from "./Dashboard";
 import Results from "./Results";
 import PokeCard from "./PokeCard";
 import Details from "./Details";
@@ -59,7 +59,7 @@ const App = () => {
         }}
       >
         <Stack.Screen name="Pokedex">
-          {props => <Header {...props} userId={userId} />}
+          {props => <Dashboard {...props} userId={userId} />}
         </Stack.Screen>
         <Stack.Screen name="Results" component={Results} />
         <Stack.Screen name="PokeCard" component={PokeCard} />
