@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as firebase from "firebase";
 import Constants from "expo-constants";
+import * as ScreenOrientation from "expo-screen-orientation";
 import { View, ActivityIndicator } from "react-native";
 import Login from "./Login";
 import Header from "./Header";
@@ -27,9 +28,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // TODO:
-// make apikey private
-// Firebase functionalities: list of pokemon caught, favorites, parties for different games
-// toast, button
+// Loading animation for adding to party
+// Firebase functionalities: list of pokemon caught,
+// Add Native Base tabs to profile, for parties, favories, caught?
+// remove from party
 // images needed: default profile pic, main logo, loading gif
 // add moves to details page?
 console.disableYellowBox = true;
@@ -39,10 +41,6 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const App = () => {
-  const [user, setUser] = useState();
-  const [userId, setUserId] = useState("");
-  const [username, setUsername] = useState();
-
   const Pokedex = () => {
     return (
       <Stack.Navigator
@@ -83,17 +81,22 @@ const App = () => {
     );
   };
 
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      // User is signed in.
-      var isAnonymous = user.isAnonymous;
-      var uid = user.uid;
-      setUser(user);
-      setUserId(uid);
-    } else {
-      // User is signed out.
-    }
-  });
+  const [user, setUser] = useState();
+  const [userId, setUserId] = useState("");
+  const [username, setUsername] = useState();
+  const [loading, setLoading] = useState(0);
+
+  // firebase.auth().onAuthStateChanged(function(user) {
+  //   if (user) {
+  //     // User is signed in.
+  //     var isAnonymous = user.isAnonymous;
+  //     var uid = user.uid;
+  //     setUser(user);
+  //     setUserId(uid);
+  //   } else {
+  //     // User is signed out.
+  //   }
+  // });
 
   const initializeUser = name => {
     if (name != "") {
@@ -106,7 +109,8 @@ const App = () => {
             { title: "New Party 1", items: [{ name: "head" }] },
             { title: "New Party 2", items: [{ name: "head" }] },
             { title: "New Party 3", items: [{ name: "head" }] }
-          ]
+          ],
+          favorites: [{ name: "head" }]
         })
         .then(() => {
           user.updateProfile({
@@ -128,21 +132,31 @@ const App = () => {
     });
 
   useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     firebase
       .auth()
       .signInAnonymously()
-      .catch(function(error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
+      .then(res => {
+        // console.log("Signing in: ", res);
+        if (res.additionalUserInfo.isNewUser) {
+          setLoading(1);
+        }
+        setUser(res.user);
+        setUserId(res.user.uid);
       });
   }, []);
+
+  useEffect(() => {
+    if (username != null) {
+      setLoading(2);
+    }
+  }, [username]);
 
   const Profile = () => {
     return <Tab2 username={username} userId={userId}></Tab2>;
   };
 
-  if (user && username) {
+  if (loading === 2) {
     return (
       <NavigationContainer>
         <Tab.Navigator
@@ -186,9 +200,7 @@ const App = () => {
         </Tab.Navigator>
       </NavigationContainer>
     );
-  }
-
-  if (user && !username) {
+  } else if (loading === 1) {
     return <Login initializeUser={initializeUser} />;
   }
 
@@ -197,7 +209,7 @@ const App = () => {
       <View
         style={{
           flex: 1,
-          marginTop: 300
+          marginTop: 400
         }}
       >
         <ActivityIndicator size="large" color="blue" />

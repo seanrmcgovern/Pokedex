@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import * as firebase from "firebase";
 import axios from "axios";
 import {
   StyleSheet,
@@ -11,13 +12,14 @@ import {
   TouchableOpacity
 } from "react-native";
 import { ListItem, Button, Tooltip, Overlay } from "react-native-elements";
-// import { Toast } from "native-base";
+import { Toast, Fab } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as WebBrowser from "expo-web-browser";
 import Pokeball from "./assets/pokeball.png";
 import PokeballSprite from "./assets/pokeballSprite.png";
 import Stats from "./Stats";
 import Popover from "./Popover";
+import { Root } from "native-base";
 
 const styles = StyleSheet.create({
   buffer: {
@@ -67,28 +69,57 @@ const Details = ({ navigation, route }) => {
 
   const [isShiny, setIsShiny] = useState(false);
 
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(); // the pokemon's current index in the list of favorites
+  const [favorites, setFavorites] = useState([]);
+  const favorite = () => {
+    if (!isFavorite) {
+      firebase
+        .database()
+        .ref("users/" + userId + "/favorites")
+        .set([...favorites, pokeObject])
+        .then(() => {
+          showToast(`${name} added to favorites`);
+        });
+    } else {
+      // already is a favorite...want to unfavorite
+      let newFavorites = favorites;
+      newFavorites.splice(currentIndex, 1);
+      firebase
+        .database()
+        .ref("users/" + userId + "/favorites")
+        .set(newFavorites)
+        .then(() => {
+          showToast(`${name} removed from favorites`);
+        });
+      setIsFavorite(false);
+    }
+  };
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button
-          onPress={togglePopover}
-          icon={<Icon name="star-o" size={20} color="white" />}
-        ></Button>
-        // <Tooltip popover={<Text>Add to Party</Text>}>
-        //   <Icon
-        //     name="star-o"
-        //     size={20}
-        //     color="white"
-        //     style={styles.headerIcon}
-        //   />
-        // </Tooltip>
+        <Icon
+          name={isFavorite ? "star" : "star-o"}
+          size={20}
+          color="white"
+          style={styles.headerIcon}
+        />
       )
     });
-  }, [navigation]);
+  }, [navigation, isFavorite]);
 
+  const [activeFab, setActiveFab] = useState(false);
   const [popVisible, setPopVisible] = useState(false);
   const togglePopover = () => {
     setPopVisible(!popVisible);
+  };
+  const showToast = text => {
+    Toast.show({
+      text: text,
+      duration: 5000,
+      type: "success"
+    });
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -271,134 +302,130 @@ const Details = ({ navigation, route }) => {
     }
   }, [varieties]);
 
+  useEffect(() => {
+    firebase
+      .database()
+      .ref("users/" + userId)
+      .on("value", snapshot => {
+        const curFavs = snapshot.val().favorites;
+        setFavorites(curFavs);
+        for (let i = 0; i < curFavs.length; i++) {
+          if (curFavs[i].name === name) {
+            setIsFavorite(true);
+            setCurrentIndex(i);
+          }
+        }
+      });
+  }, []);
+
   return (
-    <ScrollView style={{ backgroundColor: "#DE5C58" }}>
-      {(isLoading || abilityLoading) && (
-        <View style={{ height: "100%" }}>
-          <View
-            style={{
-              flex: 1,
-              marginTop: 300
-            }}
-          >
-            <ActivityIndicator size="large" color="white" />
-          </View>
-        </View>
-      )}
-      {!isLoading && !abilityLoading && (
-        <View>
-          <View style={styles.header}>
-            <ImageBackground source={Pokeball} style={styles.image}>
-              <TouchableOpacity
-                onPress={() => {
-                  setIsShiny(isShiny => !isShiny);
-                }}
-              >
-                <Image
-                  resizeMode="cover"
-                  source={{ uri: isShiny ? shiny : image }}
-                  style={{
-                    width: 200,
-                    height: 200,
-                    alignSelf: "center",
-                    padding: 0
-                  }}
-                />
-              </TouchableOpacity>
-            </ImageBackground>
-          </View>
-          <View>
-            <ListItem
-              contentContainerStyle={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "center"
-              }}
-              containerStyle={{
-                backgroundColor: "#DE5C58",
-                borderWidth: 5,
-                borderColor: "#DE5C58",
-                borderTopColor: "#2189DC",
-                borderBottomColor: "#2189DC"
-              }}
-              subtitle={flavor}
-              subtitleStyle={{
-                color: "white",
-                fontSize: 15
-              }}
-            />
-          </View>
-          <View
-            style={{
-              marginBottom: 5,
-              borderBottomWidth: 5,
-              borderBottomColor: "#2189DC"
-            }}
-          >
-            {types.map((item, index) => (
-              <ListItem
-                key={index}
-                title={"Type " + (index + 1).toString()}
-                contentContainerStyle={{
-                  display: "flex"
-                }}
-                titleStyle={{
-                  alignSelf: "flex-start"
-                }}
-                badge={{
-                  value: item.type.name,
-                  textStyle: { color: "white", fontSize: 12 },
-                  badgeStyle: {
-                    backgroundColor: getTypeColor(item.type.name),
-                    minWidth: 75
-                  }
-                }}
-                bottomDivider
-              ></ListItem>
-            ))}
-            <ListItem
-              title={"Height"}
-              rightTitle={pokemon.height}
-              bottomDivider
-            ></ListItem>
-            <ListItem
-              title={"Weight"}
-              rightTitle={pokemon.weight}
-              bottomDivider
-            ></ListItem>
-            <ListItem
-              title={"Catch Rate"}
-              rightTitle={catchRate + " / 255"}
-              bottomDivider
-            ></ListItem>
-            <ListItem
-              title={"Base Friendship"}
-              rightTitle={happiness + " / 255"}
-              bottomDivider
-            ></ListItem>
-          </View>
-          <View>
-            <Text
+    <Root>
+      <ScrollView style={{ backgroundColor: "#DE5C58" }}>
+        {(isLoading || abilityLoading) && (
+          <View style={{ height: "100%" }}>
+            <View
               style={{
-                fontSize: 20,
-                marginLeft: 10,
-                fontWeight: "bold",
-                color: "white"
+                flex: 1,
+                marginTop: 300
               }}
             >
-              Base Stats
-            </Text>
-            <Stats
-              hp={pokemon.stats[0].base_stat}
-              attack={pokemon.stats[1].base_stat}
-              defense={pokemon.stats[2].base_stat}
-              specialAttack={pokemon.stats[3].base_stat}
-              specialDefense={pokemon.stats[4].base_stat}
-              speed={pokemon.stats[5].base_stat}
-            ></Stats>
+              <ActivityIndicator size="large" color="white" />
+            </View>
           </View>
+        )}
+        {!isLoading && !abilityLoading && (
           <View>
-            {varieties.length > 1 && (
+            <View style={styles.header}>
+              <ImageBackground source={Pokeball} style={styles.image}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsShiny(isShiny => !isShiny);
+                  }}
+                >
+                  <Image
+                    resizeMode="cover"
+                    source={{ uri: isShiny ? shiny : image }}
+                    style={{
+                      width: 200,
+                      height: 200,
+                      alignSelf: "center",
+                      padding: 0
+                    }}
+                  />
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+            <View>
+              <ListItem
+                contentContainerStyle={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }}
+                containerStyle={{
+                  backgroundColor: "#DE5C58",
+                  borderWidth: 5,
+                  borderColor: "#DE5C58",
+                  borderTopColor: "#2189DC",
+                  borderBottomColor: "#2189DC"
+                }}
+                subtitle={flavor}
+                subtitleStyle={{
+                  color: "white",
+                  fontSize: 15
+                }}
+              />
+            </View>
+            <View
+              style={{
+                marginBottom: 5,
+                borderBottomWidth: 5,
+                borderBottomColor: "#2189DC"
+              }}
+            >
+              {types.map((item, index) => (
+                <ListItem
+                  key={index}
+                  title={"Type " + (index + 1).toString()}
+                  contentContainerStyle={{
+                    display: "flex"
+                  }}
+                  titleStyle={{
+                    alignSelf: "flex-start"
+                  }}
+                  badge={{
+                    value: item.type.name,
+                    textStyle: { color: "white", fontSize: 12 },
+                    badgeStyle: {
+                      backgroundColor: getTypeColor(item.type.name),
+                      minWidth: 75
+                    }
+                  }}
+                  bottomDivider
+                ></ListItem>
+              ))}
+              <ListItem
+                title={"Height"}
+                rightTitle={pokemon.height}
+                bottomDivider
+              ></ListItem>
+              <ListItem
+                title={"Weight"}
+                rightTitle={pokemon.weight}
+                bottomDivider
+              ></ListItem>
+              <ListItem
+                title={"Catch Rate"}
+                rightTitle={catchRate + " / 255"}
+                bottomDivider
+              ></ListItem>
+              <ListItem
+                title={"Base Friendship"}
+                rightTitle={happiness + " / 255"}
+                bottomDivider
+              ></ListItem>
+            </View>
+            <View>
               <Text
                 style={{
                   fontSize: 20,
@@ -407,142 +434,196 @@ const Details = ({ navigation, route }) => {
                   color: "white"
                 }}
               >
-                Forms
+                Base Stats
               </Text>
-            )}
-            {varieties.length >= 2 && (
-              <ListItem
-                leftAvatar={{
-                  source: variant1
-                    ? {
-                        uri: variant1
-                      }
-                    : PokeballSprite
-                }}
-                key={0}
-                title={capitalize(varieties[1].pokemon.name)}
-                onPress={() =>
-                  navigation.navigate("MegaDetails", {
-                    name: capitalize(varieties[1].pokemon.name),
-                    pokemon: variantData1,
-                    image: variant1,
-                    id: variantData1.id,
-                    flavor: flavor
-                  })
-                }
-                bottomDivider
-              ></ListItem>
-            )}
-            {varieties.length >= 3 && (
-              <ListItem
-                leftAvatar={{
-                  source: variant2
-                    ? {
-                        uri: variant2
-                      }
-                    : PokeballSprite
-                }}
-                key={1}
-                title={capitalize(varieties[2].pokemon.name)}
-                onPress={() =>
-                  navigation.navigate("MegaDetails", {
-                    name: capitalize(varieties[2].pokemon.name),
-                    pokemon: variantData2,
-                    image: variant2,
-                    id: variantData2.id,
-                    flavor: flavor
-                  })
-                }
-                bottomDivider
-              ></ListItem>
-            )}
-            {varieties.length >= 4 && (
-              <ListItem
-                leftAvatar={{
-                  source: variant3
-                    ? {
-                        uri: variant3
-                      }
-                    : PokeballSprite
-                }}
-                key={1}
-                title={capitalize(varieties[3].pokemon.name)}
-                onPress={() =>
-                  navigation.navigate("MegaDetails", {
-                    name: capitalize(varieties[3].pokemon.name),
-                    pokemon: variantData3,
-                    image: variant3,
-                    id: variantData3.id,
-                    flavor: flavor
-                  })
-                }
-                bottomDivider
-              ></ListItem>
-            )}
-            {varieties.length >= 5 && (
-              <ListItem
-                leftAvatar={{
-                  source: variant4
-                    ? {
-                        uri: variant4
-                      }
-                    : PokeballSprite
-                }}
-                key={1}
-                title={capitalize(varieties[4].pokemon.name)}
-                onPress={() =>
-                  navigation.navigate("MegaDetails", {
-                    name: capitalize(varieties[4].pokemon.name),
-                    pokemon: variantData4,
-                    image: variant4,
-                    id: variantData4.id,
-                    flavor: flavor
-                  })
-                }
-                bottomDivider
-              ></ListItem>
-            )}
-          </View>
-          <View>
-            <Text
-              style={{
-                fontSize: 20,
-                marginLeft: 10,
-                marginTop: 5,
-                fontWeight: "bold",
-                color: "white"
-              }}
-            >
-              Abilities
-            </Text>
-            <View>
-              {abilities.map((a, index) => (
-                <ListItem
-                  title={capitalize(a.name)}
-                  titleStyle={{ color: "#2189DC" }}
-                  subtitle={a.effect}
-                  bottomDivider
-                  key={index}
-                ></ListItem>
-              ))}
+              <Stats
+                hp={pokemon.stats[0].base_stat}
+                attack={pokemon.stats[1].base_stat}
+                defense={pokemon.stats[2].base_stat}
+                specialAttack={pokemon.stats[3].base_stat}
+                specialDefense={pokemon.stats[4].base_stat}
+                speed={pokemon.stats[5].base_stat}
+              ></Stats>
             </View>
+            <View>
+              {varieties.length > 1 && (
+                <Text
+                  style={{
+                    fontSize: 20,
+                    marginLeft: 10,
+                    fontWeight: "bold",
+                    color: "white"
+                  }}
+                >
+                  Forms
+                </Text>
+              )}
+              {varieties.length >= 2 && (
+                <ListItem
+                  leftAvatar={{
+                    source: variant1
+                      ? {
+                          uri: variant1
+                        }
+                      : PokeballSprite
+                  }}
+                  key={0}
+                  title={capitalize(varieties[1].pokemon.name)}
+                  onPress={() =>
+                    navigation.navigate("MegaDetails", {
+                      name: capitalize(varieties[1].pokemon.name),
+                      pokemon: variantData1,
+                      image: variant1,
+                      id: variantData1.id,
+                      flavor: flavor
+                    })
+                  }
+                  bottomDivider
+                ></ListItem>
+              )}
+              {varieties.length >= 3 && (
+                <ListItem
+                  leftAvatar={{
+                    source: variant2
+                      ? {
+                          uri: variant2
+                        }
+                      : PokeballSprite
+                  }}
+                  key={1}
+                  title={capitalize(varieties[2].pokemon.name)}
+                  onPress={() =>
+                    navigation.navigate("MegaDetails", {
+                      name: capitalize(varieties[2].pokemon.name),
+                      pokemon: variantData2,
+                      image: variant2,
+                      id: variantData2.id,
+                      flavor: flavor
+                    })
+                  }
+                  bottomDivider
+                ></ListItem>
+              )}
+              {varieties.length >= 4 && (
+                <ListItem
+                  leftAvatar={{
+                    source: variant3
+                      ? {
+                          uri: variant3
+                        }
+                      : PokeballSprite
+                  }}
+                  key={1}
+                  title={capitalize(varieties[3].pokemon.name)}
+                  onPress={() =>
+                    navigation.navigate("MegaDetails", {
+                      name: capitalize(varieties[3].pokemon.name),
+                      pokemon: variantData3,
+                      image: variant3,
+                      id: variantData3.id,
+                      flavor: flavor
+                    })
+                  }
+                  bottomDivider
+                ></ListItem>
+              )}
+              {varieties.length >= 5 && (
+                <ListItem
+                  leftAvatar={{
+                    source: variant4
+                      ? {
+                          uri: variant4
+                        }
+                      : PokeballSprite
+                  }}
+                  key={1}
+                  title={capitalize(varieties[4].pokemon.name)}
+                  onPress={() =>
+                    navigation.navigate("MegaDetails", {
+                      name: capitalize(varieties[4].pokemon.name),
+                      pokemon: variantData4,
+                      image: variant4,
+                      id: variantData4.id,
+                      flavor: flavor
+                    })
+                  }
+                  bottomDivider
+                ></ListItem>
+              )}
+            </View>
+            <View>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginLeft: 10,
+                  marginTop: 5,
+                  fontWeight: "bold",
+                  color: "white"
+                }}
+              >
+                Abilities
+              </Text>
+              <View>
+                {abilities.map((a, index) => (
+                  <ListItem
+                    title={capitalize(a.name)}
+                    titleStyle={{ color: "#2189DC" }}
+                    subtitle={a.effect}
+                    bottomDivider
+                    key={index}
+                  ></ListItem>
+                ))}
+              </View>
+            </View>
+            <ListItem
+              title="Competitive Strategies"
+              onPress={openStrategy}
+              rightIcon={
+                <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
+              }
+            ></ListItem>
           </View>
-          <ListItem
-            title="Competitive Strategies"
-            onPress={openStrategy}
-            rightIcon={
-              <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
-            }
-          ></ListItem>
-        </View>
-      )}
-      <Popover
-        visible={popVisible}
-        close={togglePopover}
-        userId={userId}
-        pokeObject={pokeObject}
-      ></Popover>
-    </ScrollView>
+        )}
+        <Popover
+          visible={popVisible}
+          close={togglePopover}
+          userId={userId}
+          pokeObject={pokeObject}
+          showToast={showToast}
+        ></Popover>
+      </ScrollView>
+      <Fab
+        active={activeFab}
+        direction="up"
+        style={{ backgroundColor: "#2189DC" }}
+        position="bottomRight"
+        onPress={() => setActiveFab(!activeFab)}
+      >
+        <Icon name="crosshairs" />
+        <Button
+          style={{
+            backgroundColor: "#1CA94C",
+            shadowOffset: { width: 0, height: 1 },
+            shadowColor: "black",
+            shadowOpacity: 0.75
+          }}
+          onPress={favorite}
+        >
+          <Icon name="star-o" />
+        </Button>
+        <Button
+          style={{
+            backgroundColor: "#DE5C58",
+            shadowOffset: { width: 0, height: 1 },
+            shadowColor: "black",
+            shadowOpacity: 0.75
+          }}
+          onPress={togglePopover}
+        >
+          <Icon name="tasks" />
+        </Button>
+      </Fab>
+    </Root>
   );
 };
 

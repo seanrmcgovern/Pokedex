@@ -52,8 +52,6 @@ const Results = props => {
 
   useEffect(() => {
     axios.get(url).then(res => {
-      console.log(res.data.pokemon_entries[0].pokemon_species.url);
-      // setPokemon(res.data.pokemon_entries);
       if (props.generation === 3) {
         // gen 2
         let pokeList = [];

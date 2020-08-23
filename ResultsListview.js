@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
   StyleSheet,
@@ -54,10 +54,101 @@ const ResultsListview = props => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  const flatlistRef = useRef();
+
   useEffect(() => {
     axios.get(url).then(res => {
-      setPokemon(res.data.pokemon_entries);
+      if (props.generation === 3) {
+        // gen 2
+        let pokeList = [];
+        for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+          const entryId = parseInt(
+            res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+          );
+          if (entryId > 151) {
+            pokeList.push({
+              ...res.data.pokemon_entries[i],
+              entryId: entryId
+            });
+          }
+        }
+        setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
+      } else if (props.generation === 4) {
+        // gen 3
+        let pokeList = [];
+        for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+          const entryId = parseInt(
+            res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+          );
+          if (entryId > 251) {
+            pokeList.push({
+              ...res.data.pokemon_entries[i],
+              entryId: entryId
+            });
+          }
+        }
+        setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
+      } else if (props.generation === 5) {
+        // gen 4
+        let pokeList = [];
+        for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+          const entryId = parseInt(
+            res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+          );
+          if (entryId > 386) {
+            pokeList.push({
+              ...res.data.pokemon_entries[i],
+              entryId: entryId
+            });
+          }
+        }
+        const darkrai = {
+          entryId: 491,
+          pokemon_species: {
+            name: "Darkrai",
+            url: "https://pokeapi.co/api/v2/pokemon-species/491/"
+          }
+        };
+        const shaymin = {
+          entryId: 492,
+          pokemon_species: {
+            name: "Shaymin",
+            url: "https://pokeapi.co/api/v2/pokemon-species/492/"
+          }
+        };
+        const arceus = {
+          entryId: 493,
+          pokemon_species: {
+            name: "Arceus",
+            url: "https://pokeapi.co/api/v2/pokemon-species/493/"
+          }
+        };
+        setPokemon(
+          [...pokeList, darkrai, shaymin, arceus].sort((a, b) =>
+            a.entryId > b.entryId ? 1 : -1
+          )
+        );
+      } else if (props.generation === 8) {
+        // gen 5
+        let pokeList = [];
+        for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+          const entryId = parseInt(
+            res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+          );
+          if (entryId > 494) {
+            pokeList.push({
+              ...res.data.pokemon_entries[i],
+              entryId: entryId
+            });
+          }
+        }
+        setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
+      } else {
+        // gen 1
+        setPokemon(res.data.pokemon_entries);
+      }
     });
+    flatlistRef.current.scrollToOffset({ animated: true, offset: 0 });
   }, [props.generation]);
 
   return (
@@ -65,6 +156,7 @@ const ResultsListview = props => {
       <SafeAreaView style={styles.container}>
         <FlatList
           data={pokemon}
+          ref={flatlistRef}
           //maxToRenderPerBatch={150}
           style={styles.scrollView}
           // contentContainerStyle={{
@@ -91,6 +183,7 @@ const ResultsListview = props => {
                   navigation={props.navigation}
                   gen={props.generation}
                   key={index}
+                  userId={props.userId}
                 ></ListRow>
               );
           }}

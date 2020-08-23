@@ -26,7 +26,8 @@ const ListRow = props => {
           image: sprite,
           id: id,
           gen: props.gen,
-          shiny: shiny
+          shiny: shiny,
+          userId: props.userId
         })
       }
       title={props.name}

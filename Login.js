@@ -35,6 +35,7 @@ const Login = props => {
               register();
             }}
             title="Register"
+            disabled={username === ""}
           />
         </View>
       </View>
