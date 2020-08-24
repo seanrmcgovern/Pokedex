@@ -75,6 +75,11 @@ const PartyList = props => {
               index > 0 && (
                 <ListItem
                   title={item.name}
+                  leftAvatar={{
+                    source: {
+                      uri: item.image
+                    }
+                  }}
                   bottomDivider
                   containerStyle={{ backgroundColor: "#F4F3F4" }}
                 ></ListItem>

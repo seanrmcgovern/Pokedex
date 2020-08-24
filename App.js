@@ -9,7 +9,7 @@ import Results from "./Results";
 import PokeCard from "./PokeCard";
 import Details from "./Details";
 import MegaDetails from "./MegaDetails";
-import Tab2 from "./Tab2";
+import Profile from "./Profile";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -77,6 +77,35 @@ const App = () => {
             title: route.params.name
           })}
         />
+      </Stack.Navigator>
+    );
+  };
+
+  const ProfileTab = () => {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerBackTitle: "Back",
+          headerBackTitleStyle: {
+            color: "white"
+          },
+          headerStyle: {
+            backgroundColor: "#2189DC"
+          },
+          headerTintColor: "white",
+          headerTitleStyle: {
+            fontWeight: "bold"
+          }
+        }}
+      >
+        <Stack.Screen
+          name="Profile"
+          options={({ navigation, route }) => ({
+            title: username
+          })}
+        >
+          {props => <Profile {...props} userId={userId} />}
+        </Stack.Screen>
       </Stack.Navigator>
     );
   };
@@ -152,9 +181,9 @@ const App = () => {
     }
   }, [username]);
 
-  const Profile = () => {
-    return <Tab2 username={username} userId={userId}></Tab2>;
-  };
+  // const ProfileTab = () => {
+  //   return <Profile username={username} userId={userId}></Profile>;
+  // };
 
   if (loading === 2) {
     return (
@@ -196,7 +225,7 @@ const App = () => {
           }}
         >
           <Tab.Screen name={"Pokedex"} component={Pokedex} />
-          <Tab.Screen name={"Profile"} component={Profile} />
+          <Tab.Screen name={"Profile"} component={ProfileTab} />
         </Tab.Navigator>
       </NavigationContainer>
     );

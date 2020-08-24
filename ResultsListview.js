@@ -72,6 +72,7 @@ const ResultsListview = props => {
                 entryId: entryId
               });
             }
+            pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1));
           }
         });
       }
