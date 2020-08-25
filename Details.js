@@ -12,14 +12,13 @@ import {
   TouchableOpacity
 } from "react-native";
 import { ListItem, Button, Tooltip, Overlay } from "react-native-elements";
-import { Toast, Fab } from "native-base";
+import { Root, Toast, Fab } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as WebBrowser from "expo-web-browser";
 import Pokeball from "./assets/pokeball.png";
 import PokeballSprite from "./assets/pokeballSprite.png";
 import Stats from "./Stats";
 import Popover from "./Popover";
-import { Root } from "native-base";
 
 const styles = StyleSheet.create({
   buffer: {

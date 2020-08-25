@@ -28,11 +28,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // TODO:
-// Loading animation for adding to party
-// Firebase functionalities: list of pokemon caught,
-// Add Native Base tabs to profile, for parties, favories, caught?
-// remove from party
-// images needed: default profile pic, main logo, loading gif
+// Firebase functionalities: delete party, rename party, display favorites, ability to remove favorites
+// images needed: main logo
 // add moves to details page?
 console.disableYellowBox = true;
 
@@ -106,6 +103,20 @@ const App = () => {
         >
           {props => <Profile {...props} userId={userId} />}
         </Stack.Screen>
+        <Stack.Screen
+          name="Details"
+          component={Details}
+          options={({ navigation, route }) => ({
+            title: route.params.name
+          })}
+        />
+        <Stack.Screen
+          name="MegaDetails"
+          component={MegaDetails}
+          options={({ route }) => ({
+            title: route.params.name
+          })}
+        />
       </Stack.Navigator>
     );
   };
@@ -166,7 +177,6 @@ const App = () => {
       .auth()
       .signInAnonymously()
       .then(res => {
-        // console.log("Signing in: ", res);
         if (res.additionalUserInfo.isNewUser) {
           setLoading(1);
         }
@@ -180,10 +190,6 @@ const App = () => {
       setLoading(2);
     }
   }, [username]);
-
-  // const ProfileTab = () => {
-  //   return <Profile username={username} userId={userId}></Profile>;
-  // };
 
   if (loading === 2) {
     return (

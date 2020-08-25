@@ -45,9 +45,18 @@ const Parties = props => {
       scrollEventThrottle={16}
     >
       <View style={{ height: 1000, backgroundColor: "#DE5C58" }}>
-        {parties.map((party, index) => (
-          <PartyList title={party.title} party={party.items}></PartyList>
-        ))}
+        <View style={{ backgroundColor: "white" }}>
+          {parties.map((party, index) => (
+            <PartyList
+              navigation={props.navigation}
+              title={party.title}
+              party={party.items}
+              partyIndex={index}
+              userId={props.userId}
+              parties={parties}
+            ></PartyList>
+          ))}
+        </View>
         <TouchableOpacity onPress={toggleOverlay} style={{ height: 80 }}>
           <View
             style={{

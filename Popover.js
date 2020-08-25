@@ -1,44 +1,65 @@
 import React, { useState, useEffect } from "react";
 import * as firebase from "firebase";
-import axios from "axios";
 import { ListItem, Overlay, Input, Button } from "react-native-elements";
 import { View, Text, ActivityIndicator } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { Toast } from "native-base";
 
 const Popover = props => {
   const [parties, setParties] = useState([]);
   const [newParty, setNewParty] = useState("");
 
-  const createParty = name => {
-    const newName = name === "" ? "New Party" : name;
-    firebase
-      .database()
-      .ref("users/" + props.userId + "/parties")
-      .set([
-        ...parties,
-        { title: newName, items: [{ name: "head" }, props.pokeObject] }
-      ]);
-    props.showToast(`Created party: "${name}" with ${props.pokeObject.name}`);
-    setNewParty("");
+  const [creatingParty, setCreatingParty] = useState(false);
+
+  const createParty = () => {
+    setCreatingParty(true);
   };
 
-  const [loadingChange, setLoadingChange] = useState(false);
+  useEffect(() => {
+    if (creatingParty) {
+      const newName = newParty;
+      firebase
+        .database()
+        .ref("users/" + props.userId + "/parties")
+        .set([
+          ...parties,
+          { title: newName, items: [{ name: "head" }, props.pokeObject] }
+        ])
+        .then(() => {
+          setCreatingParty(false);
+          setNewParty("");
+          props.showToast(
+            `Created party: "${newName}" with ${props.pokeObject.name}`
+          );
+          props.close();
+        });
+    }
+  }, [creatingParty]);
+
+  const [loadingChange, setLoadingChange] = useState();
 
   const addToParty = index => {
-    // setLoadingChange(true);
-    let newParties = parties;
-    newParties[index].items.push(props.pokeObject);
-    firebase
-      .database()
-      .ref("users/" + props.userId + "/parties")
-      .set(newParties);
-    props.showToast(
-      `${props.pokeObject.name} added to party: ${newParties[index].title}`
-    );
-    setNewParty("");
-    props.close();
+    setLoadingChange(index);
   };
+
+  useEffect(() => {
+    if (typeof loadingChange === "number") {
+      let newParties = parties;
+      newParties[loadingChange].items.push(props.pokeObject);
+      firebase
+        .database()
+        .ref("users/" + props.userId + "/parties")
+        .set(newParties)
+        .then(() => {
+          setLoadingChange(false);
+          props.showToast(
+            `${props.pokeObject.name} added to party: ${newParties[loadingChange].title}`
+          );
+          setNewParty("");
+          setLoadingChange();
+          props.close();
+        });
+    }
+  }, [loadingChange]);
 
   useEffect(() => {
     firebase
@@ -70,10 +91,20 @@ const Popover = props => {
         Add to Party
       </Text>
       <ScrollView>
-        {/* {loadingChange && <ActivityIndicator />} */}
         {parties.map((party, index) => (
           <TouchableOpacity onPress={() => addToParty(index)} key={index}>
-            <ListItem title={party.title} bottomDivider topDivider></ListItem>
+            <ListItem
+              title={party.title}
+              bottomDivider
+              topDivider
+              rightIcon={
+                loadingChange === index ? (
+                  <ActivityIndicator color="#2189DC" />
+                ) : (
+                  ""
+                )
+              }
+            ></ListItem>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -96,11 +127,10 @@ const Popover = props => {
       />
       <View>
         <Button
-          onPress={() => {
-            createParty(newParty);
-            props.close();
-          }}
-          title="Create Party"
+          onPress={createParty}
+          title={creatingParty ? "" : "Create Party"}
+          icon={creatingParty ? <ActivityIndicator color="#2189DC" /> : <></>}
+          disabled={newParty === "" || creatingParty}
         />
       </View>
     </Overlay>
