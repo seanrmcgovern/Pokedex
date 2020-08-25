@@ -28,7 +28,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // TODO:
-// Firebase functionalities: delete party, rename party, display favorites, ability to remove favorites
+// Firebase functionalities: rename party,
+// carousel for details image
 // images needed: main logo
 // add moves to details page?
 console.disableYellowBox = true;

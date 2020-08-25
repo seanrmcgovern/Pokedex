@@ -224,6 +224,14 @@ const Details = ({ navigation, route }) => {
       WebBrowser.openBrowserAsync(
         "https://www.smogon.com/dex/bw/pokemon/" + name
       );
+    } else if (gen === 12) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/xy/pokemon/" + name
+      );
+    } else {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/sm/pokemon/" + name
+      );
     }
   };
 

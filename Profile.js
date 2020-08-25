@@ -2,6 +2,8 @@ import React from "react";
 import { Text, View } from "react-native";
 import { Container, Tab, Tabs } from "native-base";
 import Parties from "./Parties";
+import Favorites from "./Favorites";
+import { recoveredProps } from "expo-error-recovery";
 
 const Profile = ({ navigation, route, userId }) => {
   return (
@@ -12,7 +14,7 @@ const Profile = ({ navigation, route, userId }) => {
             <Parties navigation={navigation} userId={userId}></Parties>
           </Tab>
           <Tab heading="Favorites">
-            <Text>Favorites</Text>
+            <Favorites navigation={navigation} userId={userId} />
           </Tab>
         </Tabs>
       </Container>
