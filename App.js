@@ -28,9 +28,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // TODO:
-// Firebase functionalities: rename party,
+// images needed: main logo, pokeball/filler logo
+// change color of pokeball image?
+// Firebase functionalities: rename party, username
 // carousel for details image
-// images needed: main logo
 // add moves to details page?
 console.disableYellowBox = true;
 
@@ -156,7 +157,6 @@ const App = () => {
         .then(() => {
           user.updateProfile({
             displayName: name
-            // photoURL: "https://example.com/jane-q-user/profile.jpg"
           });
         });
     }
@@ -178,7 +178,7 @@ const App = () => {
       .auth()
       .signInAnonymously()
       .then(res => {
-        if (res.additionalUserInfo.isNewUser) {
+        if (res.additionalUserInfo.isNewUser || res.user.displayName === null) {
           setLoading(1);
         }
         setUser(res.user);

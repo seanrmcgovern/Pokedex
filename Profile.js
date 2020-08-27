@@ -3,7 +3,6 @@ import { Text, View } from "react-native";
 import { Container, Tab, Tabs } from "native-base";
 import Parties from "./Parties";
 import Favorites from "./Favorites";
-import { recoveredProps } from "expo-error-recovery";
 
 const Profile = ({ navigation, route, userId }) => {
   return (

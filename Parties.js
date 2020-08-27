@@ -1,20 +1,50 @@
 import React, { useState, useEffect } from "react";
 import * as firebase from "firebase";
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import { Button, Overlay, Input } from "react-native-elements";
-import PartyList from "./PartyList";
+import { Root, Toast } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
+import PartyList from "./PartyList";
 
 const Parties = props => {
   const [parties, setParties] = useState([]);
 
-  const addParty = name => {
-    const newName = name === "" ? "New Party" : name;
-    firebase
-      .database()
-      .ref("users/" + props.userId + "/parties")
-      .set([...parties, { title: newName, items: [{ name: "head" }] }]);
+  const [newParty, setNewParty] = useState("");
+
+  const [creatingParty, setCreatingParty] = useState(false);
+
+  const createParty = () => {
+    setCreatingParty(true);
   };
+
+  const showToast = text => {
+    Toast.show({
+      text: text,
+      duration: 5000,
+      type: "success"
+    });
+  };
+
+  useEffect(() => {
+    if (creatingParty) {
+      firebase
+        .database()
+        .ref("users/" + props.userId + "/parties")
+        .set([...parties, { title: newParty, items: [{ name: "head" }] }])
+        .then(() => {
+          setCreatingParty(false);
+          setNewParty("");
+          showToast(`Created party: "${newParty}"`);
+          close();
+        });
+    }
+  }, [creatingParty]);
 
   const [visible, setVisible] = useState(false);
 
@@ -27,8 +57,6 @@ const Parties = props => {
     toggleOverlay();
   };
 
-  const [newParty, setNewParty] = useState("");
-
   useEffect(() => {
     firebase
       .database()
@@ -40,37 +68,51 @@ const Parties = props => {
   }, []);
 
   return (
-    <ScrollView
-      style={{ flex: 1, zIndex: 1, elevation: 1 }}
-      scrollEventThrottle={16}
-    >
-      <View style={{ height: 1000, backgroundColor: "#DE5C58" }}>
-        <View style={{ backgroundColor: "white" }}>
-          {parties.map((party, index) => (
-            <PartyList
-              navigation={props.navigation}
-              title={party.title}
-              party={party.items}
-              partyIndex={index}
-              userId={props.userId}
-              parties={parties}
-            ></PartyList>
-          ))}
-        </View>
-        <TouchableOpacity onPress={toggleOverlay} style={{ height: 80 }}>
-          <View
-            style={{
-              backgroundColor: "#2189DC",
-              padding: 15,
-              display: "flex",
-              borderBottomWidth: 0.5,
-              borderBottomColor: "#D3D3D3",
-              alignItems: "center"
-            }}
-          >
-            <Icon name="plus-square" size={40} color="white"></Icon>
+    <Root>
+      <View
+        style={{
+          backgroundColor: "#DE5C58",
+          flex: 1,
+          flexDirection: "column"
+        }}
+      >
+        <ScrollView
+          style={{ backgroundColor: "#DE5C58" }}
+          contentContainerStyle={{ paddingBottom: 400 }}
+        >
+          <View style={{ backgroundColor: "white" }}>
+            {parties.map((party, index) => (
+              <PartyList
+                navigation={props.navigation}
+                title={party.title}
+                party={party.items}
+                partyIndex={index}
+                userId={props.userId}
+                parties={parties}
+              ></PartyList>
+            ))}
           </View>
-        </TouchableOpacity>
+        </ScrollView>
+        <View style={{ flex: 1, justifyContent: "flex-end" }}>
+          <TouchableOpacity
+            onPress={toggleOverlay}
+            style={{ flex: 1, justifyContent: "flex-end", minHeight: 80 }}
+          >
+            <View
+              style={{
+                backgroundColor: "#2189DC",
+                padding: 15,
+                display: "flex",
+                borderBottomWidth: 0.5,
+                borderBottomColor: "#D3D3D3",
+                alignItems: "center",
+                marginBottom: 0
+              }}
+            >
+              <Icon name="plus-square" size={40} color="white"></Icon>
+            </View>
+          </TouchableOpacity>
+        </View>
         <Overlay
           isVisible={visible}
           onBackdropPress={close}
@@ -95,15 +137,18 @@ const Parties = props => {
           <View>
             <Button
               onPress={() => {
-                addParty(newParty);
-                close();
+                createParty();
               }}
-              title="Create Party"
+              title={creatingParty ? "" : "Create Party"}
+              icon={
+                creatingParty ? <ActivityIndicator color="#2189DC" /> : <></>
+              }
+              disabled={newParty === "" || creatingParty}
             />
           </View>
         </Overlay>
       </View>
-    </ScrollView>
+    </Root>
   );
 };
 
