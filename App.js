@@ -245,10 +245,11 @@ const App = () => {
       <View
         style={{
           flex: 1,
-          marginTop: 400
+          flexDirection: "column",
+          justifyContent: "center"
         }}
       >
-        <ActivityIndicator size="large" color="blue" />
+        <ActivityIndicator size="large" color="#2189DC" />
       </View>
     </View>
   );

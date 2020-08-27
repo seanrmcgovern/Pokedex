@@ -31,10 +31,16 @@ const Login = props => {
       <View
         style={{
           flex: 1,
-          marginTop: 100
+          flexDirection: "column",
+          justifyContent: "space-evenly"
         }}
       >
-        <View style={{ margin: 10, alignItems: "center" }}>
+        <View
+          style={{
+            margin: 10,
+            alignItems: "center"
+          }}
+        >
           <Image source={Sequoia} style={{ width: 300, height: 300 }}></Image>
           <Text style={styles.title}>Hello there! I am Professor Sequoia.</Text>
           <Text style={styles.title}>Welcome to the world of Pokemon!</Text>
@@ -42,23 +48,25 @@ const Login = props => {
             Enter your name and embark upon your own journey!
           </Text>
         </View>
-        <Input
-          placeholder="Ex: AshKetchum1997"
-          label="Username"
-          onChangeText={text => setUsername(text)}
-          value={username}
-        />
-        <View style={{ margin: 10 }}>
-          <Button
-            onPress={() => {
-              register();
-            }}
-            title={creatingAccount ? "" : "Create Account"}
-            disabled={username === "" || creatingAccount}
-            icon={
-              creatingAccount ? <ActivityIndicator color="#2189DC" /> : <></>
-            }
+        <View>
+          <Input
+            placeholder="Ex: AshKetchum1997"
+            label="Username"
+            onChangeText={text => setUsername(text)}
+            value={username}
           />
+          <View style={{ margin: 10 }}>
+            <Button
+              onPress={() => {
+                register();
+              }}
+              title={creatingAccount ? "" : "Create Account"}
+              disabled={username === "" || creatingAccount}
+              icon={
+                creatingAccount ? <ActivityIndicator color="#2189DC" /> : <></>
+              }
+            />
+          </View>
         </View>
       </View>
     </View>
