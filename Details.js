@@ -76,10 +76,8 @@ const Details = ({ navigation, route }) => {
       firebase
         .database()
         .ref("users/" + userId + "/favorites")
-        .set([...favorites, pokeObject])
-        .then(() => {
-          showToast(`${name} added to favorites`);
-        });
+        .set([...favorites, pokeObject]);
+      showToast(`${name} added to favorites`);
     } else {
       // already is a favorite...want to unfavorite
       let newFavorites = favorites;
@@ -87,10 +85,8 @@ const Details = ({ navigation, route }) => {
       firebase
         .database()
         .ref("users/" + userId + "/favorites")
-        .set(newFavorites)
-        .then(() => {
-          showToast(`${name} removed from favorites`);
-        });
+        .set(newFavorites);
+      showToast(`${name} removed from favorites`);
       setIsFavorite(false);
     }
   };

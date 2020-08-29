@@ -1,31 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as firebase from "firebase";
 import {
-  //   Text,
   View,
-  ScrollView,
   TouchableOpacity,
   Dimensions,
   Image,
   ImageBackground,
   StyleSheet
 } from "react-native";
-import {
-  Container,
-  Header,
-  Content,
-  Text,
-  Card,
-  CardItem,
-  Thumbnail,
-  Button,
-  Left,
-  Body,
-  Right
-} from "native-base";
+import { Text, Card, CardItem, Body } from "native-base";
 import Pokeball from "./assets/pokeball.png";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import Sequoia from "./assets/sequoia.png";
 
 const styles = StyleSheet.create({
   buffer: {
@@ -58,10 +45,19 @@ const styles = StyleSheet.create({
 const Favorites = ({ navigation, route, userId }) => {
   const SLIDER_WIDTH = Dimensions.get("window").width;
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
+  const ITEM_HEIGHT = Math.round(Dimensions.get("screen").height * 0.3);
 
   const capitalize = str => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
+
+  const emptyFavorites = [
+    {
+      id: "Pokemon you favorite will be listed here.",
+      name: "Professor Sequoia here!",
+      image: Sequoia
+    }
+  ];
 
   const [favorites, setFavorites] = useState([]);
 
@@ -70,19 +66,22 @@ const Favorites = ({ navigation, route, userId }) => {
   const ref = useRef();
 
   const renderCard = ({ item, index }) => {
+    const isPokemon = typeof item.id === "number";
     return (
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Details", {
-            name: capitalize(item.name),
-            pokemon: item.pokemon,
-            image: item.image,
-            id: item.id,
-            gen: item.gen,
-            shiny: item.shiny,
-            userId: userId
-          })
-        }
+        onPress={() => {
+          if (isPokemon) {
+            navigation.navigate("Details", {
+              name: capitalize(item.name),
+              pokemon: item.pokemon,
+              image: item.image,
+              id: item.id,
+              gen: item.gen,
+              shiny: item.shiny,
+              userId: userId
+            });
+          }
+        }}
       >
         <Card style={{ borderRadius: 40, backgroundColor: "#EDEBED" }}>
           <CardItem
@@ -93,40 +92,44 @@ const Favorites = ({ navigation, route, userId }) => {
                 style={{
                   fontFamily: "PingFangHK-Semibold",
                   color: "#2189DC",
-                  fontSize: 25
+                  fontSize: isPokemon ? 25 : 18
                 }}
               >
                 {item.name}
               </Text>
-              {/* <Text note>{item.name}</Text> */}
             </Body>
           </CardItem>
           <CardItem
             cardBody
             style={{ borderBottomLeftRadius: 40, borderBottomRightRadius: 40 }}
           >
-            <ImageBackground source={Pokeball} style={styles.image}>
-              <Image
-                resizeMode="cover"
-                source={{ uri: item.image }}
-                // style={{
-                //   width: 200,
-                //   height: 200,
-                //   alignSelf: "center",
-                //   padding: 0
-                // }}
-                style={{
-                  alignSelf: "center",
-                  height: 250,
-                  width: 250,
-                  resizeMode: "contain"
-                }}
-              />
-            </ImageBackground>
-            {/* <Image
-            source={{ uri: item.image }}
-            style={{ height: 250, width: 250, flex: 1, resizeMode: "contain" }}
-          ></Image> */}
+            {isPokemon ? (
+              <ImageBackground source={Pokeball} style={styles.image}>
+                <Image
+                  resizeMode="cover"
+                  source={{ uri: item.image }}
+                  style={{
+                    alignSelf: "center",
+                    height: ITEM_HEIGHT,
+                    width: ITEM_WIDTH * 0.75,
+                    resizeMode: "contain"
+                  }}
+                />
+              </ImageBackground>
+            ) : (
+              <View style={styles.image}>
+                <Image
+                  resizeMode="cover"
+                  source={item.image}
+                  style={{
+                    alignSelf: "center",
+                    height: ITEM_HEIGHT,
+                    width: ITEM_WIDTH * 0.75,
+                    resizeMode: "contain"
+                  }}
+                />
+              </View>
+            )}
           </CardItem>
           <CardItem
             style={{
@@ -142,7 +145,7 @@ const Favorites = ({ navigation, route, userId }) => {
                   color: "#2189DC"
                 }}
               >
-                No. {item.id}
+                {isPokemon ? `No. ${item.id}` : `${item.id}`}
               </Text>
             </Body>
           </CardItem>
@@ -173,7 +176,7 @@ const Favorites = ({ navigation, route, userId }) => {
       <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
         <Carousel
           ref={ref}
-          data={favorites}
+          data={favorites.length > 0 ? favorites : emptyFavorites}
           sliderWidth={SLIDER_WIDTH}
           itemWidth={ITEM_WIDTH}
           renderItem={renderCard}

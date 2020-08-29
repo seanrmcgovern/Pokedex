@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as firebase from "firebase";
 import Constants from "expo-constants";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { View, ActivityIndicator } from "react-native";
+import { View } from "react-native";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import Results from "./Results";
@@ -14,6 +14,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
+import { AppLoading } from "expo";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -28,8 +29,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // TODO:
-// images needed: main logo, pokeball/filler logo
-// change color of pokeball image?
 // Firebase functionalities: rename party, username
 // carousel for details image
 // add moves to details page?
@@ -249,7 +248,7 @@ const App = () => {
           justifyContent: "center"
         }}
       >
-        <ActivityIndicator size="large" color="#2189DC" />
+        <AppLoading></AppLoading>
       </View>
     </View>
   );
