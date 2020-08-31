@@ -3,4 +3,4 @@ This is a Pokedex mobile application that can display data on 7 generations of P
 
 <img src="https://i.imgflip.com/4dede3.gif"/>
 
-<div style="width:360px;max-width:100%;"><div style="height:0;padding-bottom:207.5%;position:relative;"><iframe width="360" height="747" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameBorder="0" src="https://imgflip.com/embed/4dede3"></iframe></div><p><a href="https://imgflip.com/gif/4dede3">via Imgflip</a></p></div>
+<iframe width="360" height="747" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameBorder="0" src="https://imgflip.com/embed/4dede3"></iframe>
