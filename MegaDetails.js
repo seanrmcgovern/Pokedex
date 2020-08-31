@@ -179,7 +179,7 @@ const MegaDetails = props => {
                     ? {
                         uri: image
                       }
-                    : PokeballSprite
+                    : ""
                 }
                 style={{
                   width: 200,

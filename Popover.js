@@ -1,30 +1,65 @@
 import React, { useState, useEffect } from "react";
 import * as firebase from "firebase";
-import axios from "axios";
-import { ListItem, Overlay } from "react-native-elements";
-import { Text } from "react-native";
+import { ListItem, Overlay, Input, Button } from "react-native-elements";
+import { View, Text, ActivityIndicator } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 const Popover = props => {
   const [parties, setParties] = useState([]);
+  const [newParty, setNewParty] = useState("");
 
-  //   const addParty = name => {
-  //     const newName = name === "" ? "New Party" : name;
-  //     firebase
-  //       .database()
-  //       .ref("users/" + props.userId + "/parties")
-  //       .set([...parties, { title: newName, items: [{ name: "head" }] }]);
-  //   };
+  const [creatingParty, setCreatingParty] = useState(false);
+
+  const createParty = () => {
+    setCreatingParty(true);
+  };
+
+  useEffect(() => {
+    if (creatingParty) {
+      const newName = newParty;
+      firebase
+        .database()
+        .ref("users/" + props.userId + "/parties")
+        .set([
+          ...parties,
+          { title: newName, items: [{ name: "head" }, props.pokeObject] }
+        ])
+        .then(() => {
+          setCreatingParty(false);
+          setNewParty("");
+          props.showToast(
+            `Created party: "${newName}" with ${props.pokeObject.name}`
+          );
+          props.close();
+        });
+    }
+  }, [creatingParty]);
+
+  const [loadingChange, setLoadingChange] = useState();
 
   const addToParty = index => {
-    let newParties = parties;
-    newParties[index].items.push(props.pokeObject);
-    firebase
-      .database()
-      .ref("users/" + props.userId + "/parties")
-      .set(newParties);
-    props.close();
+    setLoadingChange(index);
   };
+
+  useEffect(() => {
+    if (typeof loadingChange === "number") {
+      let newParties = parties;
+      newParties[loadingChange].items.push(props.pokeObject);
+      firebase
+        .database()
+        .ref("users/" + props.userId + "/parties")
+        .set(newParties)
+        .then(() => {
+          setLoadingChange(false);
+          props.showToast(
+            `${props.pokeObject.name} added to party: ${newParties[loadingChange].title}`
+          );
+          setNewParty("");
+          setLoadingChange();
+          props.close();
+        });
+    }
+  }, [loadingChange]);
 
   useEffect(() => {
     firebase
@@ -39,51 +74,65 @@ const Popover = props => {
   return (
     <Overlay
       isVisible={props.visible}
-      onBackdropPress={props.close}
-      overlayStyle={{ width: "80%" }}
+      onBackdropPress={() => {
+        setNewParty("");
+        props.close();
+      }}
+      overlayStyle={{ width: "80%", maxHeight: "60%" }}
     >
+      <Text
+        style={{
+          color: "#2189DC",
+          fontSize: 16,
+          fontWeight: "bold",
+          marginBottom: 10
+        }}
+      >
+        Add to Party
+      </Text>
       <ScrollView>
-        <Text
-          style={{
-            color: "#2189DC",
-            fontSize: 16,
-            fontWeight: "bold",
-            marginBottom: 10
-          }}
-        >
-          Add to existing Party
-        </Text>
         {parties.map((party, index) => (
           <TouchableOpacity onPress={() => addToParty(index)} key={index}>
-            <ListItem title={party.title} bottomDivider topDivider></ListItem>
+            <ListItem
+              title={party.title}
+              bottomDivider
+              topDivider
+              rightIcon={
+                loadingChange === index ? (
+                  <ActivityIndicator color="#2189DC" />
+                ) : (
+                  ""
+                )
+              }
+            ></ListItem>
           </TouchableOpacity>
         ))}
-        {/* <Text
-          style={{
-            color: "#2189DC",
-            fontSize: 16,
-            fontWeight: "bold",
-            marginBottom: 10
-          }}
-        >
-          Enter Party Info
-        </Text>
-        <Input
-          placeholder="Ex: New-Party-Name"
-          label="Name"
-          onChangeText={text => setNewParty(text)}
-          value={newParty}
-        />
-        <View>
-          <Button
-            onPress={() => {
-              addParty(newParty);
-              close();
-            }}
-            title="Create Party"
-          />
-        </View> */}
       </ScrollView>
+      <Text
+        style={{
+          color: "#2189DC",
+          fontSize: 16,
+          fontWeight: "bold",
+          marginBottom: 10,
+          marginTop: 10
+        }}
+      >
+        Create New Party
+      </Text>
+      <Input
+        placeholder="Ex: New-Party-Name"
+        label="Name"
+        onChangeText={text => setNewParty(text)}
+        value={newParty}
+      />
+      <View>
+        <Button
+          onPress={createParty}
+          title={creatingParty ? "" : "Create Party"}
+          icon={creatingParty ? <ActivityIndicator color="#2189DC" /> : <></>}
+          disabled={newParty === "" || creatingParty}
+        />
+      </View>
     </Overlay>
   );
 };

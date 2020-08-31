@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import * as firebase from "firebase";
 import Constants from "expo-constants";
-import { View, ActivityIndicator } from "react-native";
+import * as ScreenOrientation from "expo-screen-orientation";
+import { View } from "react-native";
 import Login from "./Login";
-import Header from "./Header";
+import Dashboard from "./Dashboard";
 import Results from "./Results";
 import PokeCard from "./PokeCard";
 import Details from "./Details";
 import MegaDetails from "./MegaDetails";
-import Tab2 from "./Tab2";
+import Profile from "./Profile";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
+import { AppLoading } from "expo";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -27,10 +29,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // TODO:
-// make apikey private
-// Firebase functionalities: list of pokemon caught, favorites, parties for different games
-// toast, button
-// images needed: default profile pic, main logo, loading gif
+// Firebase functionalities: rename party, username
+// carousel for details image
 // add moves to details page?
 console.disableYellowBox = true;
 
@@ -39,10 +39,6 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const App = () => {
-  const [user, setUser] = useState();
-  const [userId, setUserId] = useState("");
-  const [username, setUsername] = useState();
-
   const Pokedex = () => {
     return (
       <Stack.Navigator
@@ -61,7 +57,7 @@ const App = () => {
         }}
       >
         <Stack.Screen name="Pokedex">
-          {props => <Header {...props} userId={userId} />}
+          {props => <Dashboard {...props} userId={userId} />}
         </Stack.Screen>
         <Stack.Screen name="Results" component={Results} />
         <Stack.Screen name="PokeCard" component={PokeCard} />
@@ -83,17 +79,65 @@ const App = () => {
     );
   };
 
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      // User is signed in.
-      var isAnonymous = user.isAnonymous;
-      var uid = user.uid;
-      setUser(user);
-      setUserId(uid);
-    } else {
-      // User is signed out.
-    }
-  });
+  const ProfileTab = () => {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerBackTitle: "Back",
+          headerBackTitleStyle: {
+            color: "white"
+          },
+          headerStyle: {
+            backgroundColor: "#2189DC"
+          },
+          headerTintColor: "white",
+          headerTitleStyle: {
+            fontWeight: "bold"
+          }
+        }}
+      >
+        <Stack.Screen
+          name="Profile"
+          options={({ navigation, route }) => ({
+            title: username
+          })}
+        >
+          {props => <Profile {...props} userId={userId} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Details"
+          component={Details}
+          options={({ navigation, route }) => ({
+            title: route.params.name
+          })}
+        />
+        <Stack.Screen
+          name="MegaDetails"
+          component={MegaDetails}
+          options={({ route }) => ({
+            title: route.params.name
+          })}
+        />
+      </Stack.Navigator>
+    );
+  };
+
+  const [user, setUser] = useState();
+  const [userId, setUserId] = useState("");
+  const [username, setUsername] = useState();
+  const [loading, setLoading] = useState(0);
+
+  // firebase.auth().onAuthStateChanged(function(user) {
+  //   if (user) {
+  //     // User is signed in.
+  //     var isAnonymous = user.isAnonymous;
+  //     var uid = user.uid;
+  //     setUser(user);
+  //     setUserId(uid);
+  //   } else {
+  //     // User is signed out.
+  //   }
+  // });
 
   const initializeUser = name => {
     if (name != "") {
@@ -106,12 +150,12 @@ const App = () => {
             { title: "New Party 1", items: [{ name: "head" }] },
             { title: "New Party 2", items: [{ name: "head" }] },
             { title: "New Party 3", items: [{ name: "head" }] }
-          ]
+          ],
+          favorites: [{ name: "head" }]
         })
         .then(() => {
           user.updateProfile({
             displayName: name
-            // photoURL: "https://example.com/jane-q-user/profile.jpg"
           });
         });
     }
@@ -128,21 +172,26 @@ const App = () => {
     });
 
   useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     firebase
       .auth()
       .signInAnonymously()
-      .catch(function(error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
+      .then(res => {
+        if (res.additionalUserInfo.isNewUser || res.user.displayName === null) {
+          setLoading(1);
+        }
+        setUser(res.user);
+        setUserId(res.user.uid);
       });
   }, []);
 
-  const Profile = () => {
-    return <Tab2 username={username} userId={userId}></Tab2>;
-  };
+  useEffect(() => {
+    if (username != null) {
+      setLoading(2);
+    }
+  }, [username]);
 
-  if (user && username) {
+  if (loading === 2) {
     return (
       <NavigationContainer>
         <Tab.Navigator
@@ -182,13 +231,11 @@ const App = () => {
           }}
         >
           <Tab.Screen name={"Pokedex"} component={Pokedex} />
-          <Tab.Screen name={"Profile"} component={Profile} />
+          <Tab.Screen name={"Profile"} component={ProfileTab} />
         </Tab.Navigator>
       </NavigationContainer>
     );
-  }
-
-  if (user && !username) {
+  } else if (loading === 1) {
     return <Login initializeUser={initializeUser} />;
   }
 
@@ -197,10 +244,11 @@ const App = () => {
       <View
         style={{
           flex: 1,
-          marginTop: 300
+          flexDirection: "column",
+          justifyContent: "center"
         }}
       >
-        <ActivityIndicator size="large" color="blue" />
+        <AppLoading></AppLoading>
       </View>
     </View>
   );
