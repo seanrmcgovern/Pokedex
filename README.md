@@ -5,7 +5,7 @@ This is a Pokedex mobile application that can display data on 7 generations of P
 # Try it out!
 Download the Expo Client App at https://itunes.apple.com/app/apple-store/id982107779, and scan the QR code at https://expo.io/@smcgovern/pokedex with your phone's camera.
 
-## View Data on each individual Pokemon
+## Useful information on each individual Pokemon
 <div style="display: flex;">
   <img src="https://i.imgflip.com/4deg40.gif"/>
   <img src="https://i.imgflip.com/4delac.gif"/>
