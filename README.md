@@ -9,7 +9,6 @@ Download the Expo Client App at https://itunes.apple.com/app/apple-store/id98210
 <div style="display: flex;">
   <img src="https://i.imgflip.com/4deg40.gif"/>
   <img src="https://i.imgflip.com/4delac.gif"/>
-<!--   <img src="https://i.imgflip.com/4dem0x.gif"/> -->
 </div>
 
 ## Choose between 7 different generations of Pokemon
@@ -22,4 +21,5 @@ Download the Expo Client App at https://itunes.apple.com/app/apple-store/id98210
 <div style="display: flex;">
   <img src="https://i.imgflip.com/4dengr.gif"/>
   <img src="https://i.imgflip.com/4deqbq.gif"/>
+  <img src="https://i.imgflip.com/4desw6.gif"/>
 </div>
