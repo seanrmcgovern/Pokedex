@@ -5,7 +5,8 @@ This is a Pokedex mobile application that can display data on 7 generations of P
   <img src="https://i.imgflip.com/4deemz.gif"/>
   <img src="https://i.imgflip.com/4def2r.gif"/>
 </div>
-# View Pokemon Data
+
+## View Pokemon Data
 <div style="display: flex;">
   <img src="https://i.imgflip.com/4deg40.gif"/>
   <img src="https://i.imgflip.com/4degbt.gif"/>
