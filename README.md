@@ -19,9 +19,15 @@ This is a Pokedex mobile application that can display data on 7 generations of P
   <img src="https://i.imgflip.com/4def2r.gif"/>
 </div>
 
-## Create parties and mark your favorites to keep on your profile
+## User authentication lets you create parties and mark your favorites
 <div style="display: flex;">
+  <img src="https://i.imgflip.com/4desw6.gif"/>
   <img src="https://i.imgflip.com/4dengr.gif"/>
   <img src="https://i.imgflip.com/4deqbq.gif"/>
-  <img src="https://i.imgflip.com/4desw6.gif"/>
+</div>
+
+## Scales to iPad or smaller iPhones
+<div style="display: flex;">
+  <img src="https://i.imgflip.com/4dw7cx.gif"/>
+  <img src="https://i.imgflip.com/4dw7l2.gif"/>
 </div>
