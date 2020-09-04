@@ -29,5 +29,5 @@ This is a Pokedex mobile application that can display data on 7 generations of P
 ## Scales to iPad or smaller iPhones
 <div style="display: flex;">
   <img src="https://i.imgflip.com/4dw7cx.gif"/>
-  <img src="https://i.imgflip.com/4dw7l2.gif"/>
+  <img src="https://i.imgflip.com/4dw7qp.gif"/>
 </div>
