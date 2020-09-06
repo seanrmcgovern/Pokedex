@@ -1,5 +1,5 @@
 # Pokedex
-This is a Pokedex mobile application that can display data on 7 generations of Pokemon. The app also allows users to create parties, or designated groups of Pokemon, and add Pokemon to a list of favorites. Both parties and favorites are stored in Firebase, and displayed on the user profile. It was built with React-Native, <a href="https://firebase.google.com/">Firebase</a> for user authentication and database purposes, and Expo for deployment/development. Additionally, data was fetched from <a href="https://pokeapi.co/">PokeAPI<a>. The app works on both Android and iOS, but is designed primarily for iOS.
+This is a Pokedex mobile application that can display data on 7 generations of Pokemon. The app also allows users to create parties, or designated groups of Pokemon, and add Pokemon to a list of favorites. Both parties and favorites are stored in Firebase, and displayed on the user profile. It was built with React-Native, <a href="https://firebase.google.com/">Firebase</a> for user authentication and database purposes, and Expo for deployment/development. Additionally, data was fetched from <a href="https://pokeapi.co/">PokeAPI<a>. The app works on both Android and iOS, but is designed primarily for iOS. A strong internet connection is recommended.
 
 
 # Try it out!
