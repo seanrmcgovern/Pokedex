@@ -10,7 +10,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -24,7 +24,12 @@
     ],
     "ios": {
       "bundleIdentifier": "com.seanmcgovern.pokedex",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.seanmcgovern.pokedex",
+      "versionCode": 1
     },
     "description": "A Pokedex mobile application that can display data on 7 generations of Pokemon. The app also allows users to create parties, or designated groups of Pokemon, and add Pokemon to a list of favorites. Both parties and favorites are stored in Firebase, and displayed on the user profile. It was built with React-Native, Firebase for user authentication and database purposes, and Expo for deployment/development. Additionally, I used PokeAPI for data, with React-Native-Elements and NativeBase for basic components.",
     "githubUrl": "https://github.com/seanrmcgovern/Pokedex"
