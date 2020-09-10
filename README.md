@@ -1,11 +1,11 @@
 # Pokedex
-This is a Pokedex mobile application that can display data on 7 generations of Pokemon. The app also allows users to create parties, or designated groups of Pokemon, and add Pokemon to a list of favorites. Both parties and favorites are stored in Firebase, and displayed on the user profile. It was built with React-Native, <a href="https://firebase.google.com/">Firebase</a> for user authentication and database purposes, and Expo for deployment/development. Additionally, data was fetched from <a href="https://pokeapi.co/">PokeAPI<a>, with <a href="https://react-native-elements.github.io/react-native-elements/">React-Native-Elements</a> and <a href="https://nativebase.io/">NativeBase</a> for basic components. The app works on both Android and iOS, but is designed primarily for iOS.
+This is a Pokedex mobile application that can display data on 7 generations of Pokemon. The app also allows users to create parties, or designated groups of Pokemon, and add Pokemon to a list of favorites. Both parties and favorites are stored in Firebase, and displayed on the user profile. It was built with React-Native, <a href="https://firebase.google.com/">Firebase</a> for user authentication and database purposes, and Expo for deployment/development. Additionally, data was fetched from <a href="https://pokeapi.co/">PokeAPI<a>. The app works on both Android and iOS, but is designed primarily for iOS. A strong internet connection is recommended.
 
 
 # Try it out!
-<p>Watch the full demo of the current state of the app at https://www.youtube.com/watch?v=j3-sw69TbPo&t=3s </p>
+<p>Watch the full demo of the current state of the app on my <a href="https://www.youtube.com/watch?v=j3-sw69TbPo&t=3s">YouTube channel</a> </p>
 
-<p>Download the Expo Client App at https://itunes.apple.com/app/apple-store/id982107779, and scan the QR code at https://expo.io/@smcgovern/pokedex with your phone's camera.</p>
+<p>Download the Expo Client App on the <a href="https://itunes.apple.com/app/apple-store/id982107779">App Store</a>, and scan the QR code at https://expo.io/@smcgovern/pokedex with your phone's camera.</p>
 
 ## Useful information on each individual Pokemon
 <div style="display: flex;">
@@ -19,9 +19,15 @@ This is a Pokedex mobile application that can display data on 7 generations of P
   <img src="https://i.imgflip.com/4def2r.gif"/>
 </div>
 
-## Create parties and mark your favorites to keep on your profile
+## User authentication lets you create parties and mark your favorites
 <div style="display: flex;">
+  <img src="https://i.imgflip.com/4desw6.gif"/>
   <img src="https://i.imgflip.com/4dengr.gif"/>
   <img src="https://i.imgflip.com/4deqbq.gif"/>
-  <img src="https://i.imgflip.com/4desw6.gif"/>
+</div>
+
+## Scales to iPad or smaller iPhones
+<div style="display: flex;">
+  <img src="https://i.imgflip.com/4dw7cx.gif"/>
+  <img src="https://i.imgflip.com/4dw7qp.gif"/>
 </div>
