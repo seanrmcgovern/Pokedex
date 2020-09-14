@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { Container, Tab, Tabs } from "native-base";
 import Parties from "./Parties";
 import Favorites from "./Favorites";
+import Settings from "./Settings";
 
 const Profile = ({ navigation, route, userId }) => {
   return (
@@ -14,6 +15,9 @@ const Profile = ({ navigation, route, userId }) => {
           </Tab>
           <Tab heading="Favorites">
             <Favorites navigation={navigation} userId={userId} />
+          </Tab>
+          <Tab heading="Settings">
+            <Settings navigation={navigation} userId={userId} />
           </Tab>
         </Tabs>
       </Container>

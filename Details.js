@@ -261,18 +261,25 @@ const Details = ({ navigation, route }) => {
       .then(res => {
         let englishText;
         if (gen === 2) {
+          // Kanto
           englishText = res.data.flavor_text_entries[44];
         } else if (gen === 3) {
+          // Johto
           englishText = res.data.flavor_text_entries[41];
         } else if (gen === 4) {
+          // Hoenn
           englishText = res.data.flavor_text_entries[46];
         } else if (gen === 5) {
+          // Sinnoh
           englishText = res.data.flavor_text_entries[2];
         } else if (gen === 8) {
+          // Unova
           englishText = res.data.flavor_text_entries[28];
         } else if (gen === 12) {
+          // Kalos
           englishText = res.data.flavor_text_entries[6];
         } else {
+          // Alola
           englishText = res.data.flavor_text_entries[7];
         }
         setFlavor(englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " "));

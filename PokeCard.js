@@ -38,10 +38,11 @@ const PokeCard = props => {
   // { name, url, navigation }
   const [imageUrl, setImageUrl] = useState();
   const [shiny, setShiny] = useState();
-  const [id, setId] = useState();
+  // const [id, setId] = useState();
   const [pokemon, setPokemon] = useState();
 
   const name = props.name;
+  const id = props.entryId;
   const url = props.url;
 
   const capitalize = str => {
@@ -51,7 +52,7 @@ const PokeCard = props => {
   useEffect(() => {
     axios.get(url).then(res => {
       setPokemon(res.data);
-      setId(res.data.id);
+      // setId(res.data.id);
       setImageUrl(res.data.sprites.front_default);
       setShiny(res.data.sprites.front_shiny);
     });

@@ -12,7 +12,7 @@
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -25,13 +25,34 @@
     "ios": {
       "bundleIdentifier": "com.seanmcgovern.pokedex",
       "supportsTablet": true,
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "publishBundlePath": "ios/seanmcgovern-pokedex/Supporting/shell-app.bundle",
+      "publishManifestPath": "ios/seanmcgovern-pokedex/Supporting/shell-app-manifest.json"
     },
     "android": {
       "package": "com.seanmcgovern.pokedex",
-      "versionCode": 1
+      "versionCode": 1,
+      "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
+      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
     },
     "description": "A Pokedex mobile application that can display data on 7 generations of Pokemon. The app also allows users to create parties, or designated groups of Pokemon, and add Pokemon to a list of favorites. Both parties and favorites are stored in Firebase, and displayed on the user profile. It was built with React-Native, Firebase for user authentication and database purposes, and Expo for deployment/development. Additionally, I used PokeAPI for data, with React-Native-Elements and NativeBase for basic components.",
-    "githubUrl": "https://github.com/seanrmcgovern/Pokedex"
-  }
+    "githubUrl": "https://github.com/seanrmcgovern/Pokedex",
+    "extra": {
+      "REACT_NATIVE_FIREBASE_KEY": "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",
+      "REACT_NATIVE_FIREBASE_DOMAIN": "pokedex-smcg.firebaseapp.com",
+      "REACT_NATIVE_FIREBASE_URL": "https://pokedex-smcg.firebaseio.com",
+      "REACT_NATIVE_FIREBASE_PROJECT_ID": "pokedex-smcg",
+      "REACT_NATIVE_FIREBASE_BUCKET": "pokedex-smcg.appspot.com",
+      "REACT_NATIVE_FIREBASE_APP_ID": "1:654908820997:ios:0fb638857d45ca90fc966c"
+    },
+    "isDetached": true,
+    "detach": {
+      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v2.14.6-sdk36.0.0-8ea388d1-463b-4e91-bbf7-2d95d0174c96.tar.gz",
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.14.2-sdk36.0.0-ce7e16db-fd5d-4fdd-bdeb-701ba94a04d1.tar.gz"
+    },
+    "scheme": "exp46d0445893474706bf2d9058e6c62cd3",
+    "entryPoint": "node_modules/expo/AppEntry.js"
+  },
+  "displayName": "Pokedex",
+  "name": "Pokedex"
 }

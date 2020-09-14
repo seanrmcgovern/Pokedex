@@ -174,7 +174,17 @@ const Results = props => {
           setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
         } else {
           // gen 1
-          setPokemon(res.data.pokemon_entries);
+          let pokeList = [];
+          for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+            const entryId = parseInt(
+              res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+            );
+            pokeList.push({
+              ...res.data.pokemon_entries[i],
+              entryId: entryId
+            });
+          }
+          setPokemon(pokeList);
         }
       });
     }
@@ -201,16 +211,19 @@ const Results = props => {
             if (item.pokemon_species.name.includes(props.search))
               return (
                 <PokeCard
+                  // not sent/fetched from coredata
                   navigation={props.navigation}
+                  key={index}
+                  search={props.search}
+                  userId={props.userId}
+                  // stored in CoreData
                   name={item.pokemon_species.name}
                   url={
                     item.pokemon_species.url.slice(0, 33) +
                     item.pokemon_species.url.slice(41)
                   }
-                  key={index}
                   gen={props.generation}
-                  search={props.search}
-                  userId={props.userId}
+                  entryId={item.entryId}
                 ></PokeCard>
               );
           }}

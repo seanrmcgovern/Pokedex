@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as firebase from "firebase";
 import Constants from "expo-constants";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { View } from "react-native";
+import { View, ActivityIndicator, NativeModules } from "react-native";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import Results from "./Results";
@@ -14,24 +14,32 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
-import { AppLoading } from "expo";
+// import { AppLoading } from "expo";
 
-// Initialize Firebase
 const firebaseConfig = {
-  apiKey: Constants.manifest.extra.REACT_NATIVE_FIREBASE_KEY,
-  authDomain: Constants.manifest.extra.REACT_NATIVE_FIREBASE_DOMAIN,
-  databaseURL: Constants.manifest.extra.REACT_NATIVE_FIREBASE_URL,
-  projectId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_PROJECT_ID,
-  storageBucket: Constants.manifest.extra.REACT_NATIVE_FIREBASE_BUCKET,
-  appId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_APP_ID
+  apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",
+  authDomain: "pokedex-smcg.firebaseapp.com",
+  databaseURL: "https://pokedex-smcg.firebaseio.com",
+  projectId: "pokedex-smcg",
+  storageBucket: "pokedex-smcg.appspot.com",
+  appId: "1:654908820997:ios:0fb638857d45ca90fc966c"
 };
+// Initialize Firebase
+// const firebaseConfig = {
+//   apiKey: Constants.manifest.extra.REACT_NATIVE_FIREBASE_KEY,
+//   authDomain: Constants.manifest.extra.REACT_NATIVE_FIREBASE_DOMAIN,
+//   databaseURL: Constants.manifest.extra.REACT_NATIVE_FIREBASE_URL,
+//   projectId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_PROJECT_ID,
+//   storageBucket: Constants.manifest.extra.REACT_NATIVE_FIREBASE_BUCKET,
+//   appId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_APP_ID
+// };
 
 firebase.initializeApp(firebaseConfig);
 
 // TODO:
 // Firebase functionalities: rename party, username
 // carousel for details image
-// add moves to details page?
+// add moves to details page
 console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
@@ -127,20 +135,9 @@ const App = () => {
   const [username, setUsername] = useState();
   const [loading, setLoading] = useState(0);
 
-  // firebase.auth().onAuthStateChanged(function(user) {
-  //   if (user) {
-  //     // User is signed in.
-  //     var isAnonymous = user.isAnonymous;
-  //     var uid = user.uid;
-  //     setUser(user);
-  //     setUserId(uid);
-  //   } else {
-  //     // User is signed out.
-  //   }
-  // });
-
   const initializeUser = name => {
     if (name != "") {
+      NativeModules.UserInfo.saveCredentials(name, userId);
       firebase
         .database()
         .ref("users/" + user.uid)
@@ -161,32 +158,46 @@ const App = () => {
     }
   };
 
-  firebase
-    .database()
-    .ref("users/" + userId)
-    .on("value", snapshot => {
-      if (snapshot.val() && snapshot.val().username && !username) {
-        const username = snapshot.val().username;
-        setUsername(username);
-      }
-    });
+  // firebase
+  //   .database()
+  //   .ref("users/" + userId)
+  //   .on("value", snapshot => {
+  //     if (snapshot.val() && snapshot.val().username && !username) {
+  //       const username = snapshot.val().username;
+  //       setUsername(username);
+  //     }
+  //   });
 
   useEffect(() => {
+    // console.log(NativeModules.UserInfo);
+    // console.log(NativeModules.UserInfo.getCredentials());
+    // NativeModules.UserInfo.saveCredentials("usernameGoesHere", 12345);
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     firebase
       .auth()
       .signInAnonymously()
       .then(res => {
-        if (res.additionalUserInfo.isNewUser || res.user.displayName === null) {
+        if (res.additionalUserInfo.isNewUser) {
+          // call function to save PokeCards
+          // savePokeCards();
+        }
+        if (res.user.displayName === null) {
           setLoading(1);
         }
         setUser(res.user);
         setUserId(res.user.uid);
       });
+    NativeModules.UserInfo.getCredentials((name, id) => {
+      // make variable for pokecards initialized as well?
+      console.log("username from native: " + name);
+      console.log("id from native: ", id);
+      setUsername(name);
+      setUserId(id);
+    });
   }, []);
 
   useEffect(() => {
-    if (username != null) {
+    if (username != null && username != "") {
       setLoading(2);
     }
   }, [username]);
@@ -248,7 +259,8 @@ const App = () => {
           justifyContent: "center"
         }}
       >
-        <AppLoading></AppLoading>
+        <ActivityIndicator color="#2189DC" />
+        {/* <AppLoading></AppLoading> */}
       </View>
     </View>
   );

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>654908820997-hd7jk505n6khbqin9buggm38rifn1mvl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.654908820997-hd7jk505n6khbqin9buggm38rifn1mvl</string>
+	<key>API_KEY</key>
+	<string>AIzaSyANXQAn_maaPOa1_b9OAtcxPYKJ0v6nma8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>654908820997</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.seanmcgovern.pokedex</string>
+	<key>PROJECT_ID</key>
+	<string>pokedex-smcg</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pokedex-smcg.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:654908820997:ios:0fb638857d45ca90fc966c</string>
+	<key>DATABASE_URL</key>
+	<string>https://pokedex-smcg.firebaseio.com</string>
+</dict>
+</plist>
