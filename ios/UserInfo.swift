@@ -29,12 +29,23 @@ class UserInfo: NSObject {
     static let savedAlola = "savedAlola"
   }
   
+  struct Card {
+    static let id = "id"
+    static let generation = "generation"
+    static let name = "name"
+    static let height = "height"
+    static let weight = "weight"
+    static let catchRate = "catchRate"
+    static let flavor = "flavor"
+    static let friendship = "friendship"
+    static let image = "image"
+  }
+  
   // annotation used to export method in react-native
   @objc
   func getCredentials(_ callback: RCTResponseSenderBlock) {
-    print("Sending the user credentials")
-    // let mainContext = CoreDataManager.shared.mainContext
-    // print("url: \(String(describing: mainContext.persistentStoreCoordinator?.persistentStores.first?.url))")
+    let mainContext = CoreDataManager.shared.mainContext
+    print("url: \(String(describing: mainContext.persistentStoreCoordinator?.persistentStores.first?.url))")
     let curName = defaults.value(forKey: Keys.username)
     let curId = defaults.value(forKey: Keys.userId)
     let username: String
@@ -95,7 +106,6 @@ class UserInfo: NSObject {
   
   @objc
   func savePokeCard(_ id: NSNumber, generation: NSNumber, name: NSString, height: NSNumber, weight: NSNumber, catchRate: NSNumber, friendship: NSNumber, flavor: NSString) {
-      print("id: \(id)")
       let mainContext = CoreDataManager.shared.mainContext
       let newCard = PokeCard(context: mainContext)
       newCard.id = id as! Int64
@@ -106,102 +116,69 @@ class UserInfo: NSObject {
       newCard.catchRate = catchRate as! Int64
       newCard.friendship = friendship as! Int64
       newCard.flavor = flavor as String
+      // let imageData = NSData(contentsOf: imageUrl as URL)
+      // print("image: \(imageData)")
+      // newCard.image = NSData(contentsOf: imageUrl as URL)
+      // newCard.sprite = NSData(contentsOf: imageUrl as URL) as Data?
       // newCard.stats = stats as? [Int]
       // newCard.types = types as [String]
       CoreDataManager.shared.saveChanges()
     switch generation {
-      case 1:
-        defaults.set(true, forKey: Keys.savedKanto)
       case 2:
-        defaults.set(true, forKey: Keys.savedJohto)
+        defaults.set(true, forKey: Keys.savedKanto)
+        break
       case 3:
-        defaults.set(true, forKey: Keys.savedHoenn)
+        defaults.set(true, forKey: Keys.savedJohto)
+        break
       case 4:
-        defaults.set(true, forKey: Keys.savedSinnoh)
+        defaults.set(true, forKey: Keys.savedHoenn)
+        break
       case 5:
+        defaults.set(true, forKey: Keys.savedSinnoh)
+        break
+      case 8:
         defaults.set(true, forKey: Keys.savedUnova)
-      case 6:
+        break
+      case 12:
         defaults.set(true, forKey: Keys.savedKalos)
-      case 7:
+        break
+      case 16:
         defaults.set(true, forKey: Keys.savedAlola)
+        break
       default:
         print("Not a valid generation")
     }
     }
   
   @objc
-  func getPokeCards() -> [PokeCard]? { // _ gen: NSNumber
+  func getGeneration(_ gen: NSNumber, callback: RCTResponseSenderBlock) {
     let mainContext = CoreDataManager.shared.mainContext
     let fetchRequest: NSFetchRequest<PokeCard> = PokeCard.fetchRequest()
+    let filter = NSPredicate(format: "generation == %@", gen)
+    fetchRequest.predicate = filter
+    let sort = NSSortDescriptor(key: "id", ascending: true)
+    fetchRequest.sortDescriptors = [sort]
     do {
-        let results = try mainContext.fetch(fetchRequest)
-        // print("results: \(results)")
-        return results
+      let results = try mainContext.fetch(fetchRequest)
+      var pokeCards = Array<NSMutableDictionary>()
+      for entry in results {
+        let nextCard = NSMutableDictionary()
+        nextCard.setValue(entry.id, forKey: Card.id)
+        nextCard.setValue(entry.generation, forKey: Card.generation)
+        nextCard.setValue(entry.name, forKey: Card.name)
+        nextCard.setValue(entry.height, forKey: Card.height)
+        nextCard.setValue(entry.weight, forKey: Card.weight)
+        nextCard.setValue(entry.catchRate, forKey: Card.catchRate)
+        nextCard.setValue(entry.friendship, forKey: Card.friendship)
+        nextCard.setValue(entry.flavor, forKey: Card.flavor)
+        // nextCard.setValue(entry.sprite, forKey: Card.image)
+        pokeCards.append(nextCard)
+       }
+      callback([pokeCards])
     }
     catch {
-        debugPrint(error)
+      debugPrint(error)
     }
-    return nil
   }
-  
-//  @objc
-//  func savePokeCards(_ cards: [NSDictionary]) {
-//    guard let cardsDictionary = cards as? [[String: Any]] else {
-//        return
-//    }
-//    print("Play test", cardsDictionary)
-//    print("input cards: \(cards)")
-//    // print("We will save the cards in this function")
-//    let mainContext = CoreDataManager.shared.mainContext
-//    for card in cards {
-//      let newCard = PokeCard(context: mainContext)
-//      newCard.id = card.value(forKey: "id") as! Int64
-//      newCard.generation = card.value(forKey: "generation") as! Int64
-//      newCard.name = card.value(forKey: "name") as? String
-//      newCard.types = card.object(forKey: "types") as? [String]
-//      newCard.height = card.value(forKey: "height") as! Int64
-//      newCard.weight = card.value(forKey: "weight") as! Int64
-//      newCard.catchRate = card.value(forKey: "catchRate") as! Int64
-//      newCard.friendship = card.value(forKey: "friendship") as! Int64
-//      newCard.stats = card.object(forKey: "stats") as? [Int]
-//      newCard.flavor = card.value(forKey: "flavor") as? String
-////      let context = CoreDataManager.shared.backgroundContext()
-////      context.perform {
-////          let entity = PokeCard.entity()
-////          let newCard = PokeCard(entity: entity, insertInto: context)
-////          newCard.id = card.value(forKey: "id") as! Int64
-////          newCard.generation = card.value(forKey: "generation") as! Int64
-////          newCard.name = card.value(forKey: "name") as? String
-////          newCard.types = card.object(forKey: "types") as? [String]
-////          newCard.height = card.value(forKey: "height") as! Int64
-////          newCard.weight = card.value(forKey: "weight") as! Int64
-////          newCard.catchRate = card.value(forKey: "catchRate") as! Int64
-////          newCard.friendship = card.value(forKey: "friendship") as! Int64
-////          newCard.stats = card.object(forKey: "stats") as? [Int]
-////          newCard.flavor = card.value(forKey: "flavor") as? String
-////          do {
-////            try context.save()
-////          } catch {
-////            let nserror = error as NSError
-////            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-////          }
-////      }
-//
-////      if (mainContext.hasChanges) {
-////        do{
-////          try mainContext.save()
-////        } catch {
-////          let nserror = error as NSError
-////          fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-////        }
-////      }
-//       CoreDataManager.shared.saveChanges()
-//    }
-//  }
-  
-//  @objc
-//  func constantsToExport() -> [AnyHashable : Any]! {
-//    return ["initialCount": 0]
-//  }
   
 }

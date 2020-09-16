@@ -60,7 +60,7 @@ const PokeCard = props => {
 
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={() => {
         props.navigation.navigate("Details", {
           name: capitalize(name),
           pokemon: pokemon,
@@ -68,9 +68,15 @@ const PokeCard = props => {
           id: id,
           gen: props.gen,
           shiny: shiny,
-          userId: props.userId
-        })
-      }
+          userId: props.userId,
+          fromCoreData: props.fromCoreData,
+          coreCatchRate: props.catchRate,
+          coreFlavor: props.flavor,
+          coreFriendship: props.friendship,
+          coreHeight: props.height,
+          coreWeight: props.weight
+        });
+      }}
     >
       <View style={styles.card}>
         <Text style={styles.number}>{id}</Text>

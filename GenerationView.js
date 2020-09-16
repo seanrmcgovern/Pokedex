@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, NativeModules } from "react-native";
 import { SearchBar } from "react-native-elements";
 import Results from "./Results";
 import ResultsListview from "./ResultsListview";
@@ -22,6 +22,52 @@ const GenerationView = props => {
     setSearch(search);
   };
 
+  const [generationSaved, setGenerationSaved] = useState();
+
+  const refreshDownloads = () => {
+    switch (props.generation) {
+      case 2:
+        NativeModules.UserInfo.isKantoSaved(val => {
+          setGenerationSaved(val);
+        });
+        break;
+      case 3:
+        NativeModules.UserInfo.isJohtoSaved(val => {
+          setGenerationSaved(val);
+        });
+        break;
+      case 4:
+        NativeModules.UserInfo.isHoennSaved(val => {
+          setGenerationSaved(val);
+        });
+        break;
+      case 5:
+        NativeModules.UserInfo.isSinnohSaved(val => {
+          setGenerationSaved(val);
+        });
+        break;
+      case 8:
+        NativeModules.UserInfo.isUnovaSaved(val => {
+          setGenerationSaved(val);
+        });
+        break;
+      case 12:
+        NativeModules.UserInfo.isKalosSaved(val => {
+          setGenerationSaved(val);
+        });
+        break;
+      case 16:
+        NativeModules.UserInfo.isAlolaSaved(val => {
+          setGenerationSaved(val);
+        });
+        break;
+    }
+  };
+
+  useEffect(() => {
+    refreshDownloads();
+  }, []);
+
   return (
     <View>
       <SearchBar
@@ -38,6 +84,7 @@ const GenerationView = props => {
           navigation={props.navigation}
           generation={props.generation}
           userId={props.userId}
+          generationSaved={generationSaved}
         ></Results>
       ) : (
         <ResultsListview
@@ -45,6 +92,7 @@ const GenerationView = props => {
           navigation={props.navigation}
           generation={props.generation}
           userId={props.userId}
+          generationSaved={generationSaved}
         ></ResultsListview>
       )}
     </View>

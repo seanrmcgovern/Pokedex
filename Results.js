@@ -10,7 +10,8 @@ import {
   SafeAreaView,
   VirtualizedList,
   FlatList,
-  Button
+  Button,
+  NativeModules
 } from "react-native";
 import { Dimensions } from "react-native";
 
@@ -50,9 +51,9 @@ const Results = props => {
 
   const flatlistRef = useRef();
 
-  useEffect(() => {
+  const fetchFirebase = () => {
     if (props.generation === 12) {
-      // gen 6 odd edge case with pokedex separation in pokeapi
+      // gen 6 special case with pokedex separation in pokeapi
       let pokeList = [];
       for (let i = 12; i < 15; i++) {
         axios.get("https://pokeapi.co/api/v2/pokedex/" + i + "/").then(res => {
@@ -189,47 +190,99 @@ const Results = props => {
       });
     }
     // flatlistRef.current.scrollToOffset({ animated: true, offset: 0 });
-  }, [props.generation]);
+  };
+
+  useEffect(() => {
+    if (props.generationSaved == false) {
+      fetchFirebase();
+    } else {
+      NativeModules.UserInfo.getGeneration(props.generation, cards => {
+        setPokemon(cards);
+      });
+    }
+  }, [props.generationSaved]);
 
   return (
     <View style={styles.wrapper}>
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={pokemon}
-          ref={flatlistRef}
-          //removeClippedSubviews={true}
-          maxToRenderPerBatch={150}
-          style={styles.scrollView}
-          contentContainerStyle={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            paddingBottom: 400,
-            flexGrow: 1,
-            justifyContent: "center"
-          }}
-          renderItem={({ item, index }) => {
-            if (item.pokemon_species.name.includes(props.search))
-              return (
-                <PokeCard
-                  // not sent/fetched from coredata
-                  navigation={props.navigation}
-                  key={index}
-                  search={props.search}
-                  userId={props.userId}
-                  // stored in CoreData
-                  name={item.pokemon_species.name}
-                  url={
-                    item.pokemon_species.url.slice(0, 33) +
-                    item.pokemon_species.url.slice(41)
-                  }
-                  gen={props.generation}
-                  entryId={item.entryId}
-                ></PokeCard>
-              );
-          }}
-          keyExtractor={item => item.pokemon_species.name}
-        ></FlatList>
-      </SafeAreaView>
+      {props.generationSaved == false && (
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            data={pokemon}
+            ref={flatlistRef}
+            //removeClippedSubviews={true}
+            maxToRenderPerBatch={150}
+            style={styles.scrollView}
+            contentContainerStyle={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              paddingBottom: 400,
+              flexGrow: 1,
+              justifyContent: "center"
+            }}
+            renderItem={({ item, index }) => {
+              if (item.pokemon_species.name.includes(props.search))
+                return (
+                  <PokeCard
+                    navigation={props.navigation}
+                    key={index}
+                    search={props.search}
+                    userId={props.userId}
+                    name={item.pokemon_species.name}
+                    url={
+                      item.pokemon_species.url.slice(0, 33) +
+                      item.pokemon_species.url.slice(41)
+                    }
+                    gen={props.generation}
+                    entryId={item.entryId}
+                    fromCoreData={false}
+                  ></PokeCard>
+                );
+            }}
+            keyExtractor={item => item.pokemon_species.name}
+          ></FlatList>
+        </SafeAreaView>
+      )}
+      {props.generationSaved == true && (
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            data={pokemon}
+            ref={flatlistRef}
+            //removeClippedSubviews={true}
+            maxToRenderPerBatch={150}
+            style={styles.scrollView}
+            contentContainerStyle={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              paddingBottom: 400,
+              flexGrow: 1,
+              justifyContent: "center"
+            }}
+            renderItem={({ item, index }) => {
+              if (item.name.includes(props.search))
+                return (
+                  <PokeCard
+                    // not sent/fetched from coredata
+                    navigation={props.navigation}
+                    key={index}
+                    search={props.search}
+                    userId={props.userId}
+                    // stored in CoreData
+                    fromCoreData={true}
+                    name={item.name}
+                    gen={item.generation}
+                    entryId={item.id}
+                    catchRate={item.catchRate}
+                    flavor={item.flavor}
+                    friendship={item.friendship}
+                    height={item.height}
+                    weight={item.weight}
+                  ></PokeCard>
+                );
+            }}
+            keyExtractor={item => item.name}
+          ></FlatList>
+        </SafeAreaView>
+      )}
     </View>
   );
 };

@@ -56,6 +56,12 @@ const Details = ({ navigation, route }) => {
   const { gen } = route.params;
   const { shiny } = route.params;
   const { userId } = route.params;
+  const { fromCoreData } = route.params;
+  const { coreCatchRate } = route.params;
+  const { coreFlavor } = route.params;
+  const { coreFriendship } = route.params;
+  const { coreHeight } = route.params;
+  const { coreWeight } = route.params;
 
   const pokeObject = {
     name: name,
@@ -232,64 +238,68 @@ const Details = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    let abilitiesToAdd = [];
-    for (let i = 0; i < pokemon.abilities.length; i++) {
-      axios
-        .get(pokemon.abilities[i].ability.url)
-        .then(res => {
-          const englishEffect = res.data.effect_entries.find(
-            e => e.language.name === "en"
-          );
-          abilitiesToAdd.push({
-            name: pokemon.abilities[i].ability.name,
-            effect: englishEffect.effect
+    if (!fromCoreData) {
+      let abilitiesToAdd = [];
+      for (let i = 0; i < pokemon.abilities.length; i++) {
+        axios
+          .get(pokemon.abilities[i].ability.url)
+          .then(res => {
+            const englishEffect = res.data.effect_entries.find(
+              e => e.language.name === "en"
+            );
+            abilitiesToAdd.push({
+              name: pokemon.abilities[i].ability.name,
+              effect: englishEffect.effect
+            });
+          })
+          .then(() => {
+            if (abilitiesToAdd.length === pokemon.abilities.length) {
+              setAbilities(abilitiesToAdd);
+              setAbilityLoading(false);
+            }
           });
-        })
-        .then(() => {
-          if (abilitiesToAdd.length === pokemon.abilities.length) {
-            setAbilities(abilitiesToAdd);
-            setAbilityLoading(false);
-          }
-        });
+      }
+      setTypes(pokemon.types);
     }
-    setTypes(pokemon.types);
   }, [pokemon]);
 
   useEffect(() => {
-    axios
-      .get("https://pokeapi.co/api/v2/pokemon-species/" + id)
-      .then(res => {
-        let englishText;
-        if (gen === 2) {
-          // Kanto
-          englishText = res.data.flavor_text_entries[44];
-        } else if (gen === 3) {
-          // Johto
-          englishText = res.data.flavor_text_entries[41];
-        } else if (gen === 4) {
-          // Hoenn
-          englishText = res.data.flavor_text_entries[46];
-        } else if (gen === 5) {
-          // Sinnoh
-          englishText = res.data.flavor_text_entries[2];
-        } else if (gen === 8) {
-          // Unova
-          englishText = res.data.flavor_text_entries[28];
-        } else if (gen === 12) {
-          // Kalos
-          englishText = res.data.flavor_text_entries[6];
-        } else {
-          // Alola
-          englishText = res.data.flavor_text_entries[7];
-        }
-        setFlavor(englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " "));
-        setCatchRate(res.data.capture_rate);
-        setHappiness(res.data.base_happiness);
-        setVarieties(res.data.varieties);
-      })
-      .then(res => {
-        setIsLoading(false);
-      });
+    if (!fromCoreData) {
+      axios
+        .get("https://pokeapi.co/api/v2/pokemon-species/" + id)
+        .then(res => {
+          let englishText;
+          if (gen === 2) {
+            // Kanto
+            englishText = res.data.flavor_text_entries[44];
+          } else if (gen === 3) {
+            // Johto
+            englishText = res.data.flavor_text_entries[41];
+          } else if (gen === 4) {
+            // Hoenn
+            englishText = res.data.flavor_text_entries[46];
+          } else if (gen === 5) {
+            // Sinnoh
+            englishText = res.data.flavor_text_entries[2];
+          } else if (gen === 8) {
+            // Unova
+            englishText = res.data.flavor_text_entries[28];
+          } else if (gen === 12) {
+            // Kalos
+            englishText = res.data.flavor_text_entries[6];
+          } else {
+            // Alola
+            englishText = res.data.flavor_text_entries[7];
+          }
+          setFlavor(englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " "));
+          setCatchRate(res.data.capture_rate);
+          setHappiness(res.data.base_happiness);
+          setVarieties(res.data.varieties);
+        })
+        .then(res => {
+          setIsLoading(false);
+        });
+    }
   }, [id]);
 
   useEffect(() => {
@@ -313,6 +323,10 @@ const Details = ({ navigation, route }) => {
   }, [varieties]);
 
   useEffect(() => {
+    if (fromCoreData) {
+      setIsLoading(false);
+      setAbilityLoading(false);
+    }
     firebase
       .database()
       .ref("users/" + userId)
@@ -379,7 +393,7 @@ const Details = ({ navigation, route }) => {
                   borderTopColor: "#2189DC",
                   borderBottomColor: "#2189DC"
                 }}
-                subtitle={flavor}
+                subtitle={fromCoreData ? coreFlavor : flavor}
                 subtitleStyle={{
                   color: "white",
                   fontSize: 15
@@ -416,22 +430,26 @@ const Details = ({ navigation, route }) => {
               ))}
               <ListItem
                 title={"Height"}
-                rightTitle={pokemon.height}
+                rightTitle={fromCoreData ? coreHeight : pokemon.height}
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Weight"}
-                rightTitle={pokemon.weight}
+                rightTitle={fromCoreData ? coreWeight : pokemon.weight}
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Catch Rate"}
-                rightTitle={catchRate + " / 255"}
+                rightTitle={
+                  (fromCoreData ? coreCatchRate : catchRate) + " / 255"
+                }
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Base Friendship"}
-                rightTitle={happiness + " / 255"}
+                rightTitle={
+                  (fromCoreData ? coreFriendship : happiness) + " / 255"
+                }
                 bottomDivider
               ></ListItem>
             </View>
@@ -446,14 +464,16 @@ const Details = ({ navigation, route }) => {
               >
                 Base Stats
               </Text>
-              <Stats
-                hp={pokemon.stats[0].base_stat}
-                attack={pokemon.stats[1].base_stat}
-                defense={pokemon.stats[2].base_stat}
-                specialAttack={pokemon.stats[3].base_stat}
-                specialDefense={pokemon.stats[4].base_stat}
-                speed={pokemon.stats[5].base_stat}
-              ></Stats>
+              {!fromCoreData && (
+                <Stats
+                  hp={pokemon.stats[0].base_stat}
+                  attack={pokemon.stats[1].base_stat}
+                  defense={pokemon.stats[2].base_stat}
+                  specialAttack={pokemon.stats[3].base_stat}
+                  specialDefense={pokemon.stats[4].base_stat}
+                  speed={pokemon.stats[5].base_stat}
+                ></Stats>
+              )}
             </View>
             <View>
               {varieties.length > 1 && (

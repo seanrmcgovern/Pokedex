@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import * as firebase from "firebase";
-import Constants from "expo-constants";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { View, ActivityIndicator, NativeModules } from "react-native";
 import Login from "./Login";
@@ -14,7 +13,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
-// import { AppLoading } from "expo";
+// import Constants from "expo-constants";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",
@@ -37,6 +36,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // TODO:
+// Redo firebase env config for native development (expo not available)
 // Firebase functionalities: rename party, username
 // carousel for details image
 // add moves to details page
@@ -158,29 +158,22 @@ const App = () => {
     }
   };
 
-  // firebase
-  //   .database()
-  //   .ref("users/" + userId)
-  //   .on("value", snapshot => {
-  //     if (snapshot.val() && snapshot.val().username && !username) {
-  //       const username = snapshot.val().username;
-  //       setUsername(username);
-  //     }
-  //   });
+  firebase
+    .database()
+    .ref("users/" + userId)
+    .on("value", snapshot => {
+      if (snapshot.val() && snapshot.val().username && !username) {
+        const username = snapshot.val().username;
+        setUsername(username);
+      }
+    });
 
   useEffect(() => {
-    // console.log(NativeModules.UserInfo);
-    // console.log(NativeModules.UserInfo.getCredentials());
-    // NativeModules.UserInfo.saveCredentials("usernameGoesHere", 12345);
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     firebase
       .auth()
       .signInAnonymously()
       .then(res => {
-        if (res.additionalUserInfo.isNewUser) {
-          // call function to save PokeCards
-          // savePokeCards();
-        }
         if (res.user.displayName === null) {
           setLoading(1);
         }
@@ -188,9 +181,8 @@ const App = () => {
         setUserId(res.user.uid);
       });
     NativeModules.UserInfo.getCredentials((name, id) => {
-      // make variable for pokecards initialized as well?
-      console.log("username from native: " + name);
-      console.log("id from native: ", id);
+      // console.log("username from native: " + name);
+      // console.log("id from native: ", id);
       setUsername(name);
       setUserId(id);
     });
@@ -260,7 +252,6 @@ const App = () => {
         }}
       >
         <ActivityIndicator color="#2189DC" />
-        {/* <AppLoading></AppLoading> */}
       </View>
     </View>
   );

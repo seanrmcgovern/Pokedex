@@ -22,7 +22,7 @@ RCT_EXTERN_METHOD(isKalosSaved: (RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(isAlolaSaved: (RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(savePokeCard: (nonnull NSNumber)id generation:(nonnull NSNumber)generation name:(NSString)name height:(nonnull NSNumber)height weight:(nonnull NSNumber)weight catchRate:(nonnull NSNumber)catchRate friendship:(nonnull NSNumber)friendship flavor:(NSString)flavor)
 //RCT_EXTERN_METHOD(savePokeCards: (NSDictionaryArray)cards)
-//RCT_EXTERN_METHOD(savePokeCards: (NSDictionaryArray *)cards)
-RCT_EXTERN_METHOD(getPokeCards)
+RCT_EXTERN_METHOD(getGeneration: (nonnull NSNumber)gen callback:(RCTResponseSenderBlock)callback)
+RCT_EXTERN_METHOD(getPokeCard: (nonnull NSNumber)id callback:(RCTResponseSenderBlock)callback)
 
 @end

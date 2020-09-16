@@ -1,43 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  View,
-  NativeModules,
-  StyleSheet,
-  ActivityIndicator
-} from "react-native";
-import { Text, Card, CardItem, Body } from "native-base";
-import { ListItem, Button, ButtonGroup } from "react-native-elements";
-import Pokeball from "./assets/pokeball.png";
+import { View, NativeModules, StyleSheet } from "react-native";
+import { ListItem, Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-
-const styles = StyleSheet.create({
-  buffer: {
-    height: 30,
-    backgroundColor: "#DE5C58"
-  },
-  header: {
-    alignItems: "center",
-    padding: 0,
-    margin: 0,
-    backgroundColor: "#3F4448",
-    backgroundColor: "#DE5C58"
-  },
-  headerIcon: {
-    paddingRight: 10
-  },
-  title: {
-    fontFamily: "Verdana-Bold",
-    fontSize: 30,
-    color: "white"
-  },
-  image: {
-    flex: 1,
-    width: "100%",
-    resizeMode: "cover",
-    justifyContent: "center"
-  }
-});
 
 const Settings = ({ navigation, route, userId }) => {
   // Create User Defaults to know which generations are saved
@@ -45,33 +10,76 @@ const Settings = ({ navigation, route, userId }) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  // make unique function for gen 7
+  // gen 6 special case with pokedex separation in pokeapi
+  const downloadKalos = () => {
+    setSaved([...saved, 6]);
+    for (let p = 12; p < 15; p++) {
+      axios.get("https://pokeapi.co/api/v2/pokedex/" + p + "/").then(res => {
+        for (let j = 0; j < res.data.pokemon_entries.length; j++) {
+          const entry = res.data.pokemon_entries[j];
+          const entryId = parseInt(entry.pokemon_species.url.slice(42, -1));
+          if (entryId > 649) {
+            let height = 0;
+            let weight = 0;
+            let flavor = "";
+            let catchRate = 0;
+            let friendship = 0;
+            const pokeUrl =
+              entry.pokemon_species.url.slice(0, 33) +
+              entry.pokemon_species.url.slice(41);
+            axios.get(pokeUrl).then(res2 => {
+              height = res2.data.height;
+              weight = res2.data.weight;
+              axios
+                .get("https://pokeapi.co/api/v2/pokemon-species/" + entryId)
+                .then(res3 => {
+                  let englishText = res3.data.flavor_text_entries[6];
+                  flavor = englishText.flavor_text.replace(
+                    /(\r\n|\n|\r)/gm,
+                    " "
+                  );
+                  catchRate = res3.data.capture_rate;
+                  friendship = res3.data.base_happiness;
+                  // save cards with native bridge one at a time
+                  NativeModules.UserInfo.savePokeCard(
+                    entryId,
+                    12,
+                    capitalize(entry.pokemon_species.name),
+                    height,
+                    weight,
+                    catchRate,
+                    friendship,
+                    flavor
+                  );
+                });
+            });
+          }
+        }
+      });
+    }
+    refreshDownloads();
+  };
 
-  // change to entry range? in order to lose top axios call
   const downloadGen = (gen, entryLimit, flavorTextId, actualGen) => {
-    // add gen to user defaults saved/downloaded list
     setSaved([...saved, actualGen]);
-    let cardList = [];
     axios.get("https://pokeapi.co/api/v2/pokedex/" + gen + "/").then(res => {
       for (let j = 0; j < res.data.pokemon_entries.length; j++) {
         const entry = res.data.pokemon_entries[j];
         const entryId = parseInt(entry.pokemon_species.url.slice(42, -1));
         if (entryId > entryLimit) {
-          // let types = []
           let height = 0;
           let weight = 0;
           let flavor = "";
           let catchRate = 0;
           let friendship = 0;
+          let imageUrl = "";
           const pokeUrl =
             entry.pokemon_species.url.slice(0, 33) +
             entry.pokemon_species.url.slice(41);
           axios.get(pokeUrl).then(res2 => {
             height = res2.data.height;
             weight = res2.data.weight;
-            // for (let k = 0; k < res2.data.types.length; k++) {
-            //     types.push(res.data.stats)
-            // }
+            // imageUrl = res2.data.sprites.front_default;
             // setImageUrl(res.data.sprites.front_default);
             // setShiny(res.data.sprites.front_shiny);
             axios
@@ -81,21 +89,10 @@ const Settings = ({ navigation, route, userId }) => {
                 flavor = englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " ");
                 catchRate = res3.data.capture_rate;
                 friendship = res3.data.base_happiness;
-                cardList.push({
-                  id: entryId,
-                  generation: actualGen,
-                  name: capitalize(entry.pokemon_species.name),
-                  height: height,
-                  weight: weight,
-                  flavor: flavor,
-                  catchRate: catchRate,
-                  friendship: friendship
-                });
-                // console.log("cardlist now: ", cardList);
                 // save cards with native bridge one at a time
                 NativeModules.UserInfo.savePokeCard(
                   entryId,
-                  actualGen,
+                  gen,
                   capitalize(entry.pokemon_species.name),
                   height,
                   weight,
@@ -108,13 +105,7 @@ const Settings = ({ navigation, route, userId }) => {
         }
       }
     });
-    // call native function, passing the pokeList, to save all PokeCards here
-    // NativeModules.UserInfo.savePokeCards(cardList);
     refreshDownloads();
-  };
-
-  const getCards = () => {
-    NativeModules.UserInfo.getPokeCards();
   };
 
   const [kanto, setKanto] = useState();
@@ -142,14 +133,14 @@ const Settings = ({ navigation, route, userId }) => {
     NativeModules.UserInfo.isUnovaSaved(val => {
       setUnova(val);
     });
-    // NativeModules.UserInfo.isKalosSaved((val) => {
-    //     setKalos(val);
-    // });
+    NativeModules.UserInfo.isKalosSaved(val => {
+      setKalos(val);
+    });
     NativeModules.UserInfo.isAlolaSaved(val => {
       setAlola(val);
     });
   };
-  // add useEffect on mount to pull the user defaults of downloaded/saved generations of pokecards
+
   useEffect(() => {
     refreshDownloads();
   }, []);
@@ -167,8 +158,14 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(1) || kanto}
-            // onPress={() => getCards()}
-            onPress={() => downloadGen(2, 0, 44, 1)}
+            onPress={() =>
+              downloadGen(
+                /*gen*/ 2,
+                /*entryLimit*/ 0,
+                /*flavorTextId*/ 44,
+                /*actualGen*/ 1
+              )
+            }
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -190,8 +187,14 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(2) || johto}
-            // onPress={() => getCards()}
-            onPress={() => downloadGen(3, 151, 41, 2)}
+            onPress={() =>
+              downloadGen(
+                /*gen*/ 3,
+                /*entryLimit*/ 151,
+                /*flavorTextId*/ 41,
+                /*actualGen*/ 2
+              )
+            }
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -213,7 +216,14 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(3) || hoenn}
-            onPress={() => downloadGen(4, 251, 46, 3)}
+            onPress={() =>
+              downloadGen(
+                /*gen*/ 4,
+                /*entryLimit*/ 251,
+                /*flavorTextId*/ 46,
+                /*actualGen*/ 3
+              )
+            }
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -235,7 +245,14 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(4) || sinnoh}
-            onPress={() => downloadGen(5, 386, 2, 4)}
+            onPress={() =>
+              downloadGen(
+                /*gen*/ 5,
+                /*entryLimit*/ 386,
+                /*flavorTextId*/ 2,
+                /*actualGen*/ 4
+              )
+            }
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -257,7 +274,14 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(5) || unova}
-            onPress={() => downloadGen(8, 494, 28, 5)}
+            onPress={() =>
+              downloadGen(
+                /*gen*/ 8,
+                /*entryLimit*/ 494,
+                /*flavorTextId*/ 28,
+                /*actualGen*/ 5
+              )
+            }
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -273,34 +297,42 @@ const Settings = ({ navigation, route, userId }) => {
           ></Button>
         }
       ></ListItem>
-      {/* <ListItem
+      <ListItem
         title={"Save Generation 6"}
         bottomDivider
         rightIcon={
           <Button
-            onPress={() => downloadGen(8, 494, 6, 6)}
+            disabled={saved.includes(6) || kalos}
+            onPress={() => downloadKalos()}
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
               borderWidth: 1
             }}
             icon={
-              savingToCore != 1 ? (
+              !saved.includes(6) && !kalos ? (
                 <Icon name="download" size={20} color="#2189DC"></Icon>
               ) : (
-                <ActivityIndicator color="#2189DC" />
+                <Icon name="check" size={20} color="#2189DC"></Icon>
               )
             }
           ></Button>
         }
-      ></ListItem> */}
+      ></ListItem>
       <ListItem
         title={"Save Generation 7"}
         bottomDivider
         rightIcon={
           <Button
             disabled={saved.includes(7) || alola}
-            onPress={() => downloadGen(16, 721, 7, 7)}
+            onPress={() =>
+              downloadGen(
+                /*gen*/ 16,
+                /*entryLimit*/ 721,
+                /*flavorTextId*/ 7,
+                /*actualGen*/ 7
+              )
+            }
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
