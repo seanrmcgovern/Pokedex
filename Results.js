@@ -196,7 +196,7 @@ const Results = props => {
     if (props.generationSaved == false) {
       fetchFirebase();
     } else {
-      NativeModules.UserInfo.getGeneration(props.generation, cards => {
+      NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
         setPokemon(cards);
       });
     }

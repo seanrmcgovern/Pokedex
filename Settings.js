@@ -41,7 +41,7 @@ const Settings = ({ navigation, route, userId }) => {
                   catchRate = res3.data.capture_rate;
                   friendship = res3.data.base_happiness;
                   // save cards with native bridge one at a time
-                  NativeModules.UserInfo.savePokeCard(
+                  NativeModules.PokeCardBridge.savePokeCard(
                     entryId,
                     12,
                     capitalize(entry.pokemon_species.name),
@@ -90,7 +90,7 @@ const Settings = ({ navigation, route, userId }) => {
                 catchRate = res3.data.capture_rate;
                 friendship = res3.data.base_happiness;
                 // save cards with native bridge one at a time
-                NativeModules.UserInfo.savePokeCard(
+                NativeModules.PokeCardBridge.savePokeCard(
                   entryId,
                   gen,
                   capitalize(entry.pokemon_species.name),
@@ -118,25 +118,25 @@ const Settings = ({ navigation, route, userId }) => {
   const [saved, setSaved] = useState([]);
 
   const refreshDownloads = () => {
-    NativeModules.UserInfo.isKantoSaved(val => {
+    NativeModules.PokeCardBridge.isKantoSaved(val => {
       setKanto(val);
     });
-    NativeModules.UserInfo.isJohtoSaved(val => {
+    NativeModules.PokeCardBridge.isJohtoSaved(val => {
       setJohto(val);
     });
-    NativeModules.UserInfo.isHoennSaved(val => {
+    NativeModules.PokeCardBridge.isHoennSaved(val => {
       setHoenn(val);
     });
-    NativeModules.UserInfo.isSinnohSaved(val => {
+    NativeModules.PokeCardBridge.isSinnohSaved(val => {
       setSinnoh(val);
     });
-    NativeModules.UserInfo.isUnovaSaved(val => {
+    NativeModules.PokeCardBridge.isUnovaSaved(val => {
       setUnova(val);
     });
-    NativeModules.UserInfo.isKalosSaved(val => {
+    NativeModules.PokeCardBridge.isKalosSaved(val => {
       setKalos(val);
     });
-    NativeModules.UserInfo.isAlolaSaved(val => {
+    NativeModules.PokeCardBridge.isAlolaSaved(val => {
       setAlola(val);
     });
   };

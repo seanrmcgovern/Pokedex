@@ -27,37 +27,37 @@ const GenerationView = props => {
   const refreshDownloads = () => {
     switch (props.generation) {
       case 2:
-        NativeModules.UserInfo.isKantoSaved(val => {
+        NativeModules.PokeCardBridge.isKantoSaved(val => {
           setGenerationSaved(val);
         });
         break;
       case 3:
-        NativeModules.UserInfo.isJohtoSaved(val => {
+        NativeModules.PokeCardBridge.isJohtoSaved(val => {
           setGenerationSaved(val);
         });
         break;
       case 4:
-        NativeModules.UserInfo.isHoennSaved(val => {
+        NativeModules.PokeCardBridge.isHoennSaved(val => {
           setGenerationSaved(val);
         });
         break;
       case 5:
-        NativeModules.UserInfo.isSinnohSaved(val => {
+        NativeModules.PokeCardBridge.isSinnohSaved(val => {
           setGenerationSaved(val);
         });
         break;
       case 8:
-        NativeModules.UserInfo.isUnovaSaved(val => {
+        NativeModules.PokeCardBridge.isUnovaSaved(val => {
           setGenerationSaved(val);
         });
         break;
       case 12:
-        NativeModules.UserInfo.isKalosSaved(val => {
+        NativeModules.PokeCardBridge.isKalosSaved(val => {
           setGenerationSaved(val);
         });
         break;
       case 16:
-        NativeModules.UserInfo.isAlolaSaved(val => {
+        NativeModules.PokeCardBridge.isAlolaSaved(val => {
           setGenerationSaved(val);
         });
         break;
