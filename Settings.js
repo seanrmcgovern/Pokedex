@@ -49,7 +49,7 @@ const Settings = ({ navigation, route, userId }) => {
                     weight,
                     catchRate,
                     friendship,
-                    flavor
+                    flavor.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
                   );
                 });
             });
