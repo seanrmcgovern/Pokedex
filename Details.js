@@ -62,6 +62,8 @@ const Details = ({ navigation, route }) => {
   const { coreFriendship } = route.params;
   const { coreHeight } = route.params;
   const { coreWeight } = route.params;
+  const { coreTypes } = route.params;
+  const { coreStats } = route.params;
 
   const pokeObject = {
     name: name,
@@ -260,6 +262,8 @@ const Details = ({ navigation, route }) => {
           });
       }
       setTypes(pokemon.types);
+    } else {
+      setTypes(coreTypes);
     }
   }, [pokemon]);
 
@@ -418,10 +422,12 @@ const Details = ({ navigation, route }) => {
                     alignSelf: "flex-start"
                   }}
                   badge={{
-                    value: item.type.name,
+                    value: fromCoreData ? item : item.type.name,
                     textStyle: { color: "white", fontSize: 12 },
                     badgeStyle: {
-                      backgroundColor: getTypeColor(item.type.name),
+                      backgroundColor: fromCoreData
+                        ? getTypeColor(item)
+                        : getTypeColor(item.type.name),
                       minWidth: 75
                     }
                   }}
@@ -464,7 +470,16 @@ const Details = ({ navigation, route }) => {
               >
                 Base Stats
               </Text>
-              {!fromCoreData && (
+              {fromCoreData ? (
+                <Stats
+                  hp={coreStats[0]}
+                  attack={coreStats[1]}
+                  defense={coreStats[2]}
+                  specialAttack={coreStats[3]}
+                  specialDefense={coreStats[4]}
+                  speed={coreStats[5]}
+                ></Stats>
+              ) : (
                 <Stats
                   hp={pokemon.stats[0].base_stat}
                   attack={pokemon.stats[1].base_stat}

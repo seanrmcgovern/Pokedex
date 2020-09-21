@@ -24,12 +24,22 @@ const Settings = ({ navigation, route, userId }) => {
             let flavor = "";
             let catchRate = 0;
             let friendship = 0;
+            let imageUrl = "";
+            let types = [];
+            let stats = [];
             const pokeUrl =
               entry.pokemon_species.url.slice(0, 33) +
               entry.pokemon_species.url.slice(41);
             axios.get(pokeUrl).then(res2 => {
               height = res2.data.height;
               weight = res2.data.weight;
+              imageUrl = res2.data.sprites.front_default;
+              for (let t = 0; t < res2.data.types.length; t++) {
+                types.push(res2.data.types[t].type.name);
+              }
+              for (let s = 0; s < res2.data.stats.length; s++) {
+                stats.push(res2.data.stats[s].base_stat);
+              }
               axios
                 .get("https://pokeapi.co/api/v2/pokemon-species/" + entryId)
                 .then(res3 => {
@@ -49,7 +59,10 @@ const Settings = ({ navigation, route, userId }) => {
                     weight,
                     catchRate,
                     friendship,
-                    flavor.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    flavor,
+                    imageUrl,
+                    types,
+                    stats
                   );
                 });
             });
@@ -73,14 +86,21 @@ const Settings = ({ navigation, route, userId }) => {
           let catchRate = 0;
           let friendship = 0;
           let imageUrl = "";
+          let types = [];
+          let stats = [];
           const pokeUrl =
             entry.pokemon_species.url.slice(0, 33) +
             entry.pokemon_species.url.slice(41);
           axios.get(pokeUrl).then(res2 => {
             height = res2.data.height;
             weight = res2.data.weight;
-            // imageUrl = res2.data.sprites.front_default;
-            // setImageUrl(res.data.sprites.front_default);
+            imageUrl = res2.data.sprites.front_default;
+            for (let t = 0; t < res2.data.types.length; t++) {
+              types.push(res2.data.types[t].type.name);
+            }
+            for (let s = 0; s < res2.data.stats.length; s++) {
+              stats.push(res2.data.stats[s].base_stat);
+            }
             // setShiny(res.data.sprites.front_shiny);
             axios
               .get("https://pokeapi.co/api/v2/pokemon-species/" + entryId)
@@ -98,7 +118,10 @@ const Settings = ({ navigation, route, userId }) => {
                   weight,
                   catchRate,
                   friendship,
-                  flavor
+                  flavor,
+                  imageUrl,
+                  types,
+                  stats
                 );
               });
           });

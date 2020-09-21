@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 @available(iOS 10.0, *) // required for CoreDataManager
 @objc(PokeCardBridge)
@@ -36,6 +37,8 @@ class PokeCardBridge:NSObject {
     static let flavor = "flavor"
     static let friendship = "friendship"
     static let image = "image"
+    static let types = "types"
+    static let stats = "stats"
   }
   
   @objc
@@ -75,7 +78,7 @@ class PokeCardBridge:NSObject {
   }
 
   @objc
-  func savePokeCard(_ id: NSNumber, generation: NSNumber, name: NSString, height: NSNumber, weight: NSNumber, catchRate: NSNumber, friendship: NSNumber, flavor: NSString) {
+  func savePokeCard(_ id: NSNumber, generation: NSNumber, name: NSString, height: NSNumber, weight: NSNumber, catchRate: NSNumber, friendship: NSNumber, flavor: NSString, imageUrl: NSString, types: NSArray, stats: NSArray) {
       let mainContext = CoreDataManager.shared.mainContext
       let newCard = PokeCard(context: mainContext)
       newCard.id = id as! Int64
@@ -86,12 +89,15 @@ class PokeCardBridge:NSObject {
       newCard.catchRate = catchRate as! Int64
       newCard.friendship = friendship as! Int64
       newCard.flavor = flavor as String
-      // let imageData = NSData(contentsOf: imageUrl as URL)
-      // print("image: \(imageData)")
-      // newCard.image = NSData(contentsOf: imageUrl as URL)
-      // newCard.sprite = NSData(contentsOf: imageUrl as URL) as Data?
-      // newCard.stats = stats as? [Int]
-      // newCard.types = types as [String]
+      let url = URL(string: imageUrl as String)
+      if let data = try? Data(contentsOf: url!) {
+        if let img = UIImage(data: data) {
+          let png = img.pngData()
+          newCard.image = png
+        }
+      }
+      newCard.types = types as? [String]
+      newCard.stats = stats as? [Int]
       CoreDataManager.shared.saveChanges()
     switch generation {
       case 2:
@@ -141,6 +147,11 @@ class PokeCardBridge:NSObject {
         nextCard.setValue(entry.catchRate, forKey: Card.catchRate)
         nextCard.setValue(entry.friendship, forKey: Card.friendship)
         nextCard.setValue(entry.flavor, forKey: Card.flavor)
+        let imageData = NSData(data: entry.image!)
+        let strBase64:String = imageData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
+        nextCard.setValue(strBase64, forKey: Card.image)
+        nextCard.setValue(entry.types, forKey: Card.types)
+        nextCard.setValue(entry.stats, forKey: Card.stats)
         pokeCards.append(nextCard)
        }
       callback([pokeCards])

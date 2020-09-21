@@ -64,7 +64,9 @@ const PokeCard = props => {
         props.navigation.navigate("Details", {
           name: capitalize(name),
           pokemon: pokemon,
-          image: imageUrl,
+          image: props.fromCoreData
+            ? `data:image/jpeg;base64,${props.image}`
+            : imageUrl,
           id: id,
           gen: props.gen,
           shiny: shiny,
@@ -74,7 +76,9 @@ const PokeCard = props => {
           coreFlavor: props.flavor,
           coreFriendship: props.friendship,
           coreHeight: props.height,
-          coreWeight: props.weight
+          coreWeight: props.weight,
+          coreTypes: props.types,
+          coreStats: props.stats
         });
       }}
     >
@@ -83,8 +87,11 @@ const PokeCard = props => {
         <Image
           resizeMode="cover"
           source={{
-            uri: imageUrl
+            uri: props.fromCoreData
+              ? `data:image/jpeg;base64,${props.image}`
+              : imageUrl
           }}
+          // source={{ uri: imageUrl }}
           style={{
             width: 100,
             height: 100,

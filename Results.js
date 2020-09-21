@@ -276,6 +276,9 @@ const Results = props => {
                     friendship={item.friendship}
                     height={item.height}
                     weight={item.weight}
+                    image={item.image}
+                    types={item.types}
+                    stats={item.stats}
                   ></PokeCard>
                 );
             }}
