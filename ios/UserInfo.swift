@@ -27,6 +27,7 @@ class UserInfo: NSObject {
     static let savedUnova = "savedUnova"
     static let savedKalos = "savedKalos"
     static let savedAlola = "savedAlola"
+    static let partyCount = "partyCount"
   }
   
   // annotation used to export method in react-native
@@ -54,6 +55,28 @@ class UserInfo: NSObject {
     print("Passed id:  \(userId)")
     defaults.set(username, forKey: Keys.username)
     defaults.set(userId, forKey: Keys.userId)
+  }
+  
+  @objc
+  func getPartyCount(_ callback: RCTResponseSenderBlock) {
+    let curCount = defaults.value(forKey: Keys.partyCount)
+    if (curCount != nil) {
+      callback([curCount!])
+    }
+    else {
+      defaults.set(0, forKey: Keys.partyCount)
+      callback([0])
+    }
+  }
+  
+  @objc
+  func incrementPartyCount(_ callback: RCTResponseSenderBlock) {
+    let curCount = defaults.value(forKey: Keys.partyCount)
+    if (curCount != nil) {
+      let c = curCount as! Int
+      defaults.set(c+1, forKey: Keys.partyCount)
+      callback([c+1])
+    }
   }
   
 }

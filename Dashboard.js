@@ -105,7 +105,7 @@ const DashBoard = ({ navigation, route, userId }) => {
         <Tab heading="Sinnoh">
           <GenerationView
             navigation={navigation}
-            generation={5}
+            generation={6}
             userId={userId}
             viewCards={viewCards}
           ></GenerationView>

@@ -109,7 +109,7 @@ class PokeCardBridge:NSObject {
       case 4:
         defaults.set(true, forKey: Keys.savedHoenn)
         break
-      case 5:
+      case 6:
         defaults.set(true, forKey: Keys.savedSinnoh)
         break
       case 8:

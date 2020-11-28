@@ -103,7 +103,7 @@ const Results = props => {
             }
           }
           setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
-        } else if (props.generation === 5) {
+        } else if (props.generation === 6) {
           // gen 4
           let pokeList = [];
           for (let i = 0; i < res.data.pokemon_entries.length; i++) {

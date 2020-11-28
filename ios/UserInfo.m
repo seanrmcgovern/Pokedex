@@ -13,5 +13,7 @@
 
 RCT_EXTERN_METHOD(getCredentials: (RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(saveCredentials: (NSString)username withId: (NSString)userId)
+RCT_EXTERN_METHOD(getPartyCount: (RCTResponseSenderBlock)callback)
+RCT_EXTERN_METHOD(incrementPartyCount: (RCTResponseSenderBlock)callback)
 
 @end

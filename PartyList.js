@@ -147,7 +147,8 @@ const PartyList = props => {
         >
           {props.party.map(
             (item, index) =>
-              index > 0 && (
+              // index > 0 && (
+               (
                 <ListItem
                   onPress={() =>
                     props.navigation.navigate("Details", {

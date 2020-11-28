@@ -41,7 +41,7 @@ const GenerationView = props => {
           setGenerationSaved(val);
         });
         break;
-      case 5:
+      case 6:
         NativeModules.PokeCardBridge.isSinnohSaved(val => {
           setGenerationSaved(val);
         });

@@ -19,6 +19,8 @@
 		76F046D7250E951B00656E3D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F046D6250E951B00656E3D /* CoreDataManager.swift */; };
 		76F046D92512896800656E3D /* PokeCardBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 76F046D82512896800656E3D /* PokeCardBridge.m */; };
 		76F046DB25128A0C00656E3D /* PokeCardBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F046DA25128A0C00656E3D /* PokeCardBridge.swift */; };
+		76F046DD2518F43900656E3D /* PartyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F046DC2518F43800656E3D /* PartyBridge.swift */; };
+		76F046DF2518F4BC00656E3D /* PartyBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 76F046DE2518F4BC00656E3D /* PartyBridge.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		76F046D6250E951B00656E3D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		76F046D82512896800656E3D /* PokeCardBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PokeCardBridge.m; sourceTree = "<group>"; };
 		76F046DA25128A0C00656E3D /* PokeCardBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeCardBridge.swift; sourceTree = "<group>"; };
+		76F046DC2518F43800656E3D /* PartyBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyBridge.swift; sourceTree = "<group>"; };
+		76F046DE2518F4BC00656E3D /* PartyBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PartyBridge.m; sourceTree = "<group>"; };
 		8AC623DBF3A3E2CB072F81F2 /* Pods-Pokedex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pokedex.release.xcconfig"; path = "Target Support Files/Pods-Pokedex/Pods-Pokedex.release.xcconfig"; sourceTree = "<group>"; };
 		D43FF9D506E70904424FA7E9 /* libPods-Pokedex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pokedex.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -74,6 +78,8 @@
 				76F046D6250E951B00656E3D /* CoreDataManager.swift */,
 				76F046D82512896800656E3D /* PokeCardBridge.m */,
 				76F046DA25128A0C00656E3D /* PokeCardBridge.swift */,
+				76F046DC2518F43800656E3D /* PartyBridge.swift */,
+				76F046DE2518F4BC00656E3D /* PartyBridge.m */,
 			);
 			name = Pokedex;
 			sourceTree = "<group>";
@@ -266,7 +272,9 @@
 				76F046D5250E944000656E3D /* Pokedex.xcdatamodeld in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				76F046D0250D7B4F00656E3D /* UserInfo.swift in Sources */,
+				76F046DD2518F43900656E3D /* PartyBridge.swift in Sources */,
 				76F046DB25128A0C00656E3D /* PokeCardBridge.swift in Sources */,
+				76F046DF2518F4BC00656E3D /* PartyBridge.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				76F046D92512896800656E3D /* PokeCardBridge.m in Sources */,
 			);

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="18G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Party" representedClassName="Party" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="items" optional="YES" attributeType="Transformable" customClassName="NSMutableArray"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="PokeCard" representedClassName="PokeCard" syncable="YES" codeGenerationType="class">
         <attribute name="catchRate" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="flavor" optional="YES" attributeType="String"/>
@@ -15,5 +20,6 @@
     </entity>
     <elements>
         <element name="PokeCard" positionX="-63" positionY="-18" width="128" height="208"/>
+        <element name="Party" positionX="-54" positionY="72" width="128" height="88"/>
     </elements>
 </model>

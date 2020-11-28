@@ -5,7 +5,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  NativeModules
 } from "react-native";
 import { Button, Overlay, Input } from "react-native-elements";
 import { Root, Toast } from "native-base";
@@ -57,7 +58,16 @@ const Parties = props => {
     toggleOverlay();
   };
 
+  const [coreParties, setCoreParties] = useState([]);
+
   useEffect(() => {
+    // pull parties from core data
+    NativeModules.PartyBridge.getParties(parties => {
+      console.log("parties sent to react: ", parties);
+      // if (parties.length > 0) {
+      // }
+      setCoreParties(parties);
+    });
     firebase
       .database()
       .ref("users/" + props.userId)
@@ -81,7 +91,7 @@ const Parties = props => {
           contentContainerStyle={{ paddingBottom: 400 }}
         >
           <View style={{ backgroundColor: "white" }}>
-            {parties.map((party, index) => (
+            {/* {parties.map((party, index) => (
               <PartyList
                 navigation={props.navigation}
                 title={party.title}
@@ -89,6 +99,16 @@ const Parties = props => {
                 partyIndex={index}
                 userId={props.userId}
                 parties={parties}
+              ></PartyList>
+            ))} */}
+            {coreParties.map((party, index) => (
+              <PartyList
+                navigation={props.navigation}
+                title={party.title}
+                party={party.items}
+                partyIndex={index}
+                userId={props.userId}
+                parties={coreParties}
               ></PartyList>
             ))}
           </View>

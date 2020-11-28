@@ -91,7 +91,6 @@ const PokeCard = props => {
               ? `data:image/jpeg;base64,${props.image}`
               : imageUrl
           }}
-          // source={{ uri: imageUrl }}
           style={{
             width: 100,
             height: 100,

@@ -13,7 +13,23 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
-// import Constants from "expo-constants";
+
+// PRIORITY ONE
+// REFACTOR API CALLS TO USE NEW GENERATIONS ENDPOINT
+// INCLUDE ALL 8 GENERATIONS
+
+// PRIORITY TWO
+// Save Pokemon data on first load, use userDefaults variable like "firstLaunch"
+// 1) Change savePokeCard to saveGeneration, passing an Array of NSMutableDictionarys (array of objects) 
+// 2) Set firstLaunch to false
+// 3) use Callback to send True value back to React, to set a "loading" variable and trigger the login screen
+
+// PRIORITY THREE
+// Can show GIF/Logo while it's saving the data
+// Still use Firebase for user authentication, 
+//      but we might want to switch to something like google authentication 
+//      so users can return to their account after deleting the app
+//      then if they redownload and sign in we can initialize their previously saved parties/favorites
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",
@@ -144,9 +160,7 @@ const App = () => {
         .set({
           username: name,
           parties: [
-            { title: "New Party 1", items: [{ name: "head" }] },
-            { title: "New Party 2", items: [{ name: "head" }] },
-            { title: "New Party 3", items: [{ name: "head" }] }
+            { title: "Party 1", items: [{ name: "head" }] }
           ],
           favorites: [{ name: "head" }]
         })

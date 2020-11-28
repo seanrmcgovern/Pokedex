@@ -110,6 +110,7 @@ const Settings = ({ navigation, route, userId }) => {
                 catchRate = res3.data.capture_rate;
                 friendship = res3.data.base_happiness;
                 // save cards with native bridge one at a time
+                // push card to card list here
                 NativeModules.PokeCardBridge.savePokeCard(
                   entryId,
                   gen,
