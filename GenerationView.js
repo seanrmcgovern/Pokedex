@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, NativeModules } from "react-native";
 import { SearchBar } from "react-native-elements";
+import GenerationResults from "./GenerationResults";
 import Results from "./Results";
 import ResultsListview from "./ResultsListview";
 
@@ -79,13 +80,14 @@ const GenerationView = props => {
         inputContainerStyle={styles.input}
       />
       {props.viewCards ? (
-        <Results
-          search={search.toLowerCase()}
-          navigation={props.navigation}
-          generation={props.generation}
-          userId={props.userId}
-          generationSaved={generationSaved}
-        ></Results>
+        <GenerationResults search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={generationSaved}/>
+        // <Results
+        //   search={search.toLowerCase()}
+        //   navigation={props.navigation}
+        //   generation={props.generation}
+        //   userId={props.userId}
+        //   generationSaved={generationSaved}
+        // ></Results>
       ) : (
         <ResultsListview
           search={search.toLowerCase()}

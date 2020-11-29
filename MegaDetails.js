@@ -121,6 +121,9 @@ const MegaDetails = props => {
 
   useEffect(() => {
     let abilitiesToAdd = [];
+    if (pokemon.abilities.length === 0) {
+      setAbilityLoading(false);
+    }
     for (let i = 0; i < pokemon.abilities.length; i++) {
       axios
         .get(pokemon.abilities[i].ability.url)
@@ -270,29 +273,30 @@ const MegaDetails = props => {
               speed={pokemon.stats[5].base_stat}
             ></Stats>
           </View>
-          <View>
-            <Text
-              style={{
-                fontSize: 20,
-                marginLeft: 10,
-                fontWeight: "bold",
-                color: "white"
-              }}
-            >
-              Abilities
-            </Text>
+          {abilities.length > 0 && 
             <View>
-              {abilities.map((a, index) => (
-                <ListItem
-                  title={capitalize(a.name)}
-                  titleStyle={{ color: "#2189DC" }}
-                  subtitle={a.effect}
-                  bottomDivider
-                  key={index}
-                ></ListItem>
-              ))}
-            </View>
-          </View>
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginLeft: 10,
+                  fontWeight: "bold",
+                  color: "white"
+                }}
+              >
+                Abilities
+              </Text>
+              <View>
+                {abilities.map((a, index) => (
+                  <ListItem
+                    title={capitalize(a.name)}
+                    titleStyle={{ color: "#2189DC" }}
+                    subtitle={a.effect}
+                    bottomDivider
+                    key={index}
+                  ></ListItem>
+                ))}
+              </View>
+            </View>}
         </View>
       )}
     </ScrollView>

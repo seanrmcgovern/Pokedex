@@ -86,11 +86,11 @@ const PokeCard = props => {
         <Text style={styles.number}>{id}</Text>
         <Image
           resizeMode="cover"
-          source={{
+          source={props.fromCoreData || imageUrl ? {
             uri: props.fromCoreData
               ? `data:image/jpeg;base64,${props.image}`
               : imageUrl
-          }}
+          } : {}}
           style={{
             width: 100,
             height: 100,

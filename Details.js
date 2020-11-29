@@ -208,33 +208,37 @@ const Details = ({ navigation, route }) => {
   };
 
   const openStrategy = () => {
-    if (gen === 2) {
+    if (gen === 1) {
       WebBrowser.openBrowserAsync(
         "https://www.smogon.com/dex/rb/pokemon/" + name
       );
-    } else if (gen === 3) {
+    } else if (gen === 2) {
       WebBrowser.openBrowserAsync(
         "https://www.smogon.com/dex/gs/pokemon/" + name
       );
-    } else if (gen === 4) {
+    } else if (gen === 3) {
       WebBrowser.openBrowserAsync(
         "https://www.smogon.com/dex/rs/pokemon/" + name
       );
-    } else if (gen === 5) {
+    } else if (gen === 4) {
       WebBrowser.openBrowserAsync(
         "https://www.smogon.com/dex/dp/pokemon/" + name
       );
-    } else if (gen === 8) {
+    } else if (gen === 5) {
       WebBrowser.openBrowserAsync(
         "https://www.smogon.com/dex/bw/pokemon/" + name
       );
-    } else if (gen === 12) {
+    } else if (gen === 6) {
       WebBrowser.openBrowserAsync(
         "https://www.smogon.com/dex/xy/pokemon/" + name
       );
-    } else {
+    } else if (gen == 7) {
       WebBrowser.openBrowserAsync(
         "https://www.smogon.com/dex/sm/pokemon/" + name
+      );
+    } else {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/ss/pokemon/" + name
       );
     }
   };
@@ -242,6 +246,9 @@ const Details = ({ navigation, route }) => {
   useEffect(() => {
     if (!fromCoreData) {
       let abilitiesToAdd = [];
+      if (pokemon.abilities.length === 0) {
+        setAbilityLoading(false);
+      }
       for (let i = 0; i < pokemon.abilities.length; i++) {
         axios
           .get(pokemon.abilities[i].ability.url)
@@ -258,7 +265,7 @@ const Details = ({ navigation, route }) => {
             if (abilitiesToAdd.length === pokemon.abilities.length) {
               setAbilities(abilitiesToAdd);
               setAbilityLoading(false);
-            }
+            } 
           });
       }
       setTypes(pokemon.types);
@@ -272,39 +279,48 @@ const Details = ({ navigation, route }) => {
       axios
         .get("https://pokeapi.co/api/v2/pokemon-species/" + id)
         .then(res => {
-          let englishText;
-          if (gen === 2) {
-            // Kanto
+          let englishText = "";
+          if (gen === 1) {
             englishText = res.data.flavor_text_entries[44];
-          } else if (gen === 3) {
-            // Johto
-            englishText = res.data.flavor_text_entries[41];
-          } else if (gen === 4) {
-            // Hoenn
-            englishText = res.data.flavor_text_entries[46];
-          } else if (gen === 5) {
-            // Sinnoh
-            englishText = res.data.flavor_text_entries[2];
-          } else if (gen === 8) {
-            // Unova
-            englishText = res.data.flavor_text_entries[28];
-          } else if (gen === 12) {
-            // Kalos
-            englishText = res.data.flavor_text_entries[6];
-          } else {
-            // Alola
-            englishText = res.data.flavor_text_entries[7];
+          }  else {
+            englishText = res.data.flavor_text_entries.find(
+              e => e.language.name === "en"
+            );
           }
           setFlavor(englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " "));
           setCatchRate(res.data.capture_rate);
           setHappiness(res.data.base_happiness);
           setVarieties(res.data.varieties);
         })
-        .then(res => {
+        .then(() => {
           setIsLoading(false);
         });
     }
   }, [id]);
+
+
+  //         if (gen === 2) {
+  //           // Kanto
+  //           englishText = res.data.flavor_text_entries[44];
+  //         } else if (gen === 3) {
+  //           // Johto
+  //           englishText = res.data.flavor_text_entries[41];
+  //         } else if (gen === 4) {
+  //           // Hoenn
+  //           englishText = res.data.flavor_text_entries[46];
+  //         } else if (gen === 5) {
+  //           // Sinnoh
+  //           englishText = res.data.flavor_text_entries[2];
+  //         } else if (gen === 8) {
+  //           // Unova
+  //           englishText = res.data.flavor_text_entries[28];
+  //         } else if (gen === 12) {
+  //           // Kalos
+  //           englishText = res.data.flavor_text_entries[6];
+  //         } else {
+  //           // Alola
+  //           englishText = res.data.flavor_text_entries[7];
+  //         }
 
   useEffect(() => {
     for (let i = 0; i < varieties.length; i++) {
@@ -367,7 +383,9 @@ const Details = ({ navigation, route }) => {
               <ImageBackground source={Pokeball} style={styles.image}>
                 <TouchableOpacity
                   onPress={() => {
-                    setIsShiny(isShiny => !isShiny);
+                    if (shiny) {
+                      setIsShiny(isShiny => !isShiny);
+                    }
                   }}
                 >
                   <Image
@@ -596,30 +614,31 @@ const Details = ({ navigation, route }) => {
                 ></ListItem>
               )}
             </View>
-            <View>
-              <Text
-                style={{
-                  fontSize: 20,
-                  marginLeft: 10,
-                  marginTop: 5,
-                  fontWeight: "bold",
-                  color: "white"
-                }}
-              >
-                Abilities
-              </Text>
+            {abilities.length > 0 && 
               <View>
-                {abilities.map((a, index) => (
-                  <ListItem
-                    title={capitalize(a.name)}
-                    titleStyle={{ color: "#2189DC" }}
-                    subtitle={a.effect}
-                    bottomDivider
-                    key={index}
-                  ></ListItem>
-                ))}
-              </View>
-            </View>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    marginLeft: 10,
+                    marginTop: 5,
+                    fontWeight: "bold",
+                    color: "white"
+                  }}
+                >
+                  Abilities
+                </Text>
+                <View>
+                  {abilities.map((a, index) => (
+                    <ListItem
+                      title={capitalize(a.name)}
+                      titleStyle={{ color: "#2189DC" }}
+                      subtitle={a.effect}
+                      bottomDivider
+                      key={index}
+                    ></ListItem>
+                  ))}
+                </View>
+              </View>}
             <ListItem
               title="Competitive Strategies"
               onPress={openStrategy}

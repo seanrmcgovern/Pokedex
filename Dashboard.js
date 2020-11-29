@@ -75,10 +75,19 @@ const DashBoard = ({ navigation, route, userId }) => {
 
   const [viewCards, setViewCards] = useState(true);
 
+  const genTabs = [{heading: "Kanto", gen: 1}, {heading: "Johto", gen: 2}, {heading: "Hoenn", gen: 3}, {heading: "Sinnoh", gen: 4}, {heading: "Unova", gen: 5}, {heading: "Kalos", gen: 6}, {heading: "Alola", gen: 7}, {heading: "Galar", gen: 8}];
+
   return (
     <Container>
       <Tabs renderTabBar={() => <ScrollableTab />}>
-        <Tab heading="Kanto">
+        {genTabs.map((tab) => {
+          return (
+            <Tab heading={tab.heading}>
+              <GenerationView navigation={navigation} generation={tab.gen} userId={userId} viewCards={viewCards}/>
+            </Tab>
+          );
+        })}
+        {/* <Tab heading="Kanto">
           <GenerationView
             navigation={navigation}
             generation={2}
@@ -133,7 +142,7 @@ const DashBoard = ({ navigation, route, userId }) => {
             userId={userId}
             viewCards={viewCards}
           ></GenerationView>
-        </Tab>
+        </Tab> */}
       </Tabs>
     </Container>
   );
