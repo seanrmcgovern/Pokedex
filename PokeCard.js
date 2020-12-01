@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import PokeballSprite from "./assets/pokeballSprite.png";
+import Pokeball from "./assets/pokeball.png";
 
 const styles = StyleSheet.create({
   card: {
@@ -45,6 +47,8 @@ const PokeCard = props => {
   const id = props.entryId;
   const url = props.url;
 
+  const missingImage = !(props.fromCoreData || imageUrl);
+
   const capitalize = str => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
@@ -86,15 +90,16 @@ const PokeCard = props => {
         <Text style={styles.number}>{id}</Text>
         <Image
           resizeMode="cover"
-          source={props.fromCoreData || imageUrl ? {
+          source={missingImage ? Pokeball : {
             uri: props.fromCoreData
               ? `data:image/jpeg;base64,${props.image}`
               : imageUrl
-          } : {}}
+          }}
           style={{
             width: 100,
             height: 100,
-            resizeMode: "contain"
+            resizeMode: "contain",
+            marginTop: missingImage ? 10 : 0
           }}
         />
         <Text style={styles.title}>{capitalize(name)}</Text>

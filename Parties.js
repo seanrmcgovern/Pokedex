@@ -91,7 +91,8 @@ const Parties = props => {
           contentContainerStyle={{ paddingBottom: 400 }}
         >
           <View style={{ backgroundColor: "white" }}>
-            {/* {parties.map((party, index) => (
+            {/* TODO */}
+            {parties.map((party, index) => (
               <PartyList
                 navigation={props.navigation}
                 title={party.title}
@@ -100,7 +101,7 @@ const Parties = props => {
                 userId={props.userId}
                 parties={parties}
               ></PartyList>
-            ))} */}
+            ))}
             {coreParties.map((party, index) => (
               <PartyList
                 navigation={props.navigation}

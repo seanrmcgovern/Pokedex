@@ -15,8 +15,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 
 // PRIORITY ONE
-// REFACTOR API CALLS TO USE NEW GENERATIONS ENDPOINT
-// Incorporate this into the ResultsListView
+
 // try progress bar/html meter for stats
 // modify color of top tabs to actual blue
 
