@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const GenerationResults = props => {
+const CardView = props => {
   const [pokemon, setPokemon] = useState([]);
 
   const flatlistRef = useRef();
@@ -156,4 +156,4 @@ const GenerationResults = props => {
   );
 };
 
-export default GenerationResults;
+export default CardView;

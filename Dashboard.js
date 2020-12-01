@@ -87,62 +87,6 @@ const DashBoard = ({ navigation, route, userId }) => {
             </Tab>
           );
         })}
-        {/* <Tab heading="Kanto">
-          <GenerationView
-            navigation={navigation}
-            generation={2}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Johto">
-          <GenerationView
-            navigation={navigation}
-            generation={3}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Hoenn">
-          <GenerationView
-            navigation={navigation}
-            generation={4}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Sinnoh">
-          <GenerationView
-            navigation={navigation}
-            generation={6}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Unova">
-          <GenerationView
-            navigation={navigation}
-            generation={8}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Kalos">
-          <GenerationView
-            navigation={navigation}
-            generation={12}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Alola">
-          <GenerationView
-            navigation={navigation}
-            generation={16}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab> */}
       </Tabs>
     </Container>
   );

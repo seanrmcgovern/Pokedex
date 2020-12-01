@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, NativeModules } from "react-native";
 import { SearchBar } from "react-native-elements";
-import GenerationResults from "./GenerationResults";
+import CardView from "./CardView";
+import TableView from "./TableView";
 import Results from "./Results";
 import ResultsListview from "./ResultsListview";
 
@@ -27,41 +28,43 @@ const GenerationView = props => {
 
   const refreshDownloads = () => {
     switch (props.generation) {
-      case 2:
+      case 1:
         NativeModules.PokeCardBridge.isKantoSaved(val => {
           setGenerationSaved(val);
         });
         break;
-      case 3:
+      case 2:
         NativeModules.PokeCardBridge.isJohtoSaved(val => {
           setGenerationSaved(val);
         });
         break;
-      case 4:
+      case 3:
         NativeModules.PokeCardBridge.isHoennSaved(val => {
           setGenerationSaved(val);
         });
         break;
-      case 6:
+      case 4:
         NativeModules.PokeCardBridge.isSinnohSaved(val => {
           setGenerationSaved(val);
         });
         break;
-      case 8:
+      case 5:
         NativeModules.PokeCardBridge.isUnovaSaved(val => {
           setGenerationSaved(val);
         });
         break;
-      case 12:
+      case 6:
         NativeModules.PokeCardBridge.isKalosSaved(val => {
           setGenerationSaved(val);
         });
         break;
-      case 16:
+      case 7:
         NativeModules.PokeCardBridge.isAlolaSaved(val => {
           setGenerationSaved(val);
         });
         break;
+      // add case for Galar
+      // may not need this logic after converting to Core Data
     }
   };
 
@@ -80,22 +83,9 @@ const GenerationView = props => {
         inputContainerStyle={styles.input}
       />
       {props.viewCards ? (
-        <GenerationResults search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={generationSaved}/>
-        // <Results
-        //   search={search.toLowerCase()}
-        //   navigation={props.navigation}
-        //   generation={props.generation}
-        //   userId={props.userId}
-        //   generationSaved={generationSaved}
-        // ></Results>
+        <CardView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={generationSaved}/>
       ) : (
-        <ResultsListview
-          search={search.toLowerCase()}
-          navigation={props.navigation}
-          generation={props.generation}
-          userId={props.userId}
-          generationSaved={generationSaved}
-        ></ResultsListview>
+        <TableView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={generationSaved}/>
       )}
     </View>
   );
