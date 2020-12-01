@@ -246,27 +246,28 @@ const Details = ({ navigation, route }) => {
   useEffect(() => {
     if (!fromCoreData) {
       let abilitiesToAdd = [];
-      if (pokemon.abilities.length === 0) {
+      if (!pokemon.abilities || pokemon.abilities.length === 0) {
         setAbilityLoading(false);
-      }
-      for (let i = 0; i < pokemon.abilities.length; i++) {
-        axios
-          .get(pokemon.abilities[i].ability.url)
-          .then(res => {
-            const englishEffect = res.data.effect_entries.find(
-              e => e.language.name === "en"
-            );
-            abilitiesToAdd.push({
-              name: pokemon.abilities[i].ability.name,
-              effect: englishEffect.effect
+      } else {
+        for (let i = 0; i < pokemon.abilities.length; i++) {
+          axios
+            .get(pokemon.abilities[i].ability.url)
+            .then(res => {
+              const englishEffect = res.data.effect_entries.find(
+                e => e.language.name === "en"
+              );
+              abilitiesToAdd.push({
+                name: pokemon.abilities[i].ability.name,
+                effect: englishEffect.effect
+              });
+            })
+            .then(() => {
+              if (abilitiesToAdd.length === pokemon.abilities.length) {
+                setAbilities(abilitiesToAdd);
+                setAbilityLoading(false);
+              } 
             });
-          })
-          .then(() => {
-            if (abilitiesToAdd.length === pokemon.abilities.length) {
-              setAbilities(abilitiesToAdd);
-              setAbilityLoading(false);
-            } 
-          });
+        }
       }
       setTypes(pokemon.types);
     } else {
