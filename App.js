@@ -15,26 +15,21 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 
 // PRIORITY ONE
-
-// try progress bar/html meter for stats
-// modify color of top tabs to actual blue
+// 1) Convert Objective-C startup files to Swift
+// 2) Save Pokemon Data to CSV
+// 3) Process the csv and save to Core Data on App's first launch
+// 4) Can show GIF/Logo while it's saving the data
 
 // PRIORITY TWO
-// Save Pokemon data on first load, use userDefaults variable like "firstLaunch"
-// 1) Change savePokeCard to saveGeneration, passing an Array of NSMutableDictionarys (array of objects) 
-// 2) Set firstLaunch to false
-// 3) use Callback to send True value back to React, to set a "loading" variable and trigger the login screen
-// 4) Can show GIF/Logo while it's saving the data
-// Try to save any unsaved generations each time app is opened?
-// In case of internet issues?
-
-// PRIORITY THREE
 // Primarily use Core Data
 // Keep Firebase in sync every once in a while, in case user redownloads the app
 // Still use Firebase for user authentication, 
 //      but we might want to switch to something like google authentication 
 //      so users can return to their account after deleting the app
 //      then if they redownload and sign in we can initialize their previously saved parties/favorites
+
+// Low Priority
+// try progress bar/html meter for stats
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",

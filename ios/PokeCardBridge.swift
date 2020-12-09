@@ -25,6 +25,7 @@ class PokeCardBridge:NSObject {
     static let savedUnova = "savedUnova"
     static let savedKalos = "savedKalos"
     static let savedAlola = "savedAlola"
+    static let savedGalar = "savedGalar"
   }
   
   struct Card {
@@ -76,6 +77,11 @@ class PokeCardBridge:NSObject {
     let curValue = defaults.bool(forKey: Keys.savedAlola)
     callback([curValue])
   }
+  @objc
+  func isGalarSaved(_ callback: RCTResponseSenderBlock) {
+    let curValue = defaults.bool(forKey: Keys.savedGalar)
+    callback([curValue])
+  }
 
   @objc
   func savePokeCard(_ id: NSNumber, generation: NSNumber, name: NSString, height: NSNumber, weight: NSNumber, catchRate: NSNumber, friendship: NSNumber, flavor: NSString, imageUrl: NSString, types: NSArray, stats: NSArray) {
@@ -89,37 +95,42 @@ class PokeCardBridge:NSObject {
       newCard.catchRate = catchRate as! Int64
       newCard.friendship = friendship as! Int64
       newCard.flavor = flavor as String
-      let url = URL(string: imageUrl as String)
-      if let data = try? Data(contentsOf: url!) {
-        if let img = UIImage(data: data) {
-          let png = img.pngData()
-          newCard.image = png
+      if imageUrl != "" {
+        let url = URL(string: imageUrl as String)
+        if let data = try? Data(contentsOf: url!) {
+          if let img = UIImage(data: data) {
+            let png = img.pngData()
+            newCard.image = png
+          }
         }
       }
       newCard.types = types as? [String]
       newCard.stats = stats as? [Int]
       CoreDataManager.shared.saveChanges()
     switch generation {
-      case 2:
+      case 1:
         defaults.set(true, forKey: Keys.savedKanto)
         break
-      case 3:
+      case 2:
         defaults.set(true, forKey: Keys.savedJohto)
         break
-      case 4:
+      case 3:
         defaults.set(true, forKey: Keys.savedHoenn)
         break
-      case 6:
+      case 4:
         defaults.set(true, forKey: Keys.savedSinnoh)
         break
-      case 8:
+      case 5:
         defaults.set(true, forKey: Keys.savedUnova)
         break
-      case 12:
+      case 6:
         defaults.set(true, forKey: Keys.savedKalos)
         break
-      case 16:
+      case 7:
         defaults.set(true, forKey: Keys.savedAlola)
+        break
+      case 8:
+        defaults.set(true, forKey: Keys.savedGalar)
         break
       default:
         print("Not a valid generation")

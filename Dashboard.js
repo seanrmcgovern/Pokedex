@@ -26,6 +26,12 @@ const styles = StyleSheet.create({
   },
   headerIcon: {
     paddingRight: 10
+  },
+  activeTab: {
+    color: "#2189DC"
+  },
+  tabLine: {
+    backgroundColor: "#2189DC"
   }
 });
 
@@ -79,10 +85,10 @@ const DashBoard = ({ navigation, route, userId }) => {
 
   return (
     <Container>
-      <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={{backgroundColor: "#2189DC"}}>
+      <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine}>
         {genTabs.map((tab) => {
           return (
-            <Tab heading={tab.heading} activeTextStyle={{color: "#2189DC"}} activeTabStyle={{color: "#2189DC"}}>
+            <Tab heading={tab.heading} activeTextStyle={styles.activeTab} activeTabStyle={styles.activeTab}>
               <GenerationView navigation={navigation} generation={tab.gen} userId={userId} viewCards={viewCards}/>
             </Tab>
           );
