@@ -6,6 +6,7 @@
  */
 
 #import "AppDelegate.h"
+#import "pokedex-Swift.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -13,7 +14,6 @@
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
-//@import Firebase;
 
 @implementation AppDelegate
 
@@ -21,6 +21,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  PokeCardBridge *testSwiftClass = [[PokeCardBridge alloc]init];
+  NSString *string = [testSwiftClass preloadData];
+
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"Pokedex" initialProperties:nil];

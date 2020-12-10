@@ -13,6 +13,13 @@ import UIKit
 @available(iOS 10.0, *) // required for CoreDataManager
 @objc(PokeCardBridge)
 class PokeCardBridge:NSObject {
+  
+  @objc
+  func preloadData() -> String {
+    print("Hello from Swift!!!")
+    return "Hello"
+  }
+  
   let defaults = UserDefaults.standard
   
   struct Keys {

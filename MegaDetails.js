@@ -133,7 +133,7 @@ const MegaDetails = props => {
           );
           abilitiesToAdd.push({
             name: pokemon.abilities[i].ability.name,
-            effect: englishEffect.effect
+            effect: englishEffect ? englishEffect.effect : ""
           });
         })
         .then(() => {
