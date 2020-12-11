@@ -63,8 +63,11 @@ const GenerationView = props => {
           setGenerationSaved(val);
         });
         break;
-      // add case for Galar
-      // may not need this logic after converting to Core Data
+      case 8:
+        NativeModules.PokeCardBridge.isGalarSaved(val => {
+          setGenerationSaved(val);
+        });
+        break;
     }
   };
 

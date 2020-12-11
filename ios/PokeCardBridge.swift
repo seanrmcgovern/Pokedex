@@ -103,11 +103,12 @@ class PokeCardBridge:NSObject {
       newCard.friendship = friendship as! Int64
       newCard.flavor = flavor as String
       if imageUrl != "" {
-        let url = URL(string: imageUrl as String)
-        if let data = try? Data(contentsOf: url!) {
-          if let img = UIImage(data: data) {
-            let png = img.pngData()
-            newCard.image = png
+        if let url = URL(string: imageUrl as String) {
+          if let data = try? Data(contentsOf: url) {
+            if let img = UIImage(data: data) {
+              let png = img.pngData()
+              newCard.image = png
+            }
           }
         }
       }
@@ -165,8 +166,13 @@ class PokeCardBridge:NSObject {
         nextCard.setValue(entry.catchRate, forKey: Card.catchRate)
         nextCard.setValue(entry.friendship, forKey: Card.friendship)
         nextCard.setValue(entry.flavor, forKey: Card.flavor)
-        let imageData = NSData(data: entry.image!)
-        let strBase64:String = imageData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
+        var strBase64:String = ""
+        if entry.image != nil {
+            let imageData = NSData(data: entry.image!)
+            strBase64 = imageData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
+        }
+        // let imageData = NSData(data: entry.image!)
+        // let strBase64:String = imageData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
         nextCard.setValue(strBase64, forKey: Card.image)
         nextCard.setValue(entry.types, forKey: Card.types)
         nextCard.setValue(entry.stats, forKey: Card.stats)

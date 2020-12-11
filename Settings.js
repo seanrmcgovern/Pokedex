@@ -73,9 +73,12 @@ const Settings = ({ navigation, route, userId }) => {
   //   refreshDownloads();
   // };
 
-  const downloadGenerations = () => {
-    console.log("downloading boys")
-    for (let g = 1; g < 9; g++) { // generations 1-8
+  const saveCsv = () => {
+    NativeModules.CsvDataManager.saveToCsv();
+  }
+
+  const downloadGeneration = (g) => {
+    setSaved([...saved, g]);
       const url = "https://pokeapi.co/api/v2/generation/" + g + "/";
       axios.get(url).then(res => {
           const pokemon = res.data.pokemon_species;
@@ -137,7 +140,6 @@ const Settings = ({ navigation, route, userId }) => {
           }
       });
       refreshDownloads();
-    }
   }
 
   const downloadGen = (gen, entryLimit, flavorTextId) => {
@@ -206,9 +208,10 @@ const Settings = ({ navigation, route, userId }) => {
   const [unova, setUnova] = useState();
   const [kalos, setKalos] = useState();
   const [alola, setAlola] = useState();
+  const [galar, setGalar] = useState();
   const [saved, setSaved] = useState([]);
 
-  const allSaved = kanto && johto && hoenn && sinnoh && unova && kalos && alola;
+  const allSaved = kanto && johto && hoenn && sinnoh && unova && kalos && alola && galar;
 
   const refreshDownloads = () => {
     NativeModules.PokeCardBridge.isKantoSaved(val => {
@@ -232,6 +235,9 @@ const Settings = ({ navigation, route, userId }) => {
     NativeModules.PokeCardBridge.isAlolaSaved(val => {
       setAlola(val);
     });
+    NativeModules.PokeCardBridge.isGalarSaved(val => {
+      setGalar(val);
+    });
   };
 
   useEffect(() => {
@@ -245,7 +251,21 @@ const Settings = ({ navigation, route, userId }) => {
         backgroundColor: "#DE5C58"
       }}
     >
-      <ListItem title={"Download All Pokemon"} 
+      <ListItem title={"Download CSV"} 
+        rightIcon={
+          <Button
+            onPress={() =>
+              saveCsv()
+            }
+            buttonStyle={{
+              backgroundColor: "white",
+              borderColor: "#2189DC",
+              borderWidth: 1
+            }}
+            icon={<Icon name="download" size={20} color="#2189DC"></Icon>}
+          ></Button>
+        }></ListItem>
+      {/* <ListItem title={"Download All Pokemon"} 
         rightIcon={
           <Button
             disabled={allSaved}
@@ -265,21 +285,22 @@ const Settings = ({ navigation, route, userId }) => {
               )
             }
           ></Button>
-        }></ListItem>
+        }></ListItem> */}
       <ListItem
         title={"Save Generation 1"}
         bottomDivider
         rightIcon={
           <Button
             disabled={saved.includes(1) || kanto}
-            onPress={() =>
-              downloadGen(
-                /*gen*/ 1,
-                /*entryLimit*/ 0,
-                /*flavorTextId*/ 44,
-                /*actualGen*/ 1
-              )
-            }
+            // onPress={() =>
+            //   downloadGen(
+            //     /*gen*/ 1,
+            //     /*entryLimit*/ 0,
+            //     /*flavorTextId*/ 44,
+            //     /*actualGen*/ 1
+            //   )
+            // }
+            onPress={() =>downloadGeneration(/*gen*/ 1,)}
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -301,14 +322,15 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(2) || johto}
-            onPress={() =>
-              downloadGen(
-                /*gen*/ 2,
-                /*entryLimit*/ 151,
-                /*flavorTextId*/ 41,
-                /*actualGen*/ 2
-              )
-            }
+            // onPress={() =>
+            //   downloadGen(
+            //     /*gen*/ 2,
+            //     /*entryLimit*/ 151,
+            //     /*flavorTextId*/ 41,
+            //     /*actualGen*/ 2
+            //   )
+            // }
+            onPress={() =>downloadGeneration(/*gen*/ 2,)}
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -330,14 +352,15 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(3) || hoenn}
-            onPress={() =>
-              downloadGen(
-                /*gen*/ 3,
-                /*entryLimit*/ 251,
-                /*flavorTextId*/ 46,
-                /*actualGen*/ 3
-              )
-            }
+            // onPress={() =>
+            //   downloadGen(
+            //     /*gen*/ 3,
+            //     /*entryLimit*/ 251,
+            //     /*flavorTextId*/ 46,
+            //     /*actualGen*/ 3
+            //   )
+            // }
+            onPress={() =>downloadGeneration(/*gen*/ 3,)}
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -359,14 +382,15 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(4) || sinnoh}
-            onPress={() =>
-              downloadGen(
-                /*gen*/ 4,
-                /*entryLimit*/ 386,
-                /*flavorTextId*/ 2,
-                /*actualGen*/ 4
-              )
-            }
+            // onPress={() =>
+            //   downloadGen(
+            //     /*gen*/ 4,
+            //     /*entryLimit*/ 386,
+            //     /*flavorTextId*/ 2,
+            //     /*actualGen*/ 4
+            //   )
+            // }
+            onPress={() =>downloadGeneration(/*gen*/ 4,)}
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -388,14 +412,15 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(5) || unova}
-            onPress={() =>
-              downloadGen(
-                /*gen*/ 5,
-                /*entryLimit*/ 494,
-                /*flavorTextId*/ 28,
-                /*actualGen*/ 5
-              )
-            }
+            // onPress={() =>
+            //   downloadGen(
+            //     /*gen*/ 5,
+            //     /*entryLimit*/ 494,
+            //     /*flavorTextId*/ 28,
+            //     /*actualGen*/ 5
+            //   )
+            // }
+            onPress={() =>downloadGeneration(/*gen*/ 5,)}
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -417,7 +442,8 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(6) || kalos}
-            onPress={() => downloadGen(6)}
+            // onPress={() => downloadGen(6)}
+            onPress={() =>downloadGeneration(/*gen*/ 6,)}
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -439,14 +465,15 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             disabled={saved.includes(7) || alola}
-            onPress={() =>
-              downloadGen(
-                /*gen*/ 7,
-                /*entryLimit*/ 721,
-                /*flavorTextId*/ 7,
-                /*actualGen*/ 7
-              )
-            }
+            // onPress={() =>
+            //   downloadGen(
+            //     /*gen*/ 7,
+            //     /*entryLimit*/ 721,
+            //     /*flavorTextId*/ 7,
+            //     /*actualGen*/ 7
+            //   )
+            // }
+            onPress={() =>downloadGeneration(/*gen*/ 7,)}
             buttonStyle={{
               backgroundColor: "white",
               borderColor: "#2189DC",
@@ -454,6 +481,36 @@ const Settings = ({ navigation, route, userId }) => {
             }}
             icon={
               !saved.includes(7) && !alola ? (
+                <Icon name="download" size={20} color="#2189DC"></Icon>
+              ) : (
+                <Icon name="check" size={20} color="#2189DC"></Icon>
+              )
+            }
+          ></Button>
+        }
+      ></ListItem>
+      <ListItem
+        title={"Save Generation 8"}
+        bottomDivider
+        rightIcon={
+          <Button
+            disabled={saved.includes(8) || galar}
+            // onPress={() =>
+            //   downloadGen(
+            //     /*gen*/ 7,
+            //     /*entryLimit*/ 721,
+            //     /*flavorTextId*/ 7,
+            //     /*actualGen*/ 7
+            //   )
+            // }
+            onPress={() =>downloadGeneration(/*gen*/ 8,)}
+            buttonStyle={{
+              backgroundColor: "white",
+              borderColor: "#2189DC",
+              borderWidth: 1
+            }}
+            icon={
+              !saved.includes(8) && !galar ? (
                 <Icon name="download" size={20} color="#2189DC"></Icon>
               ) : (
                 <Icon name="check" size={20} color="#2189DC"></Icon>
