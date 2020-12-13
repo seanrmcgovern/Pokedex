@@ -89,14 +89,13 @@ class PokeCardBridge:NSObject {
   func preloadData() -> String {
     print("coreDataSaved: ", defaults.bool(forKey: Keys.coreDataSaved))
     if (!defaults.bool(forKey: Keys.coreDataSaved)) {
-      print("Initializing Core Data!!!")
+      print("Initializing Core Data")
       do {
         if let jsonURL = Bundle.main.url(forResource: "pokedata", withExtension: "json") {
           let jsonData = try Data(contentsOf: jsonURL)
           let parsedData = try JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
           let pokeData = parsedData as! [[String:Any]]
           for item in pokeData {
-            // print(item["id"] as Any, ": ", item["name"] as Any)
             let id = item[Card.id] as! Int64
             let generation = item[Card.generation] as! Int64
             let name = item[Card.name] as! String
@@ -111,14 +110,6 @@ class PokeCardBridge:NSObject {
             saveCardToCoreData(id, generation: generation, name: name, height: height, weight: weight, catchRate: catchRate, friendship: friendship, flavor: flavor, image: image, types: types, stats: stats)
           }
           defaults.set(true, forKey: Keys.coreDataSaved)
-          defaults.set(true, forKey: Keys.savedKanto)
-          defaults.set(true, forKey: Keys.savedJohto)
-          defaults.set(true, forKey: Keys.savedHoenn)
-          defaults.set(true, forKey: Keys.savedSinnoh)
-          defaults.set(true, forKey: Keys.savedUnova)
-          defaults.set(true, forKey: Keys.savedKalos)
-          defaults.set(true, forKey: Keys.savedAlola)
-          defaults.set(true, forKey: Keys.savedGalar)
         }
       } catch {
         print(error)

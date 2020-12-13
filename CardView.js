@@ -3,14 +3,9 @@ import PokeCard from "./PokeCard";
 import axios from "axios";
 import {
   StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
-  ScrollView,
   SafeAreaView,
-  VirtualizedList,
   FlatList,
-  Button,
   NativeModules
 } from "react-native";
 import { Dimensions } from "react-native";
@@ -46,31 +41,34 @@ const CardView = props => {
 
   const flatlistRef = useRef();
 
-  const fetchPokeApi = () => {
-      const url = "https://pokeapi.co/api/v2/generation/" + props.generation + "/";
-      axios.get(url).then(res => {
-          // establish list of pokemon for given generation
-          let pokedex = res.data.pokemon_species.map((item) => {
-            const id = parseInt(item.url.slice(42, -1));
-            return {entryId: id, name: item.name, url: item.url};
-          });
-          setPokemon(pokedex.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
-      });
-  }
+  // const fetchPokeApi = () => {
+  //     const url = "https://pokeapi.co/api/v2/generation/" + props.generation + "/";
+  //     axios.get(url).then(res => {
+  //         // establish list of pokemon for given generation
+  //         let pokedex = res.data.pokemon_species.map((item) => {
+  //           const id = parseInt(item.url.slice(42, -1));
+  //           return {entryId: id, name: item.name, url: item.url};
+  //         });
+  //         setPokemon(pokedex.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
+  //     });
+  // }
 
   useEffect(() => {
-    if (!props.generationSaved) {
-      fetchPokeApi();
-    } else {
-      NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
-        setPokemon(cards);
-      });
-    }
-  }, [props.generationSaved]);
+    // if (!props.generationSaved) {
+    //   fetchPokeApi();
+    // } else {
+    //   NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
+    //     setPokemon(cards);
+    //   });
+    // }
+    NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
+      setPokemon(cards);
+    });
+  }, []);
 
   return (
     <View style={styles.wrapper}>
-      {!props.generationSaved && (
+      {/* {!props.generationSaved && (
         <SafeAreaView style={styles.container}>
           <FlatList
             data={pokemon}
@@ -94,7 +92,7 @@ const CardView = props => {
                     search={props.search}
                     userId={props.userId}
                     name={item.name}
-                    url={
+                    url={                                 //////////////////
                       item.url.slice(0, 33) +
                       item.url.slice(41)
                     }
@@ -107,8 +105,7 @@ const CardView = props => {
             keyExtractor={item => item.name}
           ></FlatList>
         </SafeAreaView>
-      )}
-      {props.generationSaved == true && (
+      )} */}
         <SafeAreaView style={styles.container}>
           <FlatList
             data={pokemon}
@@ -124,7 +121,7 @@ const CardView = props => {
               justifyContent: "center"
             }}
             renderItem={({ item, index }) => {
-              if (item.name.includes(props.search))
+              if (item.name.toLowerCase().includes(props.search))
                 return (
                   <PokeCard
                     // not sent/fetched from coredata
@@ -133,7 +130,6 @@ const CardView = props => {
                     search={props.search}
                     userId={props.userId}
                     // stored in CoreData
-                    fromCoreData={true}
                     name={item.name}
                     gen={item.generation}
                     entryId={item.id}
@@ -151,7 +147,6 @@ const CardView = props => {
             keyExtractor={item => item.name}
           ></FlatList>
         </SafeAreaView>
-      )}
     </View>
   );
 };

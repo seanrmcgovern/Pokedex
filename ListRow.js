@@ -1,44 +1,34 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { ListItem } from "react-native-elements";
 
 const ListRow = props => {
-  const [pokemon, setPokemon] = useState();
-  const [id, setId] = useState();
-  const [sprite, setSprite] = useState("");
-  const [shiny, setShiny] = useState();
 
-  useEffect(() => {
-    axios.get(props.url).then(res => {
-      setPokemon(res.data);
-      setId(res.data.id);
-      setSprite(res.data.sprites.front_default);
-      setShiny(res.data.sprites.front_shiny);
-    });
-  }, []);
+
 
   return (
     <ListItem
       onPress={() =>
         props.navigation.navigate("Details", {
           name: props.name,
-          pokemon: pokemon,
-          image: sprite,
-          id: id,
+          image: `data:image/jpeg;base64,${props.image}`,
+          id: props.entryId,
+          // shiny: shiny,
           gen: props.gen,
-          shiny: shiny,
-          userId: props.userId
+          userId: props.userId,
+          catchRate: props.catchRate,
+          flavor: props.flavor,
+          friendship: props.friendship,
+          height: props.height,
+          weight: props.weight,
+          types: props.types,
+          stats: props.stats
         })
       }
       title={props.name}
       leftAvatar={{
-        source: sprite
-          ? {
-              uri: sprite
-            }
-          : ""
+        source: {uri:  `data:image/jpeg;base64,${props.image}`}
       }}
-      rightSubtitle={id ? `No. ${id}` : ""}
+      rightSubtitle={`No. ${props.entryId}`}
       bottomDivider
       style={{ borderBottomWidth: 1, borderBottomColor: "#2189DC" }}
     ></ListItem>

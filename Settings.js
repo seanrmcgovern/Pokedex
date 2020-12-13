@@ -179,7 +179,8 @@ const Settings = ({ navigation, route, userId }) => {
               .get("https://pokeapi.co/api/v2/pokemon-species/" + entryId)
               .then(res3 => {
                 let englishText = res3.data.flavor_text_entries[flavorTextId];
-                flavor = englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " ");
+                // flavor = englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " ");
+                flavor = englishText.flavor_text.replace(/(\r\n|\n|\r|\f)/gm, " ");
                 catchRate = res3.data.capture_rate;
                 friendship = res3.data.base_happiness;
                 // save cards with native bridge one at a time

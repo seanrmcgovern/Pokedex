@@ -207,7 +207,7 @@ const MegaDetails = props => {
                 borderTopColor: "#2189DC",
                 borderBottomColor: "#2189DC"
               }}
-              subtitle={flavor}
+              subtitle={flavor.replace("\f", " ")}
               subtitleStyle={{
                 color: "white",
                 fontSize: 15

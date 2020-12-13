@@ -56,18 +56,17 @@ const Details = ({ navigation, route }) => {
   const { gen } = route.params;
   const { shiny } = route.params;
   const { userId } = route.params;
-  const { fromCoreData } = route.params;
-  const { coreCatchRate } = route.params;
-  const { coreFlavor } = route.params;
-  const { coreFriendship } = route.params;
-  const { coreHeight } = route.params;
-  const { coreWeight } = route.params;
-  const { coreTypes } = route.params;
-  const { coreStats } = route.params;
+  const { catchRate } = route.params;
+  const { flavor } = route.params;
+  const { friendship } = route.params;
+  const { height } = route.params;
+  const { weight } = route.params;
+  const { types } = route.params;
+  const { stats } = route.params;
 
   const pokeObject = {
     name: name,
-    pokemon: pokemon,
+    // pokemon: pokemon,
     image: image,
     id: id,
     gen: gen,
@@ -129,10 +128,6 @@ const Details = ({ navigation, route }) => {
   const [abilityLoading, setAbilityLoading] = useState(true);
 
   const [abilities, setAbilities] = useState([]);
-  const [types, setTypes] = useState([]);
-  const [flavor, setFlavor] = useState();
-  const [catchRate, setCatchRate] = useState("");
-  const [happiness, setHappiness] = useState("");
   const [varieties, setVarieties] = useState([]);
 
   const [variant1, setVariant1] = useState();
@@ -243,61 +238,62 @@ const Details = ({ navigation, route }) => {
     }
   };
 
-  useEffect(() => {
-    if (!fromCoreData) {
-      let abilitiesToAdd = [];
-      if (!pokemon.abilities || pokemon.abilities.length === 0) {
-        setAbilityLoading(false);
-      } else {
-        for (let i = 0; i < pokemon.abilities.length; i++) {
-          axios
-            .get(pokemon.abilities[i].ability.url)
-            .then(res => {
-              const englishEffect = res.data.effect_entries.find(
-                e => e.language.name === "en"
-              );
-              abilitiesToAdd.push({
-                name: pokemon.abilities[i].ability.name,
-                effect: englishEffect ? englishEffect.effect : ""
-              });
-            })
-            .then(() => {
-              if (abilitiesToAdd.length === pokemon.abilities.length) {
-                setAbilities(abilitiesToAdd);
-                setAbilityLoading(false);
-              } 
-            });
-        }
-      }
-      setTypes(pokemon.types);
-    } else {
-      setTypes(coreTypes);
-    }
-  }, [pokemon]);
+  // useEffect(() => {
+  //   if (!fromCoreData) {
+  //     let abilitiesToAdd = [];
+  //     if (!pokemon.abilities || pokemon.abilities.length === 0) {
+  //       setAbilityLoading(false);
+  //     } else {
+  //       for (let i = 0; i < pokemon.abilities.length; i++) {
+  //         axios
+  //           .get(pokemon.abilities[i].ability.url)
+  //           .then(res => {
+  //             const englishEffect = res.data.effect_entries.find(
+  //               e => e.language.name === "en"
+  //             );
+  //             abilitiesToAdd.push({
+  //               name: pokemon.abilities[i].ability.name,
+  //               effect: englishEffect ? englishEffect.effect : ""
+  //             });
+  //           })
+  //           .then(() => {
+  //             if (abilitiesToAdd.length === pokemon.abilities.length) {
+  //               setAbilities(abilitiesToAdd);
+  //               setAbilityLoading(false);
+  //             } 
+  //           });
+  //       }
+  //     }
+  //     setTypes(pokemon.types);
+  //   } else {
+  //     setTypes(coreTypes);
+  //   }
+  // }, [pokemon]);
 
-  useEffect(() => {
-    if (!fromCoreData) {
-      axios
-        .get("https://pokeapi.co/api/v2/pokemon-species/" + id)
-        .then(res => {
-          let englishText = "";
-          if (gen === 1) {
-            englishText = res.data.flavor_text_entries[44];
-          }  else {
-            englishText = res.data.flavor_text_entries.find(
-              e => e.language.name === "en"
-            );
-          }
-          setFlavor(englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " "));
-          setCatchRate(res.data.capture_rate);
-          setHappiness(res.data.base_happiness);
-          setVarieties(res.data.varieties);
-        })
-        .then(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (!fromCoreData) {
+  //     axios
+  //       .get("https://pokeapi.co/api/v2/pokemon-species/" + id)
+  //       .then(res => {
+  //         let englishText = "";
+  //         if (gen === 1) {
+  //           englishText = res.data.flavor_text_entries[44];
+  //         }  else {
+  //           englishText = res.data.flavor_text_entries.find(
+  //             e => e.language.name === "en"
+  //           );
+  //         }
+  //         setFlavor(englishText.flavor_text.replace(/(\r\n|\n|\r)/gm, " "));
+  //         setCatchRate(res.data.capture_rate);
+  //         setHappiness(res.data.base_happiness);
+  //         setVarieties(res.data.varieties);
+  //       })
+  //       .then(() => {
+  //         setIsLoading(false);
+  //       });
+  //   }
+  // }, [id]);
+
 
 
   //         if (gen === 2) {
@@ -344,10 +340,8 @@ const Details = ({ navigation, route }) => {
   }, [varieties]);
 
   useEffect(() => {
-    if (fromCoreData) {
-      setIsLoading(false);
-      setAbilityLoading(false);
-    }
+    // setIsLoading(false);
+    // setAbilityLoading(false);
     firebase
       .database()
       .ref("users/" + userId)
@@ -366,7 +360,7 @@ const Details = ({ navigation, route }) => {
   return (
     <Root>
       <ScrollView style={{ backgroundColor: "#DE5C58" }}>
-        {(isLoading || abilityLoading) && (
+        {/* {(isLoading || abilityLoading) && (
           <View style={{ height: "100%" }}>
             <View
               style={{
@@ -377,8 +371,7 @@ const Details = ({ navigation, route }) => {
               <ActivityIndicator size="large" color="white" />
             </View>
           </View>
-        )}
-        {!isLoading && !abilityLoading && (
+        )} */}
           <View>
             <View style={styles.header}>
               <ImageBackground source={Pokeball} style={styles.image}>
@@ -416,7 +409,7 @@ const Details = ({ navigation, route }) => {
                   borderTopColor: "#2189DC",
                   borderBottomColor: "#2189DC"
                 }}
-                subtitle={fromCoreData ? coreFlavor : flavor}
+                subtitle={flavor.replace("\f", " ")}
                 subtitleStyle={{
                   color: "white",
                   fontSize: 15
@@ -441,12 +434,10 @@ const Details = ({ navigation, route }) => {
                     alignSelf: "flex-start"
                   }}
                   badge={{
-                    value: fromCoreData ? item : item.type.name,
+                    value: item ,
                     textStyle: { color: "white", fontSize: 12 },
                     badgeStyle: {
-                      backgroundColor: fromCoreData
-                        ? getTypeColor(item)
-                        : getTypeColor(item.type.name),
+                      backgroundColor: getTypeColor(item),
                       minWidth: 75
                     }
                   }}
@@ -455,26 +446,22 @@ const Details = ({ navigation, route }) => {
               ))}
               <ListItem
                 title={"Height"}
-                rightTitle={fromCoreData ? coreHeight : pokemon.height}
+                rightTitle={height}
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Weight"}
-                rightTitle={fromCoreData ? coreWeight : pokemon.weight}
+                rightTitle={weight}
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Catch Rate"}
-                rightTitle={
-                  (fromCoreData ? coreCatchRate : catchRate) + " / 255"
-                }
+                rightTitle={catchRate + " / 255"}
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Base Friendship"}
-                rightTitle={
-                  (fromCoreData ? coreFriendship : happiness) + " / 255"
-                }
+                rightTitle={friendship + " / 255"}
                 bottomDivider
               ></ListItem>
             </View>
@@ -489,25 +476,14 @@ const Details = ({ navigation, route }) => {
               >
                 Base Stats
               </Text>
-              {fromCoreData ? (
-                <Stats
-                  hp={coreStats[0]}
-                  attack={coreStats[1]}
-                  defense={coreStats[2]}
-                  specialAttack={coreStats[3]}
-                  specialDefense={coreStats[4]}
-                  speed={coreStats[5]}
-                ></Stats>
-              ) : (
-                <Stats
-                  hp={pokemon.stats[0].base_stat}
-                  attack={pokemon.stats[1].base_stat}
-                  defense={pokemon.stats[2].base_stat}
-                  specialAttack={pokemon.stats[3].base_stat}
-                  specialDefense={pokemon.stats[4].base_stat}
-                  speed={pokemon.stats[5].base_stat}
-                ></Stats>
-              )}
+              <Stats
+                hp={stats[0]}
+                attack={stats[1]}
+                defense={stats[2]}
+                specialAttack={stats[3]}
+                specialDefense={stats[4]}
+                speed={stats[5]}
+              ></Stats>
             </View>
             <View>
               {varieties.length > 1 && (
@@ -648,7 +624,6 @@ const Details = ({ navigation, route }) => {
               }
             ></ListItem>
           </View>
-        )}
         <Popover
           visible={popVisible}
           close={togglePopover}

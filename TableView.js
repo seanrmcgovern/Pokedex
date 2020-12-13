@@ -9,7 +9,8 @@ import {
   SafeAreaView,
   VirtualizedList,
   FlatList,
-  Image
+  Image,
+  NativeModules
 } from "react-native";
 import { Dimensions } from "react-native";
 import ListRow from "./ListRow";
@@ -66,15 +67,21 @@ const TableView = props => {
         });
     }
   
+    // useEffect(() => {
+    //   if (!props.generationSaved) {
+    //     fetchPokeApi();
+    //   } else {
+    //     NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
+    //       setPokemon(cards);
+    //     });
+    //   }
+    // }, [props.generationSaved]);
+
     useEffect(() => {
-      if (!props.generationSaved) {
-        fetchPokeApi();
-      } else {
-        NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
-          setPokemon(cards);
-        });
-      }
-    }, [props.generationSaved]);
+      NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
+        setPokemon(cards);
+      });
+    })
 
   return (
     <View style={styles.wrapper}>
@@ -97,18 +104,28 @@ const TableView = props => {
             marginRight: 10
           }}
           renderItem={({ item, index }) => {
-            if (item.name.includes(props.search))
+            if (item.name.toLowerCase().includes(props.search))
               return (
                 <ListRow
-                  name={capitalize(item.name)}
-                  url={
-                    item.url.slice(0, 33) +
-                    item.url.slice(41)
-                  }
+                  // url={
+                  //   item.url.slice(0, 33) +
+                  //   item.url.slice(41)
+                  // }
                   navigation={props.navigation}
-                  gen={props.generation}
                   key={index}
                   userId={props.userId}
+                  name={item.name}
+                  // stored in CoreData
+                  gen={item.generation}
+                  entryId={item.id}
+                  catchRate={item.catchRate}
+                  flavor={item.flavor}
+                  friendship={item.friendship}
+                  height={item.height}
+                  weight={item.weight}
+                  image={item.image}
+                  types={item.types}
+                  stats={item.stats}
                 ></ListRow>
               );
           }}

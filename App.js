@@ -15,13 +15,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 
 // PRIORITY ONE
-// 1) Process the csv and save to Core Data on App's first launch
-// 2) Modify csv to include shiny images, optimal flavor texts, and more
-// 3) Can show GIF/Logo while it's saving the data
+// 1) Modify csv to include shiny images, optimal flavor texts
+// 2) Figure out how to best store/retrieve abilities and varieties of pokemon
+// 2) Can show GIF/Logo while it's saving the data
 
 // PRIORITY TWO
 // Primarily use Core Data
-// Keep Firebase in sync every once in a while, in case user redownloads the app
+// Store parties/favorites in core data, sync with firebase
+// Keep Firebase in sync every once in a while, in case user deletes&redownloads the app
 // Still use Firebase for user authentication, 
 //      but we might want to switch to something like google authentication 
 //      so users can return to their account after deleting the app

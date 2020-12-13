@@ -3,8 +3,6 @@ import { View, StyleSheet, NativeModules } from "react-native";
 import { SearchBar } from "react-native-elements";
 import CardView from "./CardView";
 import TableView from "./TableView";
-import Results from "./Results";
-import ResultsListview from "./ResultsListview";
 
 const styles = StyleSheet.create({
   container: {
@@ -24,57 +22,6 @@ const GenerationView = props => {
     setSearch(search);
   };
 
-  const [generationSaved, setGenerationSaved] = useState();
-
-  const refreshDownloads = () => {
-    switch (props.generation) {
-      case 1:
-        NativeModules.PokeCardBridge.isKantoSaved(val => {
-          setGenerationSaved(val);
-        });
-        break;
-      case 2:
-        NativeModules.PokeCardBridge.isJohtoSaved(val => {
-          setGenerationSaved(val);
-        });
-        break;
-      case 3:
-        NativeModules.PokeCardBridge.isHoennSaved(val => {
-          setGenerationSaved(val);
-        });
-        break;
-      case 4:
-        NativeModules.PokeCardBridge.isSinnohSaved(val => {
-          setGenerationSaved(val);
-        });
-        break;
-      case 5:
-        NativeModules.PokeCardBridge.isUnovaSaved(val => {
-          setGenerationSaved(val);
-        });
-        break;
-      case 6:
-        NativeModules.PokeCardBridge.isKalosSaved(val => {
-          setGenerationSaved(val);
-        });
-        break;
-      case 7:
-        NativeModules.PokeCardBridge.isAlolaSaved(val => {
-          setGenerationSaved(val);
-        });
-        break;
-      case 8:
-        NativeModules.PokeCardBridge.isGalarSaved(val => {
-          setGenerationSaved(val);
-        });
-        break;
-    }
-  };
-
-  useEffect(() => {
-    refreshDownloads();
-  }, []);
-
   return (
     <View>
       <SearchBar
@@ -86,9 +33,9 @@ const GenerationView = props => {
         inputContainerStyle={styles.input}
       />
       {props.viewCards ? (
-        <CardView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={true}/>
+        <CardView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId}/>
       ) : (
-        <TableView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={true}/>
+        <TableView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId}/>
       )}
     </View>
   );
