@@ -86,9 +86,9 @@ const GenerationView = props => {
         inputContainerStyle={styles.input}
       />
       {props.viewCards ? (
-        <CardView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={generationSaved}/>
+        <CardView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={true}/>
       ) : (
-        <TableView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={generationSaved}/>
+        <TableView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} userId={props.userId} generationSaved={true}/>
       )}
     </View>
   );

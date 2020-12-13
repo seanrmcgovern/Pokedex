@@ -11,6 +11,6 @@
 
 @interface RCT_EXTERN_MODULE(CsvDataManager, NSObject)
 
-RCT_EXTERN_METHOD(saveToCsv)
+RCT_EXTERN_METHOD(saveToJSON)
 
 @end

@@ -59,7 +59,6 @@ const CardView = props => {
   }
 
   useEffect(() => {
-    console.log("Gen Saved: ", props.generationSaved);
     if (!props.generationSaved) {
       fetchPokeApi();
     } else {

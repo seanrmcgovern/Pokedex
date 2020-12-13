@@ -15,10 +15,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 
 // PRIORITY ONE
-// 1) Convert Objective-C startup files to Swift
-// 2) Save Pokemon Data to CSV
-// 3) Process the csv and save to Core Data on App's first launch
-// 4) Can show GIF/Logo while it's saving the data
+// 1) Process the csv and save to Core Data on App's first launch
+// 2) Modify csv to include shiny images, optimal flavor texts, and more
+// 3) Can show GIF/Logo while it's saving the data
 
 // PRIORITY TWO
 // Primarily use Core Data

@@ -77,6 +77,10 @@ const Settings = ({ navigation, route, userId }) => {
     NativeModules.CsvDataManager.saveToCsv();
   }
 
+  const saveJSON = () => {
+    NativeModules.CsvDataManager.saveToJSON();
+  }
+
   const downloadGeneration = (g) => {
     setSaved([...saved, g]);
       const url = "https://pokeapi.co/api/v2/generation/" + g + "/";
@@ -251,11 +255,11 @@ const Settings = ({ navigation, route, userId }) => {
         backgroundColor: "#DE5C58"
       }}
     >
-      <ListItem title={"Download CSV"} 
+      <ListItem title={"Download JSON"} 
         rightIcon={
           <Button
             onPress={() =>
-              saveCsv()
+              saveJSON()
             }
             buttonStyle={{
               backgroundColor: "white",
