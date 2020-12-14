@@ -10,73 +10,6 @@ const Settings = ({ navigation, route, userId }) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  // gen 6 special case with pokedex separation in pokeapi
-  // const downloadKalos = () => {
-  //   setSaved([...saved, 6]);
-  //   for (let p = 12; p < 15; p++) {
-  //     axios.get("https://pokeapi.co/api/v2/pokedex/" + p + "/").then(res => {
-  //       for (let j = 0; j < res.data.pokemon_entries.length; j++) {
-  //         const entry = res.data.pokemon_entries[j];
-  //         const entryId = parseInt(entry.pokemon_species.url.slice(42, -1));
-  //         if (entryId > 649) {
-  //           let height = 0;
-  //           let weight = 0;
-  //           let flavor = "";
-  //           let catchRate = 0;
-  //           let friendship = 0;
-  //           let imageUrl = "";
-  //           let types = [];
-  //           let stats = [];
-  //           const pokeUrl =
-  //             entry.pokemon_species.url.slice(0, 33) +
-  //             entry.pokemon_species.url.slice(41);
-  //           axios.get(pokeUrl).then(res2 => {
-  //             height = res2.data.height;
-  //             weight = res2.data.weight;
-  //             imageUrl = res2.data.sprites.front_default;
-  //             for (let t = 0; t < res2.data.types.length; t++) {
-  //               types.push(res2.data.types[t].type.name);
-  //             }
-  //             for (let s = 0; s < res2.data.stats.length; s++) {
-  //               stats.push(res2.data.stats[s].base_stat);
-  //             }
-  //             axios
-  //               .get("https://pokeapi.co/api/v2/pokemon-species/" + entryId)
-  //               .then(res3 => {
-  //                 let englishText = res3.data.flavor_text_entries[6];
-  //                 flavor = englishText.flavor_text.replace(
-  //                   /(\r\n|\n|\r)/gm,
-  //                   " "
-  //                 );
-  //                 catchRate = res3.data.capture_rate;
-  //                 friendship = res3.data.base_happiness;
-  //                 // save cards with native bridge one at a time
-  //                 NativeModules.PokeCardBridge.savePokeCard(
-  //                   entryId,
-  //                   12,
-  //                   capitalize(entry.pokemon_species.name),
-  //                   height,
-  //                   weight,
-  //                   catchRate,
-  //                   friendship,
-  //                   flavor,
-  //                   imageUrl,
-  //                   types,
-  //                   stats
-  //                 );
-  //               });
-  //           });
-  //         }
-  //       }
-  //     });
-  //   }
-  //   refreshDownloads();
-  // };
-
-  const saveCsv = () => {
-    NativeModules.CsvDataManager.saveToCsv();
-  }
-
   const saveJSON = () => {
     NativeModules.CsvDataManager.saveToJSON();
   }
@@ -96,20 +29,35 @@ const Settings = ({ navigation, route, userId }) => {
             let catchRate = 0;
             let friendship = 0;
             let imageUrl = "";
+            let shinyUrl = "";
             let types = [];
             let stats = [];
-            const detailsUrl = item.url.slice(0, 33) + item.url.slice(41); // pokemon endpoint
+            const detailsUrl = item.url.slice(0, 33) + item.url.slice(41); // "/pokemon" endpoint
             axios.get(detailsUrl).then(res2 => {
               height = res2.data.height;
               weight = res2.data.weight;
               imageUrl = res2.data.sprites.front_default;
+              shinyUrl = res2.data.sprites.front_shiny;
               for (let t = 0; t < res2.data.types.length; t++) {
                 types.push(res2.data.types[t].type.name);
               }
               for (let s = 0; s < res2.data.stats.length; s++) {
                 stats.push(res2.data.stats[s].base_stat);
               }
-              // setShiny(res.data.sprites.front_shiny);
+              let abilities = [];
+              for (let i = 0; i < res2.data.abilities.length; i++) {
+                axios
+                  .get(res2.data.abilities[i].ability.url)
+                  .then(abilityRes => {
+                    const englishEffect = abilityRes.data.effect_entries.find(
+                      e => e.language.name === "en"
+                    );
+                    abilities.push({
+                      name: res2.data.abilities[i].ability.name,
+                      effect: englishEffect ? englishEffect.effect : ""
+                    });
+                  });
+              }
               axios
                 .get(item.url) // pokemon-species endpoint
                 .then(res3 => {
@@ -136,8 +84,10 @@ const Settings = ({ navigation, route, userId }) => {
                     friendship,
                     flavor,
                     imageUrl,
+                    shinyUrl,
                     types,
-                    stats
+                    stats,
+                    abilities
                   );
                 });
             });

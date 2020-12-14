@@ -124,8 +124,10 @@ const TableView = props => {
                   height={item.height}
                   weight={item.weight}
                   image={item.image}
+                  shiny={item.shiny}
                   types={item.types}
                   stats={item.stats}
+                  abilities={item.abilities}
                 ></ListRow>
               );
           }}

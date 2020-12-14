@@ -54,13 +54,6 @@ const CardView = props => {
   // }
 
   useEffect(() => {
-    // if (!props.generationSaved) {
-    //   fetchPokeApi();
-    // } else {
-    //   NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
-    //     setPokemon(cards);
-    //   });
-    // }
     NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
       setPokemon(cards);
     });
@@ -68,44 +61,6 @@ const CardView = props => {
 
   return (
     <View style={styles.wrapper}>
-      {/* {!props.generationSaved && (
-        <SafeAreaView style={styles.container}>
-          <FlatList
-            data={pokemon}
-            ref={flatlistRef}
-            //removeClippedSubviews={true}
-            maxToRenderPerBatch={150}
-            style={styles.scrollView}
-            contentContainerStyle={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              paddingBottom: 400,
-              flexGrow: 1,
-              justifyContent: "center"
-            }}
-            renderItem={({ item, index }) => {
-              if (item.name.includes(props.search))
-                return (
-                  <PokeCard
-                    navigation={props.navigation}
-                    key={index}
-                    search={props.search}
-                    userId={props.userId}
-                    name={item.name}
-                    url={                                 //////////////////
-                      item.url.slice(0, 33) +
-                      item.url.slice(41)
-                    }
-                    gen={props.generation}
-                    entryId={item.entryId}
-                    fromCoreData={false}
-                  ></PokeCard>
-                );
-            }}
-            keyExtractor={item => item.name}
-          ></FlatList>
-        </SafeAreaView>
-      )} */}
         <SafeAreaView style={styles.container}>
           <FlatList
             data={pokemon}
@@ -139,8 +94,10 @@ const CardView = props => {
                     height={item.height}
                     weight={item.weight}
                     image={item.image}
+                    shiny={item.shiny}
                     types={item.types}
                     stats={item.stats}
+                    abilities={item.abilities}
                   ></PokeCard>
                 );
             }}

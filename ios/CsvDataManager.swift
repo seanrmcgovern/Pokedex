@@ -24,8 +24,10 @@ class CsvDataManager:NSObject {
     static let flavor = "flavor"
     static let friendship = "friendship"
     static let image = "image"
+    static let shiny = "shiny"
     static let types = "types"
     static let stats = "stats"
+    static let abilities = "abilities"
   }
   
   @objc
@@ -53,12 +55,19 @@ class CsvDataManager:NSObject {
           dct.setValue(entry.catchRate, forKey: Card.catchRate)
           dct.setValue(entry.friendship, forKey: Card.friendship)
           dct.setValue(entry.flavor, forKey: Card.flavor)
+          dct.setValue(entry.abilities, forKey: Card.abilities)
           var strBase64:String = ""
-          if entry.image != nil {
+          var shinyBase64:String = ""
+          if entry.imageData != nil {
             let imageData = NSData(data: entry.imageData!)
             strBase64 = imageData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
           }
+          if entry.shinyData != nil {
+            let shinyData = NSData(data: entry.shinyData!)
+            shinyBase64 = shinyData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
+          }
           dct.setValue(strBase64, forKey: Card.image)
+          dct.setValue(shinyBase64, forKey: Card.shiny)
           dct.setValue(entry.types, forKey: Card.types)
           dct.setValue(entry.stats, forKey: Card.stats)
           pokeArray.append(dct)

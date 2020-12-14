@@ -40,8 +40,10 @@ class PokeCardBridge:NSObject {
     static let flavor = "flavor"
     static let friendship = "friendship"
     static let image = "image"
+    static let shiny = "shiny"
     static let types = "types"
     static let stats = "stats"
+    static let abilities = "abilities"
   }
   
   @objc
@@ -87,9 +89,7 @@ class PokeCardBridge:NSObject {
   
   @objc
   func preloadData() -> String {
-    print("coreDataSaved: ", defaults.bool(forKey: Keys.coreDataSaved))
     if (!defaults.bool(forKey: Keys.coreDataSaved)) {
-      print("Initializing Core Data")
       do {
         if let jsonURL = Bundle.main.url(forResource: "pokedata", withExtension: "json") {
           let jsonData = try Data(contentsOf: jsonURL)
@@ -105,9 +105,11 @@ class PokeCardBridge:NSObject {
             let friendship = item[Card.friendship] as! Int64
             let flavor = item[Card.flavor] as! String
             let image = item[Card.image] as! String
+            let shiny = item[Card.shiny] as! String
             let types = item[Card.types] as! [String]
             let stats = item[Card.stats] as! [Int]
-            saveCardToCoreData(id, generation: generation, name: name, height: height, weight: weight, catchRate: catchRate, friendship: friendship, flavor: flavor, image: image, types: types, stats: stats)
+            let abilities = item[Card.abilities] as! [NSMutableDictionary]
+            saveCardToCoreData(id, generation: generation, name: name, height: height, weight: weight, catchRate: catchRate, friendship: friendship, flavor: flavor, image: image, shiny: shiny, types: types, stats: stats, abilities: abilities)
           }
           defaults.set(true, forKey: Keys.coreDataSaved)
         }
@@ -118,8 +120,7 @@ class PokeCardBridge:NSObject {
     return "Done"
   }
   
-  func saveCardToCoreData(_ id: Int64, generation: Int64, name: String, height: Int64, weight: Int64, catchRate: Int64, friendship: Int64, flavor: String, image: String, types: [String], stats: [Int]) {
-    print("Saving: ", name)
+  func saveCardToCoreData(_ id: Int64, generation: Int64, name: String, height: Int64, weight: Int64, catchRate: Int64, friendship: Int64, flavor: String, image: String, shiny: String, types: [String], stats: [Int], abilities: [NSMutableDictionary]) {
     let mainContext = CoreDataManager.shared.mainContext
     let newCard = PokeCard(context: mainContext)
     newCard.id = id
@@ -131,13 +132,15 @@ class PokeCardBridge:NSObject {
     newCard.friendship = friendship
     newCard.flavor = flavor
     newCard.image = image
+    newCard.shiny = shiny
     newCard.types = types
     newCard.stats = stats
+    newCard.abilities = abilities
     CoreDataManager.shared.saveChanges()
   }
   
   @objc
-  func savePokeCard(_ id: NSNumber, generation: NSNumber, name: NSString, height: NSNumber, weight: NSNumber, catchRate: NSNumber, friendship: NSNumber, flavor: NSString, imageUrl: NSString, types: NSArray, stats: NSArray) {
+  func savePokeCard(_ id: NSNumber, generation: NSNumber, name: NSString, height: NSNumber, weight: NSNumber, catchRate: NSNumber, friendship: NSNumber, flavor: NSString, imageUrl: NSString, shinyUrl: NSString, types: NSArray, stats: NSArray, abilities: NSArray) {
     let mainContext = CoreDataManager.shared.mainContext
     let newCard = PokeCard(context: mainContext)
     newCard.id = id as! Int64
@@ -158,8 +161,19 @@ class PokeCardBridge:NSObject {
         }
       }
     }
+    if shinyUrl != "" {
+      if let url = URL(string: shinyUrl as String) {
+        if let data = try? Data(contentsOf: url) {
+          if let img = UIImage(data: data) {
+            let png = img.pngData()
+            newCard.shinyData = png
+          }
+        }
+      }
+    }
     newCard.types = types as? [String]
     newCard.stats = stats as? [Int]
+    newCard.abilities = abilities as? [NSMutableDictionary]
     CoreDataManager.shared.saveChanges()
     switch generation {
     case 1:
@@ -213,8 +227,10 @@ class PokeCardBridge:NSObject {
         nextCard.setValue(entry.friendship, forKey: Card.friendship)
         nextCard.setValue(entry.flavor, forKey: Card.flavor)
         nextCard.setValue(entry.image, forKey: Card.image)
+        nextCard.setValue(entry.shiny, forKey: Card.shiny)
         nextCard.setValue(entry.types, forKey: Card.types)
         nextCard.setValue(entry.stats, forKey: Card.stats)
+        nextCard.setValue(entry.abilities, forKey: Card.abilities)
         pokeCards.append(nextCard)
       }
       callback([pokeCards])

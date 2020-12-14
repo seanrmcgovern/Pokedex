@@ -20,7 +20,7 @@ RCT_EXTERN_METHOD(isAlolaSaved: (RCTResponseSenderBlock)callback)
 
 RCT_EXTERN_METHOD(isGalarSaved: (RCTResponseSenderBlock)callback)
 
-RCT_EXTERN_METHOD(savePokeCard: (nonnull NSNumber)id generation:(nonnull NSNumber)generation name:(NSString)name height:(nonnull NSNumber)height weight:(nonnull NSNumber)weight catchRate:(nonnull NSNumber)catchRate friendship:(nonnull NSNumber)friendship flavor:(NSString)flavor imageUrl:(NSString)imageUrl types:(NSArray)types stats:(NSArray)stats)
+RCT_EXTERN_METHOD(savePokeCard: (nonnull NSNumber)id generation:(nonnull NSNumber)generation name:(NSString)name height:(nonnull NSNumber)height weight:(nonnull NSNumber)weight catchRate:(nonnull NSNumber)catchRate friendship:(nonnull NSNumber)friendship flavor:(NSString)flavor imageUrl:(NSString)imageUrl shinyUrl:(NSString)shinyUrl types:(NSArray)types stats:(NSArray)stats abilities:(NSArray)abilities)
 
 RCT_EXTERN_METHOD(getGeneration: (nonnull NSNumber)gen callback:(RCTResponseSenderBlock)callback)
 

@@ -38,15 +38,6 @@ const styles = StyleSheet.create({
 const PokeCard = props => {
 
   const name = props.name;
-  const url = props.url;
-
-  // useEffect(() => {
-  //   axios.get(url).then(res => {
-  //     setPokemon(res.data);
-  //     setImageUrl(res.data.sprites.front_default);
-  //     setShiny(res.data.sprites.front_shiny);
-  //   });
-  // }, []);
 
   return (
     <TouchableOpacity
@@ -54,6 +45,7 @@ const PokeCard = props => {
         props.navigation.navigate("Details", {
           name: name,
           image: `data:image/jpeg;base64,${props.image}`,
+          shiny: `data:image/jpeg;base64,${props.shiny}`,
           id: props.entryId,
           gen: props.gen,
           // shiny: shiny,
@@ -64,7 +56,8 @@ const PokeCard = props => {
           height: props.height,
           weight: props.weight,
           types: props.types,
-          stats: props.stats
+          stats: props.stats,
+          abilities: props.abilities
         });
       }}
     >

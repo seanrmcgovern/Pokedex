@@ -50,11 +50,10 @@ const styles = StyleSheet.create({
 
 const Details = ({ navigation, route }) => {
   const { name } = route.params;
-  const { pokemon } = route.params;
   const { image } = route.params;
+  const { shiny } = route.params;
   const { id } = route.params;
   const { gen } = route.params;
-  const { shiny } = route.params;
   const { userId } = route.params;
   const { catchRate } = route.params;
   const { flavor } = route.params;
@@ -63,10 +62,10 @@ const Details = ({ navigation, route }) => {
   const { weight } = route.params;
   const { types } = route.params;
   const { stats } = route.params;
+  const { abilities } = route.params;
 
   const pokeObject = {
     name: name,
-    // pokemon: pokemon,
     image: image,
     id: id,
     gen: gen,
@@ -127,7 +126,6 @@ const Details = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [abilityLoading, setAbilityLoading] = useState(true);
 
-  const [abilities, setAbilities] = useState([]);
   const [varieties, setVarieties] = useState([]);
 
   const [variant1, setVariant1] = useState();
@@ -240,38 +238,6 @@ const Details = ({ navigation, route }) => {
 
   // useEffect(() => {
   //   if (!fromCoreData) {
-  //     let abilitiesToAdd = [];
-  //     if (!pokemon.abilities || pokemon.abilities.length === 0) {
-  //       setAbilityLoading(false);
-  //     } else {
-  //       for (let i = 0; i < pokemon.abilities.length; i++) {
-  //         axios
-  //           .get(pokemon.abilities[i].ability.url)
-  //           .then(res => {
-  //             const englishEffect = res.data.effect_entries.find(
-  //               e => e.language.name === "en"
-  //             );
-  //             abilitiesToAdd.push({
-  //               name: pokemon.abilities[i].ability.name,
-  //               effect: englishEffect ? englishEffect.effect : ""
-  //             });
-  //           })
-  //           .then(() => {
-  //             if (abilitiesToAdd.length === pokemon.abilities.length) {
-  //               setAbilities(abilitiesToAdd);
-  //               setAbilityLoading(false);
-  //             } 
-  //           });
-  //       }
-  //     }
-  //     setTypes(pokemon.types);
-  //   } else {
-  //     setTypes(coreTypes);
-  //   }
-  // }, [pokemon]);
-
-  // useEffect(() => {
-  //   if (!fromCoreData) {
   //     axios
   //       .get("https://pokeapi.co/api/v2/pokemon-species/" + id)
   //       .then(res => {
@@ -319,25 +285,25 @@ const Details = ({ navigation, route }) => {
   //           englishText = res.data.flavor_text_entries[7];
   //         }
 
-  useEffect(() => {
-    for (let i = 0; i < varieties.length; i++) {
-      axios.get(varieties[i].pokemon.url).then(res => {
-        if (i === 1) {
-          setVariantData1(res.data);
-          setVariant1(res.data.sprites.front_default);
-        } else if (i === 2) {
-          setVariantData2(res.data);
-          setVariant2(res.data.sprites.front_default);
-        } else if (i === 3) {
-          setVariantData3(res.data);
-          setVariant3(res.data.sprites.front_default);
-        } else if (i === 4) {
-          setVariantData4(res.data);
-          setVariant4(res.data.sprites.front_default);
-        }
-      });
-    }
-  }, [varieties]);
+  // useEffect(() => {
+  //   for (let i = 0; i < varieties.length; i++) {
+  //     axios.get(varieties[i].pokemon.url).then(res => {
+  //       if (i === 1) {
+  //         setVariantData1(res.data);
+  //         setVariant1(res.data.sprites.front_default);
+  //       } else if (i === 2) {
+  //         setVariantData2(res.data);
+  //         setVariant2(res.data.sprites.front_default);
+  //       } else if (i === 3) {
+  //         setVariantData3(res.data);
+  //         setVariant3(res.data.sprites.front_default);
+  //       } else if (i === 4) {
+  //         setVariantData4(res.data);
+  //         setVariant4(res.data.sprites.front_default);
+  //       }
+  //     });
+  //   }
+  // }, [varieties]);
 
   useEffect(() => {
     // setIsLoading(false);

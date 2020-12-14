@@ -11,8 +11,8 @@ const ListRow = props => {
         props.navigation.navigate("Details", {
           name: props.name,
           image: `data:image/jpeg;base64,${props.image}`,
+          shiny: `data:image/jpeg;base64,${props.shiny}`,
           id: props.entryId,
-          // shiny: shiny,
           gen: props.gen,
           userId: props.userId,
           catchRate: props.catchRate,
@@ -21,7 +21,8 @@ const ListRow = props => {
           height: props.height,
           weight: props.weight,
           types: props.types,
-          stats: props.stats
+          stats: props.stats,
+          abilities: props.abilities
         })
       }
       title={props.name}

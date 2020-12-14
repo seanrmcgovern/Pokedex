@@ -12,7 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3DE4DAD41476765101945408 /* libPods-Pokedex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D43FF9D506E70904424FA7E9 /* libPods-Pokedex.a */; };
-		7608A0CB25857A8B00C3949F /* pokedata.json in Resources */ = {isa = PBXBuildFile; fileRef = 7608A0CA25857A8B00C3949F /* pokedata.json */; };
+		76C49B1F2586E33B000F279F /* pokedata.json in Resources */ = {isa = PBXBuildFile; fileRef = 76C49B1E2586E33B000F279F /* pokedata.json */; };
 		76E175E42582ABB000A9E048 /* CsvDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E175E32582ABB000A9E048 /* CsvDataManager.swift */; };
 		76E175E62582ABC400A9E048 /* CsvDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E175E52582ABC400A9E048 /* CsvDataManager.m */; };
 		76F046CD250C053E00656E3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76F046CC250C053E00656E3D /* GoogleService-Info.plist */; };
@@ -37,7 +37,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Pokedex/main.m; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B47C5AFCB8BDE514B7D1AC6 /* Pods-Pokedex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pokedex.debug.xcconfig"; path = "Target Support Files/Pods-Pokedex/Pods-Pokedex.debug.xcconfig"; sourceTree = "<group>"; };
-		7608A0CA25857A8B00C3949F /* pokedata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pokedata.json; sourceTree = "<group>"; };
+		76C49B1E2586E33B000F279F /* pokedata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pokedata.json; sourceTree = "<group>"; };
 		76E175E32582ABB000A9E048 /* CsvDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvDataManager.swift; sourceTree = "<group>"; };
 		76E175E52582ABC400A9E048 /* CsvDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CsvDataManager.m; sourceTree = "<group>"; };
 		76F046CC250C053E00656E3D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -71,7 +71,7 @@
 		13B07FAE1A68108700A75B9A /* Pokedex */ = {
 			isa = PBXGroup;
 			children = (
-				7608A0CA25857A8B00C3949F /* pokedata.json */,
+				76C49B1E2586E33B000F279F /* pokedata.json */,
 				76F046D1250D7F6F00656E3D /* UserInfo.m */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -206,7 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				7608A0CB25857A8B00C3949F /* pokedata.json in Resources */,
+				76C49B1F2586E33B000F279F /* pokedata.json in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				76F046CD250C053E00656E3D /* GoogleService-Info.plist in Resources */,
 			);
