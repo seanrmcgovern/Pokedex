@@ -15,9 +15,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 
 // PRIORITY ONE
-// 1) Modify csv to include shiny images, optimal flavor texts
-// 2) Figure out how to best store/retrieve abilities and varieties of pokemon
-// 2) Can show GIF/Logo while it's saving the data
+// 1) Figure out how to best store and varieties of pokemon
 
 // PRIORITY TWO
 // Primarily use Core Data

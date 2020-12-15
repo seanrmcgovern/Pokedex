@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import PokeCard from "./PokeCard";
 import axios from "axios";
 import {
@@ -41,17 +41,35 @@ const CardView = props => {
 
   const flatlistRef = useRef();
 
-  // const fetchPokeApi = () => {
-  //     const url = "https://pokeapi.co/api/v2/generation/" + props.generation + "/";
-  //     axios.get(url).then(res => {
-  //         // establish list of pokemon for given generation
-  //         let pokedex = res.data.pokemon_species.map((item) => {
-  //           const id = parseInt(item.url.slice(42, -1));
-  //           return {entryId: id, name: item.name, url: item.url};
-  //         });
-  //         setPokemon(pokedex.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
-  //     });
-  // }
+  const renderCard = useCallback(
+    ({ item }) => {
+      if (item.name.toLowerCase().includes(props.search))
+        return (
+          <PokeCard
+            // not sent/fetched from coredata
+            navigation={props.navigation}
+            search={props.search}
+            userId={props.userId}
+            // stored in CoreData
+            name={item.name}
+            gen={item.generation}
+            entryId={item.id}
+            catchRate={item.catchRate}
+            flavor={item.flavor}
+            friendship={item.friendship}
+            height={item.height}
+            weight={item.weight}
+            image={item.image}
+            shiny={item.shiny}
+            types={item.types}
+            stats={item.stats}
+            abilities={item.abilities}
+          ></PokeCard>
+        );
+    }
+  );
+
+  const keyExtractor = useCallback((item) => item.id.toString(), []);
 
   useEffect(() => {
     NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
@@ -61,49 +79,24 @@ const CardView = props => {
 
   return (
     <View style={styles.wrapper}>
-        <SafeAreaView style={styles.container}>
-          <FlatList
-            data={pokemon}
-            ref={flatlistRef}
-            //removeClippedSubviews={true}
-            maxToRenderPerBatch={150}
-            style={styles.scrollView}
-            contentContainerStyle={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              paddingBottom: 400,
-              flexGrow: 1,
-              justifyContent: "center"
-            }}
-            renderItem={({ item, index }) => {
-              if (item.name.toLowerCase().includes(props.search))
-                return (
-                  <PokeCard
-                    // not sent/fetched from coredata
-                    navigation={props.navigation}
-                    key={index}
-                    search={props.search}
-                    userId={props.userId}
-                    // stored in CoreData
-                    name={item.name}
-                    gen={item.generation}
-                    entryId={item.id}
-                    catchRate={item.catchRate}
-                    flavor={item.flavor}
-                    friendship={item.friendship}
-                    height={item.height}
-                    weight={item.weight}
-                    image={item.image}
-                    shiny={item.shiny}
-                    types={item.types}
-                    stats={item.stats}
-                    abilities={item.abilities}
-                  ></PokeCard>
-                );
-            }}
-            keyExtractor={item => item.name}
-          ></FlatList>
-        </SafeAreaView>
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={pokemon}
+          ref={flatlistRef}
+          //removeClippedSubviews={true}
+          // maxToRenderPerBatch={150}
+          style={styles.scrollView}
+          contentContainerStyle={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            paddingBottom: 400,
+            flexGrow: 1,
+            justifyContent: "center"
+          }}
+          renderItem={renderCard}
+          keyExtractor={keyExtractor}
+        ></FlatList>
+      </SafeAreaView>
     </View>
   );
 };

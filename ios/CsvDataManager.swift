@@ -32,10 +32,8 @@ class CsvDataManager:NSObject {
   
   @objc
   func saveToJSON() {
-    print("Saving JSON data")
-    
     var pokeArray = [AnyObject]()
-    
+
     let mainContext = CoreDataManager.shared.mainContext
     for i in 1...8 {
       let fetchRequest: NSFetchRequest<PokeCard> = PokeCard.fetchRequest()
@@ -98,3 +96,51 @@ class CsvDataManager:NSObject {
   }
   
 }
+
+// Logic to combine json with shiny images with json with abilities
+//    var pokeArray = [AnyObject]()
+//    do {
+//      var abilities:[[NSMutableDictionary]] = []
+//      if let jsonURL = Bundle.main.url(forResource: "abilityData", withExtension: "json") {
+//        let jsonData = try Data(contentsOf: jsonURL)
+//        let parsedData = try JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
+//        let pokeData = parsedData as! [[String:Any]]
+//        var count = 0
+//        for item in pokeData {
+//          let ability = item[Card.abilities] as! [NSMutableDictionary]
+//          abilities.append(ability)
+//          if ability.isEmpty {
+//            print("Missing for pokemon: ", item[Card.name] as! String)
+//            count += 1
+//          }
+//        }
+//      }
+//
+//      if let jsonURL = Bundle.main.url(forResource: "pokedata", withExtension: "json") {
+//        let jsonData = try Data(contentsOf: jsonURL)
+//        let parsedData = try JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
+//        let pokeData = parsedData as! [[String:Any]]
+//        var i = 0
+//        for item in pokeData {
+//          let dct = NSMutableDictionary()
+//          dct.setValue(item[Card.id], forKey: Card.id)
+//          dct.setValue(item[Card.generation], forKey: Card.generation)
+//          dct.setValue(item[Card.name], forKey: Card.name)
+//          dct.setValue(item[Card.height], forKey: Card.height)
+//          dct.setValue(item[Card.weight], forKey: Card.weight)
+//          dct.setValue(item[Card.catchRate], forKey: Card.catchRate)
+//          dct.setValue(item[Card.friendship], forKey: Card.friendship)
+//          dct.setValue(item[Card.flavor], forKey: Card.flavor)
+//          dct.setValue(item[Card.image], forKey: Card.image)
+//          dct.setValue(item[Card.shiny], forKey: Card.shiny)
+//          dct.setValue(item[Card.types], forKey: Card.types)
+//          dct.setValue(item[Card.stats], forKey: Card.stats)
+//          dct.setValue(abilities[i], forKey: Card.abilities)
+//          i += 1
+//          pokeArray.append(dct)
+//        }
+//        createJSON(from: pokeArray)
+//      }
+//    } catch {
+//      print(error)
+//    }

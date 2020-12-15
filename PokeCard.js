@@ -48,7 +48,6 @@ const PokeCard = props => {
           shiny: `data:image/jpeg;base64,${props.shiny}`,
           id: props.entryId,
           gen: props.gen,
-          // shiny: shiny,
           userId: props.userId,
           catchRate: props.catchRate,
           flavor: props.flavor,
@@ -60,8 +59,28 @@ const PokeCard = props => {
           abilities: props.abilities
         });
       }}
+      style={styles.card}
     >
-      <View style={styles.card}>
+      {/* <View style={styles.card} 
+        onPress={() => {
+          props.navigation.navigate("Details", {
+            name: name,
+            image: `data:image/jpeg;base64,${props.image}`,
+            shiny: `data:image/jpeg;base64,${props.shiny}`,
+            id: props.entryId,
+            gen: props.gen,
+            userId: props.userId,
+            catchRate: props.catchRate,
+            flavor: props.flavor,
+            friendship: props.friendship,
+            height: props.height,
+            weight: props.weight,
+            types: props.types,
+            stats: props.stats,
+            abilities: props.abilities
+          });
+        }}
+        > */}
         <Text style={styles.number}>{props.entryId}</Text>
         <Image
           resizeMode="cover"
@@ -74,7 +93,7 @@ const PokeCard = props => {
           }}
         />
         <Text style={styles.title}>{name}</Text>
-      </View>
+      {/* </View> */}
     </TouchableOpacity>
   );
 };

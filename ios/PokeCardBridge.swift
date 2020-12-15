@@ -109,6 +109,7 @@ class PokeCardBridge:NSObject {
             let types = item[Card.types] as! [String]
             let stats = item[Card.stats] as! [Int]
             let abilities = item[Card.abilities] as! [NSMutableDictionary]
+            
             saveCardToCoreData(id, generation: generation, name: name, height: height, weight: weight, catchRate: catchRate, friendship: friendship, flavor: flavor, image: image, shiny: shiny, types: types, stats: stats, abilities: abilities)
           }
           defaults.set(true, forKey: Keys.coreDataSaved)
