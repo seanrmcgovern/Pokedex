@@ -306,8 +306,6 @@ const Details = ({ navigation, route }) => {
   // }, [varieties]);
 
   useEffect(() => {
-    // setIsLoading(false);
-    // setAbilityLoading(false);
     firebase
       .database()
       .ref("users/" + userId)
@@ -326,18 +324,6 @@ const Details = ({ navigation, route }) => {
   return (
     <Root>
       <ScrollView style={{ backgroundColor: "#DE5C58" }}>
-        {/* {(isLoading || abilityLoading) && (
-          <View style={{ height: "100%" }}>
-            <View
-              style={{
-                flex: 1,
-                marginTop: 300
-              }}
-            >
-              <ActivityIndicator size="large" color="white" />
-            </View>
-          </View>
-        )} */}
           <View>
             <View style={styles.header}>
               <ImageBackground source={Pokeball} style={styles.image}>
@@ -410,6 +396,14 @@ const Details = ({ navigation, route }) => {
                   bottomDivider
                 ></ListItem>
               ))}
+              <Stats
+                hp={stats[0]}
+                attack={stats[1]}
+                defense={stats[2]}
+                specialAttack={stats[3]}
+                specialDefense={stats[4]}
+                speed={stats[5]}
+              ></Stats>
               <ListItem
                 title={"Height"}
                 rightTitle={height}
@@ -431,7 +425,7 @@ const Details = ({ navigation, route }) => {
                 bottomDivider
               ></ListItem>
             </View>
-            <View>
+            {/* <View>
               <Text
                 style={{
                   fontSize: 20,
@@ -450,7 +444,7 @@ const Details = ({ navigation, route }) => {
                 specialDefense={stats[4]}
                 speed={stats[5]}
               ></Stats>
-            </View>
+            </View> */}
             <View>
               {varieties.length > 1 && (
                 <Text

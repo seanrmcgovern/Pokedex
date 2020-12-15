@@ -83,8 +83,6 @@ const CardView = props => {
         <FlatList
           data={pokemon}
           ref={flatlistRef}
-          //removeClippedSubviews={true}
-          // maxToRenderPerBatch={150}
           style={styles.scrollView}
           contentContainerStyle={{
             flexDirection: "row",

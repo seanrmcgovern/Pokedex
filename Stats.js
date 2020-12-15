@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, Text, View, Animated } from "react-native";
 
 const styles = StyleSheet.create({
   row: {
@@ -17,11 +17,37 @@ const styles = StyleSheet.create({
   }
 });
 
+const Progress = ({step, steps, height}) => {
+  const animatedValue = useRef(new Animated.Value(-1000)).current;
+  const reactive = useRef(new Animated.Value(-1000)).current;
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: reactive,
+      duration: 1000, 
+      useNativeDriver: true
+    }).start();
+  }, []);
+
+  useEffect(() => {
+    reactive.setValue(-width + (width * step) /steps);
+  }, [step, width])
+  return (
+    <View onLayout={e => {
+      const newWidth = e.nativeEvent.layout.width;
+      setWidth(newWidth);
+      }} 
+       style={{height: height, backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: height, overflow: 'hidden', flex: 0.6, margin: 20, marginLeft: 0, }}>
+      <Animated.View style={{height: height, borderRadius: height, backgroundColor: "#1CA94C", width: '100%', position: 'absolute', left: 0, top: 0, transform: [{translateX: animatedValue}]}}/>
+    </View>
+  )
+} 
+
 const Stats = props => {
   return (
     <View
       style={{
-        marginBottom: 5,
         borderBottomWidth: 5,
         borderBottomColor: "#2189DC"
       }}
@@ -39,15 +65,7 @@ const Stats = props => {
         >
           {props.hp}
         </Text>
-        <View
-          style={{
-            backgroundColor: "#1CA94C",
-            flex: 0.035 * (props.hp / 10),
-            margin: 20,
-            marginLeft: 0,
-            borderRadius: 5
-          }}
-        ></View>
+        <Progress step={props.hp} steps={255} height={10}/>
       </View>
       <View style={styles.row}>
         <View style={{ flex: 0.25, margin: 12 }}>
@@ -62,15 +80,7 @@ const Stats = props => {
         >
           {props.attack}
         </Text>
-        <View
-          style={{
-            backgroundColor: "#1CA94C",
-            flex: 0.035 * (props.attack / 10),
-            margin: 20,
-            marginLeft: 0,
-            borderRadius: 5
-          }}
-        ></View>
+        <Progress step={props.attack} steps={255} height={10}/>
       </View>
       <View style={styles.row}>
         <View style={{ flex: 0.25, margin: 12 }}>
@@ -85,15 +95,7 @@ const Stats = props => {
         >
           {props.defense}
         </Text>
-        <View
-          style={{
-            backgroundColor: "#1CA94C",
-            flex: 0.035 * (props.defense / 10),
-            margin: 20,
-            marginLeft: 0,
-            borderRadius: 5
-          }}
-        ></View>
+        <Progress step={props.defense} steps={255} height={10}/>
       </View>
       <View style={styles.row}>
         <View style={{ flex: 0.25, margin: 12 }}>
@@ -108,15 +110,7 @@ const Stats = props => {
         >
           {props.specialAttack}
         </Text>
-        <View
-          style={{
-            backgroundColor: "#1CA94C",
-            flex: 0.035 * (props.specialAttack / 10),
-            margin: 20,
-            marginLeft: 0,
-            borderRadius: 5
-          }}
-        ></View>
+        <Progress step={props.specialAttack} steps={255} height={10}/>
       </View>
       <View style={styles.row}>
         <View style={{ flex: 0.25, margin: 12 }}>
@@ -131,15 +125,7 @@ const Stats = props => {
         >
           {props.specialDefense}
         </Text>
-        <View
-          style={{
-            backgroundColor: "#1CA94C",
-            flex: 0.035 * (props.specialDefense / 10),
-            margin: 20,
-            marginLeft: 0,
-            borderRadius: 5
-          }}
-        ></View>
+        <Progress step={props.specialDefense} steps={255} height={10}/>
       </View>
       <View style={styles.row}>
         <View style={{ flex: 0.25, margin: 12 }}>
@@ -154,15 +140,7 @@ const Stats = props => {
         >
           {props.speed}
         </Text>
-        <View
-          style={{
-            backgroundColor: "#1CA94C",
-            flex: 0.035 * (props.speed / 10),
-            margin: 20,
-            marginLeft: 0,
-            borderRadius: 5
-          }}
-        ></View>
+        <Progress step={props.speed} steps={255} height={10}/>
       </View>
     </View>
   );
