@@ -88,7 +88,7 @@ class PokeCardBridge:NSObject {
   }
   
   @objc
-  func preloadData() -> String {
+  func preloadData() -> Void {
     if (!defaults.bool(forKey: Keys.coreDataSaved)) {
       do {
         if let jsonURL = Bundle.main.url(forResource: "pokedata", withExtension: "json") {
@@ -118,7 +118,6 @@ class PokeCardBridge:NSObject {
         print(error)
       }
     }
-    return "Done"
   }
   
   func saveCardToCoreData(_ id: Int64, generation: Int64, name: String, height: Int64, weight: Int64, catchRate: Int64, friendship: Int64, flavor: String, image: String, shiny: String, types: [String], stats: [Int], abilities: [NSMutableDictionary]) {

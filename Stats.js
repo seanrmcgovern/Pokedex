@@ -18,14 +18,14 @@ const styles = StyleSheet.create({
 });
 
 const Progress = ({step, steps, height}) => {
-  const animatedValue = useRef(new Animated.Value(-1000)).current;
-  const reactive = useRef(new Animated.Value(-1000)).current;
+  const animatedValue = useRef(new Animated.Value(-250)).current;
+  const reactive = useRef(new Animated.Value(-250)).current;
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
     Animated.timing(animatedValue, {
       toValue: reactive,
-      duration: 1000, 
+      duration: 1500, 
       useNativeDriver: true
     }).start();
   }, []);

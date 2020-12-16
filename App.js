@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { registerRootComponent } from 'expo';
 import * as firebase from "firebase";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { View, ActivityIndicator, NativeModules } from "react-native";
@@ -269,4 +270,5 @@ const App = () => {
   );
 };
 
-export default App;
+registerRootComponent(App);
+// export default App;
