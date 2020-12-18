@@ -15,6 +15,7 @@
     "expo-constants": "~9.3.3",
     "expo-screen-orientation": "~2.1.0",
     "expo-updates": "^0.4.1",
+    "expo-web-browser": "~8.6.0",
     "expokit": "^36.0.1",
     "firebase": "7.9.0",
     "native-base": "^2.13.14",

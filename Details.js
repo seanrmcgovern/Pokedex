@@ -14,7 +14,7 @@ import {
 import { ListItem, Button, Tooltip, Overlay } from "react-native-elements";
 import { Root, Toast, Fab, Separator } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-// import * as WebBrowser from "expo-web-browser";
+import * as WebBrowser from "expo-web-browser";
 import Pokeball from "./assets/pokeball.png";
 import PokeballSprite from "./assets/pokeballSprite.png";
 import Stats from "./Stats";
@@ -201,39 +201,39 @@ const Details = ({ navigation, route }) => {
   };
 
   const openStrategy = () => {
-    // if (gen === 1) {
-    //   WebBrowser.openBrowserAsync(
-    //     "https://www.smogon.com/dex/rb/pokemon/" + name
-    //   );
-    // } else if (gen === 2) {
-    //   WebBrowser.openBrowserAsync(
-    //     "https://www.smogon.com/dex/gs/pokemon/" + name
-    //   );
-    // } else if (gen === 3) {
-    //   WebBrowser.openBrowserAsync(
-    //     "https://www.smogon.com/dex/rs/pokemon/" + name
-    //   );
-    // } else if (gen === 4) {
-    //   WebBrowser.openBrowserAsync(
-    //     "https://www.smogon.com/dex/dp/pokemon/" + name
-    //   );
-    // } else if (gen === 5) {
-    //   WebBrowser.openBrowserAsync(
-    //     "https://www.smogon.com/dex/bw/pokemon/" + name
-    //   );
-    // } else if (gen === 6) {
-    //   WebBrowser.openBrowserAsync(
-    //     "https://www.smogon.com/dex/xy/pokemon/" + name
-    //   );
-    // } else if (gen == 7) {
-    //   WebBrowser.openBrowserAsync(
-    //     "https://www.smogon.com/dex/sm/pokemon/" + name
-    //   );
-    // } else {
-    //   WebBrowser.openBrowserAsync(
-    //     "https://www.smogon.com/dex/ss/pokemon/" + name
-    //   );
-    // }
+    if (gen === 1) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/rb/pokemon/" + name
+      );
+    } else if (gen === 2) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/gs/pokemon/" + name
+      );
+    } else if (gen === 3) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/rs/pokemon/" + name
+      );
+    } else if (gen === 4) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/dp/pokemon/" + name
+      );
+    } else if (gen === 5) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/bw/pokemon/" + name
+      );
+    } else if (gen === 6) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/xy/pokemon/" + name
+      );
+    } else if (gen == 7) {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/sm/pokemon/" + name
+      );
+    } else {
+      WebBrowser.openBrowserAsync(
+        "https://www.smogon.com/dex/ss/pokemon/" + name
+      );
+    }
   };
 
   // useEffect(() => {
