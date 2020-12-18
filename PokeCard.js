@@ -10,8 +10,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 5,
     borderColor: "#2189DC",
-    margin: "2%",
+    margin: "1%",
     borderRadius: 20,
+    paddingLeft: 5,
+    paddingRight: 5,
     // backgroundColor: "#425069",
     backgroundColor: "#EDEBED"
   },
@@ -61,26 +63,6 @@ const PokeCard = props => {
       }}
       style={styles.card}
     >
-      {/* <View style={styles.card} 
-        onPress={() => {
-          props.navigation.navigate("Details", {
-            name: name,
-            image: `data:image/jpeg;base64,${props.image}`,
-            shiny: `data:image/jpeg;base64,${props.shiny}`,
-            id: props.entryId,
-            gen: props.gen,
-            userId: props.userId,
-            catchRate: props.catchRate,
-            flavor: props.flavor,
-            friendship: props.friendship,
-            height: props.height,
-            weight: props.weight,
-            types: props.types,
-            stats: props.stats,
-            abilities: props.abilities
-          });
-        }}
-        > */}
         <Text style={styles.number}>{props.entryId}</Text>
         <Image
           resizeMode="cover"
@@ -93,7 +75,6 @@ const PokeCard = props => {
           }}
         />
         <Text style={styles.title}>{name}</Text>
-      {/* </View> */}
     </TouchableOpacity>
   );
 };

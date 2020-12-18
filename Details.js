@@ -12,7 +12,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { ListItem, Button, Tooltip, Overlay } from "react-native-elements";
-import { Root, Toast, Fab } from "native-base";
+import { Root, Toast, Fab, Separator } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 // import * as WebBrowser from "expo-web-browser";
 import Pokeball from "./assets/pokeball.png";
@@ -368,13 +368,7 @@ const Details = ({ navigation, route }) => {
                 }}
               />
             </View>
-            <View
-              style={{
-                marginBottom: 5,
-                borderBottomWidth: 5,
-                borderBottomColor: "#2189DC"
-              }}
-            >
+            <View>
               {types.map((item, index) => (
                 <ListItem
                   key={index}
@@ -404,14 +398,42 @@ const Details = ({ navigation, route }) => {
                 specialDefense={stats[4]}
                 speed={stats[5]}
               ></Stats>
+              {abilities.length > 0 && 
+              <View>
+                {/* <Text
+                  style={{
+                    fontSize: 20,
+                    marginLeft: 10,
+                    marginTop: 5,
+                    fontWeight: "bold",
+                    color: "white"
+                  }}
+                >
+                  Abilities
+                </Text> */}
+                <Separator >
+                  <Text>Abilities</Text>
+                </Separator>
+                <View>
+                  {abilities.map((a, index) => (
+                    <ListItem
+                      title={capitalize(a.name)}
+                      titleStyle={{ color: "#2189DC" }}
+                      subtitle={a.effect}
+                      bottomDivider
+                      key={index}
+                    ></ListItem>
+                  ))}
+                </View>
+              </View>}
               <ListItem
                 title={"Height"}
-                rightTitle={height}
+                rightTitle={`${height/10} m`}
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Weight"}
-                rightTitle={weight}
+                rightTitle={`${weight/10} kg`}
                 bottomDivider
               ></ListItem>
               <ListItem
@@ -425,26 +447,6 @@ const Details = ({ navigation, route }) => {
                 bottomDivider
               ></ListItem>
             </View>
-            {/* <View>
-              <Text
-                style={{
-                  fontSize: 20,
-                  marginLeft: 10,
-                  fontWeight: "bold",
-                  color: "white"
-                }}
-              >
-                Base Stats
-              </Text>
-              <Stats
-                hp={stats[0]}
-                attack={stats[1]}
-                defense={stats[2]}
-                specialAttack={stats[3]}
-                specialDefense={stats[4]}
-                speed={stats[5]}
-              ></Stats>
-            </View> */}
             <View>
               {varieties.length > 1 && (
                 <Text
@@ -551,31 +553,6 @@ const Details = ({ navigation, route }) => {
                 ></ListItem>
               )}
             </View>
-            {abilities.length > 0 && 
-              <View>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    marginLeft: 10,
-                    marginTop: 5,
-                    fontWeight: "bold",
-                    color: "white"
-                  }}
-                >
-                  Abilities
-                </Text>
-                <View>
-                  {abilities.map((a, index) => (
-                    <ListItem
-                      title={capitalize(a.name)}
-                      titleStyle={{ color: "#2189DC" }}
-                      subtitle={a.effect}
-                      bottomDivider
-                      key={index}
-                    ></ListItem>
-                  ))}
-                </View>
-              </View>}
             <ListItem
               title="Competitive Strategies"
               onPress={openStrategy}

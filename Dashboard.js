@@ -86,9 +86,9 @@ const DashBoard = ({ navigation, route, userId }) => {
   return (
     <Container>
       <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine}>
-        {genTabs.map((tab) => {
+        {genTabs.map((tab, index) => {
           return (
-            <Tab heading={tab.heading} activeTextStyle={styles.activeTab} activeTabStyle={styles.activeTab}>
+            <Tab heading={tab.heading} activeTextStyle={styles.activeTab} activeTabStyle={styles.activeTab} key={index}>
               <GenerationView navigation={navigation} generation={tab.gen} userId={userId} viewCards={viewCards}/>
             </Tab>
           );

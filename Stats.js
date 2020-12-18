@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View, Animated } from "react-native";
+import { Separator } from "native-base";
 
 const styles = StyleSheet.create({
   row: {
@@ -46,12 +47,10 @@ const Progress = ({step, steps, height}) => {
 
 const Stats = props => {
   return (
-    <View
-      style={{
-        borderBottomWidth: 5,
-        borderBottomColor: "#2189DC"
-      }}
-    >
+    <View>
+      <Separator >
+        <Text>Base Stats</Text>
+      </Separator>
       <View style={styles.row}>
         <View style={{ flex: 0.25, margin: 12 }}>
           <Text style={{ fontSize: 16 }}>HP</Text>

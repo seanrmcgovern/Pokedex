@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { registerRootComponent } from 'expo';
 import * as firebase from "firebase";
-import * as ScreenOrientation from "expo-screen-orientation";
 import { View, ActivityIndicator, NativeModules } from "react-native";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
@@ -14,6 +13,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
+import { LogBox } from "react-native";
 
 // PRIORITY ONE
 // 1) Figure out how to best store and varieties of pokemon
@@ -27,8 +27,10 @@ import { Icon } from "react-native-elements";
 //      so users can return to their account after deleting the app
 //      then if they redownload and sign in we can initialize their previously saved parties/favorites
 
-// Low Priority
-// try progress bar/html meter for stats
+// PRIORITY THREE
+// Redo firebase env config for native development, if still using firebase
+// Database functionalities: rename party, username
+// add moves to details page
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",
@@ -50,12 +52,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// TODO:
-// Redo firebase env config for native development (expo not available)
-// Firebase functionalities: rename party, username
-// carousel for details image
-// add moves to details page
-console.disableYellowBox = true;
+LogBox.ignoreAllLogs();
 
 const Stack = createStackNavigator();
 
@@ -171,31 +168,31 @@ const App = () => {
     }
   };
 
-  firebase
-    .database()
-    .ref("users/" + userId)
-    .on("value", snapshot => {
-      if (snapshot.val() && snapshot.val().username && !username) {
-        const username = snapshot.val().username;
-        setUsername(username);
-      }
-    });
+  // firebase
+  //   .database()
+  //   .ref("users/" + userId)
+  //   .on("value", snapshot => {
+  //     if (snapshot.val() && snapshot.val().username && !username) {
+  //       const username = snapshot.val().username;
+  //       setUsername(username);
+  //     }
+  //   });
 
   useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-    firebase
-      .auth()
-      .signInAnonymously()
-      .then(res => {
-        if (res.user.displayName === null) {
-          setLoading(1);
-        }
-        setUser(res.user);
-        setUserId(res.user.uid);
-      });
+    // firebase
+    //   .auth()
+    //   .signInAnonymously()
+    //   .then(res => {
+    //     if (res.user.displayName === null) {
+    //       setLoading(1);
+    //     }
+    //     setUser(res.user);
+    //     setUserId(res.user.uid);
+    //   });
     NativeModules.UserInfo.getCredentials((name, id) => {
-      // console.log("username from native: " + name);
-      // console.log("id from native: ", id);
+      if (name === null) {
+        setLoading(1);
+      }
       setUsername(name);
       setUserId(id);
     });
@@ -251,7 +248,8 @@ const App = () => {
         </Tab.Navigator>
       </NavigationContainer>
     );
-  } else if (loading === 1) {
+  } 
+  else if (loading === 1) {
     return <Login initializeUser={initializeUser} />;
   }
 

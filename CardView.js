@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PokeCard from "./PokeCard";
-import axios from "axios";
 import {
   StyleSheet,
   View,
@@ -79,22 +78,19 @@ const CardView = props => {
 
   return (
     <View style={styles.wrapper}>
-      <SafeAreaView style={styles.container}>
         <FlatList
           data={pokemon}
           ref={flatlistRef}
           style={styles.scrollView}
           contentContainerStyle={{
-            flexDirection: "row",
-            flexWrap: "wrap",
             paddingBottom: 400,
-            flexGrow: 1,
-            justifyContent: "center"
+            justifyContent: "center",
+            alignItems:'center'
           }}
+          numColumns={3}
           renderItem={renderCard}
           keyExtractor={keyExtractor}
         ></FlatList>
-      </SafeAreaView>
     </View>
   );
 };
