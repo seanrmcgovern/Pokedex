@@ -49,7 +49,7 @@ const Stats = props => {
   return (
     <View>
       <Separator >
-        <Text>Base Stats</Text>
+        <Text style={{fontSize: 16}}>Base Stats</Text>
       </Separator>
       <View style={styles.row}>
         <View style={{ flex: 0.25, margin: 12 }}>

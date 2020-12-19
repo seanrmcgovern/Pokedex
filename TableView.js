@@ -1,15 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import {
   StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
-  ScrollView,
   SafeAreaView,
-  VirtualizedList,
   FlatList,
-  Image,
   NativeModules
 } from "react-native";
 import { Dimensions } from "react-native";
@@ -49,33 +43,7 @@ const styles = StyleSheet.create({
 const TableView = props => {
     const [pokemon, setPokemon] = useState([]);
 
-    const capitalize = str => {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    };
-
     const flatlistRef = useRef();
-  
-    const fetchPokeApi = () => {
-        const url = "https://pokeapi.co/api/v2/generation/" + props.generation + "/";
-        axios.get(url).then(res => {
-            // establish list of pokemon for given generation
-            let pokedex = res.data.pokemon_species.map((item) => {
-              const id = parseInt(item.url.slice(42, -1));
-              return {entryId: id, name: item.name, url: item.url};
-            });
-            setPokemon(pokedex.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
-        });
-    }
-  
-    // useEffect(() => {
-    //   if (!props.generationSaved) {
-    //     fetchPokeApi();
-    //   } else {
-    //     NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
-    //       setPokemon(cards);
-    //     });
-    //   }
-    // }, [props.generationSaved]);
 
     useEffect(() => {
       NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
@@ -89,7 +57,6 @@ const TableView = props => {
         <FlatList
           data={pokemon}
           ref={flatlistRef}
-          //maxToRenderPerBatch={150}
           style={styles.scrollView}
           // contentContainerStyle={{
           //   flexDirection: "row",
@@ -107,10 +74,6 @@ const TableView = props => {
             if (item.name.toLowerCase().includes(props.search))
               return (
                 <ListRow
-                  // url={
-                  //   item.url.slice(0, 33) +
-                  //   item.url.slice(41)
-                  // }
                   navigation={props.navigation}
                   key={index}
                   userId={props.userId}

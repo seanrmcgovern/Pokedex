@@ -8,7 +8,6 @@ import {
   Image,
   ScrollView,
   ImageBackground,
-  ActivityIndicator,
   TouchableOpacity
 } from "react-native";
 import { ListItem, Button, Tooltip, Overlay } from "react-native-elements";
@@ -18,6 +17,7 @@ import * as WebBrowser from "expo-web-browser";
 import Pokeball from "./assets/pokeball.png";
 import PokeballSprite from "./assets/pokeballSprite.png";
 import Stats from "./Stats";
+import TypeBadges from "./TypeBadges";
 import Popover from "./Popover";
 
 const styles = StyleSheet.create({
@@ -123,9 +123,6 @@ const Details = ({ navigation, route }) => {
     });
   };
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [abilityLoading, setAbilityLoading] = useState(true);
-
   const [varieties, setVarieties] = useState([]);
 
   const [variant1, setVariant1] = useState();
@@ -139,65 +136,6 @@ const Details = ({ navigation, route }) => {
 
   const capitalize = str => {
     return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-  const getTypeColor = type => {
-    switch (type) {
-      case "grass":
-        return "green";
-        break;
-      case "poison":
-        return "purple";
-        break;
-      case "water":
-        return "#2189DC";
-        break;
-      case "fire":
-        return "orange";
-        break;
-      case "rock":
-        return "#AC7901";
-        break;
-      case "flying":
-        return "#C8B9CE";
-        break;
-      case "fairy":
-        return "violet";
-        break;
-      case "psychic":
-        return "#C94AEE";
-        break;
-      case "ground":
-        return "#7F6526";
-        break;
-      case "bug":
-        return "#BBEF57";
-        break;
-      case "normal":
-        return "tan";
-        break;
-      case "fighting":
-        return "brown";
-        break;
-      case "dark":
-        return "#3F4448";
-        break;
-      case "steel":
-        return "grey";
-        break;
-      case "ice":
-        return "#91E9EA";
-        break;
-      case "dragon":
-        return "#35328D";
-        break;
-      case "ghost":
-        return "#936BA4";
-        break;
-      case "electric":
-        return "#F6D812";
-        break;
-    }
   };
 
   const openStrategy = () => {
@@ -259,31 +197,6 @@ const Details = ({ navigation, route }) => {
   //       });
   //   }
   // }, [id]);
-
-
-
-  //         if (gen === 2) {
-  //           // Kanto
-  //           englishText = res.data.flavor_text_entries[44];
-  //         } else if (gen === 3) {
-  //           // Johto
-  //           englishText = res.data.flavor_text_entries[41];
-  //         } else if (gen === 4) {
-  //           // Hoenn
-  //           englishText = res.data.flavor_text_entries[46];
-  //         } else if (gen === 5) {
-  //           // Sinnoh
-  //           englishText = res.data.flavor_text_entries[2];
-  //         } else if (gen === 8) {
-  //           // Unova
-  //           englishText = res.data.flavor_text_entries[28];
-  //         } else if (gen === 12) {
-  //           // Kalos
-  //           englishText = res.data.flavor_text_entries[6];
-  //         } else {
-  //           // Alola
-  //           englishText = res.data.flavor_text_entries[7];
-  //         }
 
   // useEffect(() => {
   //   for (let i = 0; i < varieties.length; i++) {
@@ -369,27 +282,7 @@ const Details = ({ navigation, route }) => {
               />
             </View>
             <View>
-              {types.map((item, index) => (
-                <ListItem
-                  key={index}
-                  title={"Type " + (index + 1).toString()}
-                  contentContainerStyle={{
-                    display: "flex"
-                  }}
-                  titleStyle={{
-                    alignSelf: "flex-start"
-                  }}
-                  badge={{
-                    value: item ,
-                    textStyle: { color: "white", fontSize: 12 },
-                    badgeStyle: {
-                      backgroundColor: getTypeColor(item),
-                      minWidth: 75
-                    }
-                  }}
-                  bottomDivider
-                ></ListItem>
-              ))}
+              <TypeBadges types={types}/>
               <Stats
                 hp={stats[0]}
                 attack={stats[1]}
@@ -400,19 +293,8 @@ const Details = ({ navigation, route }) => {
               ></Stats>
               {abilities.length > 0 && 
               <View>
-                {/* <Text
-                  style={{
-                    fontSize: 20,
-                    marginLeft: 10,
-                    marginTop: 5,
-                    fontWeight: "bold",
-                    color: "white"
-                  }}
-                >
-                  Abilities
-                </Text> */}
                 <Separator >
-                  <Text>Abilities</Text>
+                  <Text style={{fontSize: 16}}>Abilities</Text>
                 </Separator>
                 <View>
                   {abilities.map((a, index) => (
