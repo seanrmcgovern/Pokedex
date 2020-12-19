@@ -31,6 +31,7 @@ import { LogBox } from "react-native";
 // Redo firebase env config for native development, if still using firebase
 // Database functionalities: rename party, username
 // add moves to details page
+// add type filters
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",

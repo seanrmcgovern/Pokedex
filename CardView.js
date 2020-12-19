@@ -3,7 +3,6 @@ import PokeCard from "./PokeCard";
 import {
   StyleSheet,
   View,
-  SafeAreaView,
   FlatList,
   NativeModules
 } from "react-native";
@@ -45,24 +44,10 @@ const CardView = props => {
       if (item.name.toLowerCase().includes(props.search))
         return (
           <PokeCard
-            // not sent/fetched from coredata
             navigation={props.navigation}
             search={props.search}
             userId={props.userId}
-            // stored in CoreData
-            name={item.name}
-            gen={item.generation}
-            entryId={item.id}
-            catchRate={item.catchRate}
-            flavor={item.flavor}
-            friendship={item.friendship}
-            height={item.height}
-            weight={item.weight}
-            image={item.image}
-            shiny={item.shiny}
-            types={item.types}
-            stats={item.stats}
-            abilities={item.abilities}
+            pokemon={item}
           ></PokeCard>
         );
     }

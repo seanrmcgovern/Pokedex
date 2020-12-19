@@ -10,7 +10,7 @@ import {
   ImageBackground,
   TouchableOpacity
 } from "react-native";
-import { ListItem, Button, Tooltip, Overlay } from "react-native-elements";
+import { ListItem, Button  } from "react-native-elements";
 import { Root, Toast, Fab, Separator } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as WebBrowser from "expo-web-browser";
@@ -49,27 +49,15 @@ const styles = StyleSheet.create({
 });
 
 const Details = ({ navigation, route }) => {
-  const { name } = route.params;
-  const { image } = route.params;
-  const { shiny } = route.params;
-  const { id } = route.params;
-  const { gen } = route.params;
+  const { pokemon } = route.params;
   const { userId } = route.params;
-  const { catchRate } = route.params;
-  const { flavor } = route.params;
-  const { friendship } = route.params;
-  const { height } = route.params;
-  const { weight } = route.params;
-  const { types } = route.params;
-  const { stats } = route.params;
-  const { abilities } = route.params;
 
   const pokeObject = {
-    name: name,
-    image: image,
-    id: id,
-    gen: gen,
-    shiny: shiny
+    name: pokemon.name,
+    image: pokemon.image,
+    id: pokemon.id,
+    gen: pokemon.generation,
+    shiny: pokemon.shiny
   };
 
   const [isShiny, setIsShiny] = useState(false);
@@ -78,23 +66,23 @@ const Details = ({ navigation, route }) => {
   const [currentIndex, setCurrentIndex] = useState(); // the pokemon's current index in the list of favorites
   const [favorites, setFavorites] = useState([]);
   const favorite = () => {
-    if (!isFavorite) {
-      firebase
-        .database()
-        .ref("users/" + userId + "/favorites")
-        .set([...favorites, pokeObject]);
-      showToast(`${name} added to favorites`);
-    } else {
-      // already is a favorite...want to unfavorite
-      let newFavorites = favorites;
-      newFavorites.splice(currentIndex, 1);
-      firebase
-        .database()
-        .ref("users/" + userId + "/favorites")
-        .set(newFavorites);
-      showToast(`${name} removed from favorites`);
-      setIsFavorite(false);
-    }
+    // if (!isFavorite) {
+    //   firebase
+    //     .database()
+    //     .ref("users/" + userId + "/favorites")
+    //     .set([...favorites, pokeObject]);
+    //   showToast(`${name} added to favorites`);
+    // } else {
+    //   // already is a favorite...want to unfavorite
+    //   let newFavorites = favorites;
+    //   newFavorites.splice(currentIndex, 1);
+    //   firebase
+    //     .database()
+    //     .ref("users/" + userId + "/favorites")
+    //     .set(newFavorites);
+    //   showToast(`${name} removed from favorites`);
+    //   setIsFavorite(false);
+    // }
   };
 
   React.useLayoutEffect(() => {
@@ -138,38 +126,38 @@ const Details = ({ navigation, route }) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  const openStrategy = () => {
+  const openStrategy = (gen) => {
     if (gen === 1) {
       WebBrowser.openBrowserAsync(
-        "https://www.smogon.com/dex/rb/pokemon/" + name
+        "https://www.smogon.com/dex/rb/pokemon/" + pokemon.name
       );
     } else if (gen === 2) {
       WebBrowser.openBrowserAsync(
-        "https://www.smogon.com/dex/gs/pokemon/" + name
+        "https://www.smogon.com/dex/gs/pokemon/" + pokemon.name
       );
     } else if (gen === 3) {
       WebBrowser.openBrowserAsync(
-        "https://www.smogon.com/dex/rs/pokemon/" + name
+        "https://www.smogon.com/dex/rs/pokemon/" + pokemon.name
       );
     } else if (gen === 4) {
       WebBrowser.openBrowserAsync(
-        "https://www.smogon.com/dex/dp/pokemon/" + name
+        "https://www.smogon.com/dex/dp/pokemon/" + pokemon.name
       );
     } else if (gen === 5) {
       WebBrowser.openBrowserAsync(
-        "https://www.smogon.com/dex/bw/pokemon/" + name
+        "https://www.smogon.com/dex/bw/pokemon/" + pokemon.name
       );
     } else if (gen === 6) {
       WebBrowser.openBrowserAsync(
-        "https://www.smogon.com/dex/xy/pokemon/" + name
+        "https://www.smogon.com/dex/xy/pokemon/" + pokemon.name
       );
     } else if (gen == 7) {
       WebBrowser.openBrowserAsync(
-        "https://www.smogon.com/dex/sm/pokemon/" + name
+        "https://www.smogon.com/dex/sm/pokemon/" + pokemon.name
       );
     } else {
       WebBrowser.openBrowserAsync(
-        "https://www.smogon.com/dex/ss/pokemon/" + name
+        "https://www.smogon.com/dex/ss/pokemon/" + pokemon.name
       );
     }
   };
@@ -226,7 +214,7 @@ const Details = ({ navigation, route }) => {
         const curFavs = snapshot.val().favorites;
         setFavorites(curFavs);
         for (let i = 0; i < curFavs.length; i++) {
-          if (curFavs[i].name === name) {
+          if (curFavs[i].name === pokemon.name) {
             setIsFavorite(true);
             setCurrentIndex(i);
           }
@@ -242,14 +230,14 @@ const Details = ({ navigation, route }) => {
               <ImageBackground source={Pokeball} style={styles.image}>
                 <TouchableOpacity
                   onPress={() => {
-                    if (shiny) {
+                    if (pokemon.shiny) {
                       setIsShiny(isShiny => !isShiny);
                     }
                   }}
                 >
                   <Image
                     resizeMode="cover"
-                    source={{ uri: isShiny ? shiny : image }}
+                    source={{ uri: isShiny ? `data:image/jpeg;base64,${pokemon.shiny}` : `data:image/jpeg;base64,${pokemon.image}` }}
                     style={{
                       width: 200,
                       height: 200,
@@ -274,7 +262,7 @@ const Details = ({ navigation, route }) => {
                   borderTopColor: "#2189DC",
                   borderBottomColor: "#2189DC"
                 }}
-                subtitle={flavor.replace("\f", " ")}
+                subtitle={pokemon.flavor.replace("\f", " ")}
                 subtitleStyle={{
                   color: "white",
                   fontSize: 15
@@ -282,22 +270,22 @@ const Details = ({ navigation, route }) => {
               />
             </View>
             <View>
-              <TypeBadges types={types}/>
+              <TypeBadges types={pokemon.types}/>
               <Stats
-                hp={stats[0]}
-                attack={stats[1]}
-                defense={stats[2]}
-                specialAttack={stats[3]}
-                specialDefense={stats[4]}
-                speed={stats[5]}
+                hp={pokemon.stats[0]}
+                attack={pokemon.stats[1]}
+                defense={pokemon.stats[2]}
+                specialAttack={pokemon.stats[3]}
+                specialDefense={pokemon.stats[4]}
+                speed={pokemon.stats[5]}
               ></Stats>
-              {abilities.length > 0 && 
+              {pokemon.abilities.length > 0 && 
               <View>
                 <Separator >
                   <Text style={{fontSize: 16}}>Abilities</Text>
                 </Separator>
                 <View>
-                  {abilities.map((a, index) => (
+                  {pokemon.abilities.map((a, index) => (
                     <ListItem
                       title={capitalize(a.name)}
                       titleStyle={{ color: "#2189DC" }}
@@ -310,22 +298,22 @@ const Details = ({ navigation, route }) => {
               </View>}
               <ListItem
                 title={"Height"}
-                rightTitle={`${height/10} m`}
+                rightTitle={`${pokemon.height/10} m`}
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Weight"}
-                rightTitle={`${weight/10} kg`}
+                rightTitle={`${pokemon.weight/10} kg`}
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Catch Rate"}
-                rightTitle={catchRate + " / 255"}
+                rightTitle={pokemon.catchRate + " / 255"}
                 bottomDivider
               ></ListItem>
               <ListItem
                 title={"Base Friendship"}
-                rightTitle={friendship + " / 255"}
+                rightTitle={pokemon.friendship + " / 255"}
                 bottomDivider
               ></ListItem>
             </View>
@@ -359,7 +347,7 @@ const Details = ({ navigation, route }) => {
                       pokemon: variantData1,
                       image: variant1,
                       id: variantData1.id,
-                      flavor: flavor
+                      flavor: pokemon.flavor
                     })
                   }
                   bottomDivider
@@ -382,7 +370,7 @@ const Details = ({ navigation, route }) => {
                       pokemon: variantData2,
                       image: variant2,
                       id: variantData2.id,
-                      flavor: flavor
+                      flavor: pokemon.flavor
                     })
                   }
                   bottomDivider
@@ -405,7 +393,7 @@ const Details = ({ navigation, route }) => {
                       pokemon: variantData3,
                       image: variant3,
                       id: variantData3.id,
-                      flavor: flavor
+                      flavor: pokemon.flavor
                     })
                   }
                   bottomDivider
@@ -428,7 +416,7 @@ const Details = ({ navigation, route }) => {
                       pokemon: variantData4,
                       image: variant4,
                       id: variantData4.id,
-                      flavor: flavor
+                      flavor: pokemon.flavor
                     })
                   }
                   bottomDivider
@@ -437,7 +425,7 @@ const Details = ({ navigation, route }) => {
             </View>
             <ListItem
               title="Competitive Strategies"
-              onPress={openStrategy}
+              onPress={() => openStrategy(pokemon.generation)}
               rightIcon={
                 <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
               }

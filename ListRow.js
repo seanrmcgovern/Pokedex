@@ -1,35 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { ListItem } from "react-native-elements";
 
 const ListRow = props => {
-
-
 
   return (
     <ListItem
       onPress={() =>
         props.navigation.navigate("Details", {
-          name: props.name,
-          image: `data:image/jpeg;base64,${props.image}`,
-          shiny: `data:image/jpeg;base64,${props.shiny}`,
-          id: props.entryId,
-          gen: props.gen,
+          pokemon: props.pokemon,
           userId: props.userId,
-          catchRate: props.catchRate,
-          flavor: props.flavor,
-          friendship: props.friendship,
-          height: props.height,
-          weight: props.weight,
-          types: props.types,
-          stats: props.stats,
-          abilities: props.abilities
         })
       }
-      title={props.name}
+      title={props.pokemon.name}
       leftAvatar={{
-        source: {uri:  `data:image/jpeg;base64,${props.image}`}
+        source: {uri:  `data:image/jpeg;base64,${props.pokemon.image}`}
       }}
-      rightSubtitle={`No. ${props.entryId}`}
+      rightSubtitle={`No. ${props.pokemon.id}`}
       bottomDivider
       style={{ borderBottomWidth: 1, borderBottomColor: "#2189DC" }}
     ></ListItem>

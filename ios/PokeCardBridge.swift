@@ -136,6 +136,7 @@ class PokeCardBridge:NSObject {
     newCard.types = types
     newCard.stats = stats
     newCard.abilities = abilities
+    newCard.isFavorite = false
     CoreDataManager.shared.saveChanges()
   }
   

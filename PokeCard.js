@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import PokeballSprite from "./assets/pokeballSprite.png";
 import Pokeball from "./assets/pokeball.png";
@@ -39,26 +39,12 @@ const styles = StyleSheet.create({
 
 const PokeCard = props => {
 
-  const name = props.name;
-
   return (
     <TouchableOpacity
       onPress={() => {
         props.navigation.navigate("Details", {
-          name: name,
-          image: `data:image/jpeg;base64,${props.image}`,
-          shiny: `data:image/jpeg;base64,${props.shiny}`,
-          id: props.entryId,
-          gen: props.gen,
+          pokemon: props.pokemon,
           userId: props.userId,
-          catchRate: props.catchRate,
-          flavor: props.flavor,
-          friendship: props.friendship,
-          height: props.height,
-          weight: props.weight,
-          types: props.types,
-          stats: props.stats,
-          abilities: props.abilities
         });
       }}
       style={styles.card}
@@ -66,7 +52,7 @@ const PokeCard = props => {
         <Text style={styles.number}>{props.entryId}</Text>
         <Image
           resizeMode="cover"
-          source={{uri: `data:image/jpeg;base64,${props.image}`}}
+          source={{uri: `data:image/jpeg;base64,${props.pokemon.image}`}}
           style={{
             width: 100,
             height: 100,
@@ -74,7 +60,7 @@ const PokeCard = props => {
             marginTop: 0
           }}
         />
-        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.title}>{props.pokemon.name}</Text>
     </TouchableOpacity>
   );
 };

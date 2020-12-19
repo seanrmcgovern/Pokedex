@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -41,15 +41,30 @@ const styles = StyleSheet.create({
 });
 
 const TableView = props => {
-    const [pokemon, setPokemon] = useState([]);
+  const [pokemon, setPokemon] = useState([]);
 
-    const flatlistRef = useRef();
+  const flatlistRef = useRef();
 
-    useEffect(() => {
-      NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
-        setPokemon(cards);
-      });
-    })
+  useEffect(() => {
+    NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
+      setPokemon(cards);
+    });
+  });
+
+  const renderRow = useCallback(
+      ({ item }) => {
+        if (item.name.toLowerCase().includes(props.search))
+          return (
+            <ListRow
+              navigation={props.navigation}
+              userId={props.userId}
+              pokemon={item}
+            ></ListRow>
+          );
+      }
+  );
+
+  const keyExtractor = useCallback((item) => item.id.toString(), []);
 
   return (
     <View style={styles.wrapper}>
@@ -70,31 +85,8 @@ const TableView = props => {
             marginLeft: 10,
             marginRight: 10
           }}
-          renderItem={({ item, index }) => {
-            if (item.name.toLowerCase().includes(props.search))
-              return (
-                <ListRow
-                  navigation={props.navigation}
-                  key={index}
-                  userId={props.userId}
-                  name={item.name}
-                  // stored in CoreData
-                  gen={item.generation}
-                  entryId={item.id}
-                  catchRate={item.catchRate}
-                  flavor={item.flavor}
-                  friendship={item.friendship}
-                  height={item.height}
-                  weight={item.weight}
-                  image={item.image}
-                  shiny={item.shiny}
-                  types={item.types}
-                  stats={item.stats}
-                  abilities={item.abilities}
-                ></ListRow>
-              );
-          }}
-          keyExtractor={item => item.name}
+          renderItem={renderRow}
+          keyExtractor={keyExtractor}
         ></FlatList>
       </SafeAreaView>
     </View>
