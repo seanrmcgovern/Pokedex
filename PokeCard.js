@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import PokeballSprite from "./assets/pokeballSprite.png";
 import Pokeball from "./assets/pokeball.png";
 
@@ -43,13 +43,14 @@ const PokeCard = props => {
     <TouchableOpacity
       onPress={() => {
         props.navigation.navigate("Details", {
+          name: props.pokemon.name,
           pokemon: props.pokemon,
           userId: props.userId,
         });
       }}
       style={styles.card}
     >
-        <Text style={styles.number}>{props.entryId}</Text>
+        <Text style={styles.number}>{props.pokemon.id}</Text>
         <Image
           resizeMode="cover"
           source={{uri: `data:image/jpeg;base64,${props.pokemon.image}`}}

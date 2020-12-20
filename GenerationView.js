@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, NativeModules } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet} from "react-native";
 import { SearchBar } from "react-native-elements";
 import CardView from "./CardView";
 import TableView from "./TableView";

@@ -13,4 +13,6 @@
 
 RCT_EXTERN_METHOD(saveToJSON)
 
+RCT_EXTERN_METHOD(saveForms)
+
 @end

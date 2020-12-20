@@ -29,25 +29,25 @@ const Popover = props => {
       });
 
       const newName = newParty;
-      firebase
-        .database()
-        .ref("users/" + props.userId + "/parties")
-        .set([
-          ...parties,
-          {
-            title: newName,
-            items: [{ name: "head" }, props.pokeObject],
-            id: curCount
-          }
-        ])
-        .then(() => {
-          setCreatingParty(false);
-          setNewParty("");
-          props.showToast(
-            `Created party: "${newName}" with ${props.pokeObject.name}`
-          );
-          props.close();
-        });
+      // firebase
+      //   .database()
+      //   .ref("users/" + props.userId + "/parties")
+      //   .set([
+      //     ...parties,
+      //     {
+      //       title: newName,
+      //       items: [{ name: "head" }, props.pokeObject],
+      //       id: curCount
+      //     }
+      //   ])
+      //   .then(() => {
+      //     setCreatingParty(false);
+      //     setNewParty("");
+      //     props.showToast(
+      //       `Created party: "${newName}" with ${props.pokeObject.name}`
+      //     );
+      //     props.close();
+      //   });
     }
   }, [creatingParty]);
 
@@ -57,25 +57,25 @@ const Popover = props => {
     setLoadingChange(index);
   };
 
-  useEffect(() => {
-    if (typeof loadingChange === "number") {
-      let newParties = parties;
-      newParties[loadingChange].items.push(props.pokeObject);
-      firebase
-        .database()
-        .ref("users/" + props.userId + "/parties")
-        .set(newParties)
-        .then(() => {
-          setLoadingChange(false);
-          props.showToast(
-            `${props.pokeObject.name} added to party: ${newParties[loadingChange].title}`
-          );
-          setNewParty("");
-          setLoadingChange();
-          props.close();
-        });
-    }
-  }, [loadingChange]);
+  // useEffect(() => {
+  //   if (typeof loadingChange === "number") {
+  //     let newParties = parties;
+  //     newParties[loadingChange].items.push(props.pokeObject);
+  //     firebase
+  //       .database()
+  //       .ref("users/" + props.userId + "/parties")
+  //       .set(newParties)
+  //       .then(() => {
+  //         setLoadingChange(false);
+  //         props.showToast(
+  //           `${props.pokeObject.name} added to party: ${newParties[loadingChange].title}`
+  //         );
+  //         setNewParty("");
+  //         setLoadingChange();
+  //         props.close();
+  //       });
+  //   }
+  // }, [loadingChange]);
 
   const [coreParties, setCoreParties] = useState([]);
   const [partyCount, setPartyCount] = useState([]);
@@ -113,13 +113,13 @@ const Popover = props => {
       }
       setCoreParties(partiesRes);
     });
-    firebase
-      .database()
-      .ref("users/" + props.userId)
-      .on("value", snapshot => {
-        const curParties = snapshot.val().parties;
-        setParties(curParties);
-      });
+    // firebase
+    //   .database()
+    //   .ref("users/" + props.userId)
+    //   .on("value", snapshot => {
+    //     const curParties = snapshot.val().parties;
+    //     setParties(curParties);
+    //   });
   }, []);
 
   return (

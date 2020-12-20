@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { View, NativeModules, StyleSheet } from "react-native";
+import { View, NativeModules } from "react-native";
 import { ListItem, Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -12,6 +12,71 @@ const Settings = ({ navigation, route, userId }) => {
 
   const saveJSON = () => {
     NativeModules.CsvDataManager.saveToJSON();
+  }
+
+  // save each form as a pokecard, with id that matches the original id of the main pokemon form
+  // pull those from core data, sort by id, then create new json with all data plus varieties
+  // 0 - 899 exclusive
+  // try going 100 at a time
+  const saveForms = () => {
+    // const forms = []; // array of dictionaries
+    // for (let i = 800; i < 899; i++) {
+    //   axios.get("https://pokeapi.co/api/v2/pokemon-species/" + i).then(res => {
+    //     const data = res.data;
+    //     const id = res.data.id;
+    //     const flavor = data.form_descriptions.length > 0 ? data.form_descriptions[0].description : "";
+    //     const varieties = data.varieties.slice(1);
+    //     for (const item of varieties) {
+    //       const name = item.pokemon.name;
+    //       let types = [];
+    //       let stats = [];
+    //       let height = 0;
+    //       let weight = 0;
+    //       let abilities = [];
+    //       let image;
+    //       // console.log("url: ", item.pokemon.url);
+    //       axios.get(item.pokemon.url).then(itemRes => {
+    //         image = itemRes.data.sprites.front_default;
+    //         for (let t = 0; t < itemRes.data.types.length; t++) {
+    //           types.push(itemRes.data.types[t].type.name);
+    //         }
+    //         for (let s = 0; s < itemRes.data.stats.length; s++) {
+    //           stats.push(itemRes.data.stats[s].base_stat);
+    //         }
+    //         height = itemRes.data.height;
+    //         weight = itemRes.data.weight;
+    //         const abilityObjects = itemRes.data.abilities;
+    //         for (const a of abilityObjects) {
+    //           const abilityName = a.ability.name;
+    //           axios.get(a.ability.url).then(abilityRes => {
+    //             const englishEffect = abilityRes.data.effect_entries.find(
+    //               e => e.language.name === "en"
+    //             );
+    //             abilities.push({
+    //               name: abilityName,
+    //               effect: englishEffect ? englishEffect.effect : ""
+    //             });
+    //           })
+    //         }
+    //       }).then(() => NativeModules.PokeCardBridge.savePokeCard(
+    //         id,
+    //         0, 
+    //         capitalize(name),
+    //         height,
+    //         weight,
+    //         0,
+    //         0,
+    //         flavor,
+    //         image,
+    //         "",
+    //         types,
+    //         stats,
+    //         abilities
+    //       ))
+    //     }
+    //   })
+    // }
+    NativeModules.CsvDataManager.saveForms();
   }
 
   const downloadGeneration = (g) => {
@@ -206,11 +271,12 @@ const Settings = ({ navigation, route, userId }) => {
         backgroundColor: "#DE5C58"
       }}
     >
-      <ListItem title={"Download JSON"} 
+      <ListItem title={"Download JSON forms"} 
         rightIcon={
           <Button
             onPress={() =>
-              saveJSON()
+              // saveJSON()
+              saveForms()
             }
             buttonStyle={{
               backgroundColor: "white",

@@ -12,9 +12,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3DE4DAD41476765101945408 /* libPods-Pokedex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D43FF9D506E70904424FA7E9 /* libPods-Pokedex.a */; };
-		763E0D56258819A0007FFF06 /* pokedata1.json in Resources */ = {isa = PBXBuildFile; fileRef = 763E0D55258819A0007FFF06 /* pokedata1.json */; };
+		761348A325900927009E466D /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 761348A225900927009E466D /* data.json */; };
 		763E0D5825883D34007FFF06 /* pokedata.json in Resources */ = {isa = PBXBuildFile; fileRef = 763E0D5725883D34007FFF06 /* pokedata.json */; };
-		76C49B1F2586E33B000F279F /* pokedata0.json in Resources */ = {isa = PBXBuildFile; fileRef = 76C49B1E2586E33B000F279F /* pokedata0.json */; };
 		76CBFAF4258A9C0A0024D8A9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76CBFAF3258A9C0A0024D8A9 /* Expo.plist */; };
 		76E175E42582ABB000A9E048 /* CsvDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E175E32582ABB000A9E048 /* CsvDataManager.swift */; };
 		76E175E62582ABC400A9E048 /* CsvDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E175E52582ABC400A9E048 /* CsvDataManager.m */; };
@@ -40,9 +39,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Pokedex/main.m; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B47C5AFCB8BDE514B7D1AC6 /* Pods-Pokedex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pokedex.debug.xcconfig"; path = "Target Support Files/Pods-Pokedex/Pods-Pokedex.debug.xcconfig"; sourceTree = "<group>"; };
-		763E0D55258819A0007FFF06 /* pokedata1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pokedata1.json; sourceTree = "<group>"; };
+		761348A225900927009E466D /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		763E0D5725883D34007FFF06 /* pokedata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pokedata.json; sourceTree = "<group>"; };
-		76C49B1E2586E33B000F279F /* pokedata0.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pokedata0.json; sourceTree = "<group>"; };
 		76CBFAF3258A9C0A0024D8A9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		76E175E32582ABB000A9E048 /* CsvDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvDataManager.swift; sourceTree = "<group>"; };
 		76E175E52582ABC400A9E048 /* CsvDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CsvDataManager.m; sourceTree = "<group>"; };
@@ -77,12 +75,11 @@
 		13B07FAE1A68108700A75B9A /* Pokedex */ = {
 			isa = PBXGroup;
 			children = (
-				763E0D55258819A0007FFF06 /* pokedata1.json */,
-				76C49B1E2586E33B000F279F /* pokedata0.json */,
+				763E0D5725883D34007FFF06 /* pokedata.json */,
+				761348A225900927009E466D /* data.json */,
 				76F046D1250D7F6F00656E3D /* UserInfo.m */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				763E0D5725883D34007FFF06 /* pokedata.json */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				76F046CF250D7B4F00656E3D /* UserInfo.swift */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -216,9 +213,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				76C49B1F2586E33B000F279F /* pokedata0.json in Resources */,
+				761348A325900927009E466D /* data.json in Resources */,
 				763E0D5825883D34007FFF06 /* pokedata.json in Resources */,
-				763E0D56258819A0007FFF06 /* pokedata1.json in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				76CBFAF4258A9C0A0024D8A9 /* Expo.plist in Resources */,
 				76F046CD250C053E00656E3D /* GoogleService-Info.plist in Resources */,

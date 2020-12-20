@@ -44,6 +44,7 @@ class PokeCardBridge:NSObject {
     static let types = "types"
     static let stats = "stats"
     static let abilities = "abilities"
+    static let forms = "forms"
   }
   
   @objc
@@ -91,7 +92,7 @@ class PokeCardBridge:NSObject {
   func preloadData() -> Void {
     if (!defaults.bool(forKey: Keys.coreDataSaved)) {
       do {
-        if let jsonURL = Bundle.main.url(forResource: "pokedata", withExtension: "json") {
+        if let jsonURL = Bundle.main.url(forResource: "data", withExtension: "json") {
           let jsonData = try Data(contentsOf: jsonURL)
           let parsedData = try JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
           let pokeData = parsedData as! [[String:Any]]
@@ -109,8 +110,9 @@ class PokeCardBridge:NSObject {
             let types = item[Card.types] as! [String]
             let stats = item[Card.stats] as! [Int]
             let abilities = item[Card.abilities] as! [NSMutableDictionary]
+            let forms = item[Card.forms] as! [NSMutableDictionary]
             
-            saveCardToCoreData(id, generation: generation, name: name, height: height, weight: weight, catchRate: catchRate, friendship: friendship, flavor: flavor, image: image, shiny: shiny, types: types, stats: stats, abilities: abilities)
+            saveCardToCoreData(id, generation: generation, name: name, height: height, weight: weight, catchRate: catchRate, friendship: friendship, flavor: flavor, image: image, shiny: shiny, types: types, stats: stats, abilities: abilities, forms: forms)
           }
           defaults.set(true, forKey: Keys.coreDataSaved)
         }
@@ -120,7 +122,7 @@ class PokeCardBridge:NSObject {
     }
   }
   
-  func saveCardToCoreData(_ id: Int64, generation: Int64, name: String, height: Int64, weight: Int64, catchRate: Int64, friendship: Int64, flavor: String, image: String, shiny: String, types: [String], stats: [Int], abilities: [NSMutableDictionary]) {
+  func saveCardToCoreData(_ id: Int64, generation: Int64, name: String, height: Int64, weight: Int64, catchRate: Int64, friendship: Int64, flavor: String, image: String, shiny: String, types: [String], stats: [Int], abilities: [NSMutableDictionary], forms: [NSMutableDictionary]) {
     let mainContext = CoreDataManager.shared.mainContext
     let newCard = PokeCard(context: mainContext)
     newCard.id = id
@@ -136,6 +138,7 @@ class PokeCardBridge:NSObject {
     newCard.types = types
     newCard.stats = stats
     newCard.abilities = abilities
+    newCard.forms = forms
     newCard.isFavorite = false
     CoreDataManager.shared.saveChanges()
   }
@@ -177,6 +180,9 @@ class PokeCardBridge:NSObject {
     newCard.abilities = abilities as? [NSMutableDictionary]
     CoreDataManager.shared.saveChanges()
     switch generation {
+    case 0:
+      print("Saving forms")
+      break
     case 1:
       defaults.set(true, forKey: Keys.savedKanto)
       break
@@ -232,6 +238,7 @@ class PokeCardBridge:NSObject {
         nextCard.setValue(entry.types, forKey: Card.types)
         nextCard.setValue(entry.stats, forKey: Card.stats)
         nextCard.setValue(entry.abilities, forKey: Card.abilities)
+        nextCard.setValue(entry.forms, forKey: Card.forms)
         pokeCards.append(nextCard)
       }
       callback([pokeCards])

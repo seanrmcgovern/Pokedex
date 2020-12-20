@@ -32,20 +32,20 @@ const Parties = props => {
     });
   };
 
-  useEffect(() => {
-    if (creatingParty) {
-      firebase
-        .database()
-        .ref("users/" + props.userId + "/parties")
-        .set([...parties, { title: newParty, items: [{ name: "head" }] }])
-        .then(() => {
-          setCreatingParty(false);
-          setNewParty("");
-          showToast(`Created party: "${newParty}"`);
-          close();
-        });
-    }
-  }, [creatingParty]);
+  // useEffect(() => {
+  //   if (creatingParty) {
+  //     firebase
+  //       .database()
+  //       .ref("users/" + props.userId + "/parties")
+  //       .set([...parties, { title: newParty, items: [{ name: "head" }] }])
+  //       .then(() => {
+  //         setCreatingParty(false);
+  //         setNewParty("");
+  //         showToast(`Created party: "${newParty}"`);
+  //         close();
+  //       });
+  //   }
+  // }, [creatingParty]);
 
   const [visible, setVisible] = useState(false);
 
@@ -68,13 +68,13 @@ const Parties = props => {
       // }
       setCoreParties(parties);
     });
-    firebase
-      .database()
-      .ref("users/" + props.userId)
-      .on("value", snapshot => {
-        const curParties = snapshot.val().parties;
-        setParties(curParties);
-      });
+    // firebase
+    //   .database()
+    //   .ref("users/" + props.userId)
+    //   .on("value", snapshot => {
+    //     const curParties = snapshot.val().parties;
+    //     setParties(curParties);
+    //   });
   }, []);
 
   return (
@@ -91,7 +91,6 @@ const Parties = props => {
           contentContainerStyle={{ paddingBottom: 400 }}
         >
           <View style={{ backgroundColor: "white" }}>
-            {/* TODO */}
             {parties.map((party, index) => (
               <PartyList
                 navigation={props.navigation}

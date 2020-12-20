@@ -33,8 +33,8 @@ class UserInfo: NSObject {
   // annotation used to export method in react-native
   @objc
   func getCredentials(_ callback: RCTResponseSenderBlock) {
-     // let mainContext = CoreDataManager.shared.mainContext
-     // print("url: \(String(describing: mainContext.persistentStoreCoordinator?.persistentStores.first?.url))")
+    let mainContext = CoreDataManager.shared.mainContext
+    print("url: \(String(describing: mainContext.persistentStoreCoordinator?.persistentStores.first?.url))")
     let curName = defaults.value(forKey: Keys.username)
     let curId = defaults.value(forKey: Keys.userId)
     let username: String

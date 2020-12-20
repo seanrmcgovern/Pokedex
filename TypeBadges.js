@@ -22,7 +22,6 @@ const TypeBadges = props => {
             return {color: "green", icon: "leaf", type: "font-awesome-5"};
             break;
           case "poison":
-            // "skull"
             return {color: "purple", icon: "disease" , type: "font-awesome-5"};
             break;
           case "water":

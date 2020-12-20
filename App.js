@@ -17,6 +17,8 @@ import { LogBox } from "react-native";
 
 // PRIORITY ONE
 // 1) Figure out how to best store and varieties of pokemon
+// 2) add abilities and flavor to forms, have to lowercase the names of forms to use them with api
+// 3) fix login process to only use core data?
 
 // PRIORITY TWO
 // Primarily use Core Data
@@ -151,21 +153,22 @@ const App = () => {
   const initializeUser = name => {
     if (name != "") {
       NativeModules.UserInfo.saveCredentials(name, userId);
-      firebase
-        .database()
-        .ref("users/" + user.uid)
-        .set({
-          username: name,
-          parties: [
-            { title: "Party 1", items: [{ name: "head" }] }
-          ],
-          favorites: [{ name: "head" }]
-        })
-        .then(() => {
-          user.updateProfile({
-            displayName: name
-          });
-        });
+      setUsername(name)
+      // firebase
+      //   .database()
+      //   .ref("users/" + user.uid)
+      //   .set({
+      //     username: name,
+      //     parties: [
+      //       { title: "Party 1", items: [{ name: "head" }] }
+      //     ],
+      //     favorites: [{ name: "head" }]
+      //   })
+      //   .then(() => {
+      //     user.updateProfile({
+      //       displayName: name
+      //     });
+      //   });
     }
   };
 
@@ -191,7 +194,7 @@ const App = () => {
     //     setUserId(res.user.uid);
     //   });
     NativeModules.UserInfo.getCredentials((name, id) => {
-      if (name === null) {
+      if (name === "") {
         setLoading(1);
       }
       setUsername(name);

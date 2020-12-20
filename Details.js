@@ -206,21 +206,21 @@ const Details = ({ navigation, route }) => {
   //   }
   // }, [varieties]);
 
-  useEffect(() => {
-    firebase
-      .database()
-      .ref("users/" + userId)
-      .on("value", snapshot => {
-        const curFavs = snapshot.val().favorites;
-        setFavorites(curFavs);
-        for (let i = 0; i < curFavs.length; i++) {
-          if (curFavs[i].name === pokemon.name) {
-            setIsFavorite(true);
-            setCurrentIndex(i);
-          }
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   firebase
+  //     .database()
+  //     .ref("users/" + userId)
+  //     .on("value", snapshot => {
+  //       const curFavs = snapshot.val().favorites;
+  //       setFavorites(curFavs);
+  //       for (let i = 0; i < curFavs.length; i++) {
+  //         if (curFavs[i].name === pokemon.name) {
+  //           setIsFavorite(true);
+  //           setCurrentIndex(i);
+  //         }
+  //       }
+  //     });
+  // }, []);
 
   return (
     <Root>
@@ -317,7 +317,40 @@ const Details = ({ navigation, route }) => {
                 bottomDivider
               ></ListItem>
             </View>
-            <View>
+            {pokemon.forms.length > 0 && 
+                <View>
+                <Separator >
+                  <Text style={{fontSize: 16}}>Forms</Text>
+                </Separator>
+                {pokemon.forms.map((form, index) => (
+                  <ListItem
+                    leftAvatar={{source: form.image? {uri: `data:image/jpeg;base64,${form.image}`}: PokeballSprite}}
+                    key={index}
+                    title={form.name}
+                    onPress={() => {
+                      navigation.push("Details", {
+                        name: form.name,
+                        pokemon: {...form, abilities: pokemon.abilities, forms: []},
+                        // add boolean to designate a form/variety, so you can't favorite forms or add them to parties
+                        // and to not display catchrate and friendship
+                        // userId: props.userId,
+                      });
+                    }}
+                    // onPress={() =>
+                    //   navigation.navigate("MegaDetails", {
+                    //     name: capitalize(varieties[1].pokemon.name),
+                    //     pokemon: variantData1,
+                    //     image: variant1,
+                    //     id: variantData1.id,
+                    //     flavor: pokemon.flavor
+                    //   })
+                    // }
+                    bottomDivider
+                  ></ListItem>
+                ))}
+              </View>
+            }
+            {/* <View>
               {varieties.length > 1 && (
                 <Text
                   style={{
@@ -422,7 +455,7 @@ const Details = ({ navigation, route }) => {
                   bottomDivider
                 ></ListItem>
               )}
-            </View>
+            </View> */}
             <ListItem
               title="Competitive Strategies"
               onPress={() => openStrategy(pokemon.generation)}
