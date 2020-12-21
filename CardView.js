@@ -41,11 +41,9 @@ const CardView = props => {
 
   const renderCard = useCallback(
     ({ item }) => {
-      if (item.name.toLowerCase().includes(props.search))
         return (
           <PokeCard
             navigation={props.navigation}
-            search={props.search}
             userId={props.userId}
             pokemon={item}
           ></PokeCard>
@@ -75,6 +73,7 @@ const CardView = props => {
           numColumns={3}
           renderItem={renderCard}
           keyExtractor={keyExtractor}
+          removeClippedSubviews
         ></FlatList>
     </View>
   );

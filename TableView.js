@@ -49,11 +49,10 @@ const TableView = props => {
     NativeModules.PokeCardBridge.getGeneration(props.generation, cards => {
       setPokemon(cards);
     });
-  });
+  }, []);
 
   const renderRow = useCallback(
       ({ item }) => {
-        if (item.name.toLowerCase().includes(props.search))
           return (
             <ListRow
               navigation={props.navigation}
@@ -76,7 +75,7 @@ const TableView = props => {
           // contentContainerStyle={{
           //   flexDirection: "row",
           //   flexWrap: "wrap",
-          //   paddingBottom: 300,
+          //   paddingBottom: 400,
           //   flexGrow: 1,
           //   justifyContent: "center"
           // }}

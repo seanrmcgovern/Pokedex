@@ -79,7 +79,7 @@ const TypeBadges = props => {
     <View>
       <View style={styles.row}>
         {props.types.map((t,index) => 
-            <Badge style={{backgroundColor: getTypeInfo(t).color, color: "white", flexDirection:'row', flexWrap:'wrap',  minWidth: 150, marginTop: 10, marginRight: index === 0 ? 10 : 0, height: 35}}>
+            <Badge key={index} style={{backgroundColor: getTypeInfo(t).color, color: "white", flexDirection:'row', flexWrap:'wrap',  minWidth: 150, marginTop: 10, marginRight: index === 0 ? 10 : 0, height: 35}}>
                 <Icon name={getTypeInfo(t).icon} type={getTypeInfo(t).type} color="white" style={{marginTop: 2}}/>
                 <Text style={{ color: "white", fontSize: 16, marginLeft: 15, marginTop: 5}}>{t.toUpperCase()}</Text>
             </Badge>
