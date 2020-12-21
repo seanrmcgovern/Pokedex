@@ -19,7 +19,8 @@ const ListRow = props => {
       }}
       rightSubtitle={`No. ${props.pokemon.id}`}
       bottomDivider
-      style={{ borderBottomWidth: 1, borderBottomColor: "#2189DC" }}
+      containerStyle={{borderRadius: 35, marginBottom: 3}}
+      // style={{ borderBottomWidth: 1, borderBottomColor: "#2189DC" }}
     ></ListItem>
   );
 };
