@@ -16,9 +16,8 @@ import { Icon } from "react-native-elements";
 import { LogBox } from "react-native";
 
 // PRIORITY ONE
-// 1) Figure out how to best store and varieties of pokemon
-// 2) add abilities and flavor to forms, have to lowercase the names of forms to use them with api
-// 3) fix login process to only use core data?
+// 1) add abilities and flavor to forms, have to lowercase the names of forms to use them with api
+// 2) fix login process to only use core data?
 
 // PRIORITY TWO
 // Primarily use Core Data

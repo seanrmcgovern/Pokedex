@@ -70,7 +70,7 @@ const TableView = props => {
     <View style={styles.wrapper}>
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={pokemon}
+          data={pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
           ref={flatlistRef}
           style={styles.scrollView}
           // contentContainerStyle={{

@@ -45,6 +45,7 @@ const PokeCard = props => {
         props.navigation.navigate("Details", {
           name: props.pokemon.name,
           pokemon: props.pokemon,
+          isNested: false,
           userId: props.userId,
         });
       }}

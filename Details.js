@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
 
 const Details = ({ navigation, route }) => {
   const { pokemon } = route.params;
+  const { isNested } = route.params;
   const { userId } = route.params;
 
   const pokeObject = {
@@ -111,17 +112,6 @@ const Details = ({ navigation, route }) => {
     });
   };
 
-  const [varieties, setVarieties] = useState([]);
-
-  const [variant1, setVariant1] = useState();
-  const [variantData1, setVariantData1] = useState();
-  const [variant2, setVariant2] = useState();
-  const [variantData2, setVariantData2] = useState();
-  const [variant3, setVariant3] = useState();
-  const [variantData3, setVariantData3] = useState();
-  const [variant4, setVariant4] = useState();
-  const [variantData4, setVariantData4] = useState();
-
   const capitalize = str => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
@@ -161,6 +151,15 @@ const Details = ({ navigation, route }) => {
       );
     }
   };
+
+  const [expanded, setExpanded] = useState({});
+
+  useEffect(() => {
+    for (const ability in pokemon.abilities) {
+      const name = ability.name;
+      setExpanded({...expanded, [name]: false});
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (!fromCoreData) {
@@ -290,32 +289,14 @@ const Details = ({ navigation, route }) => {
                       title={capitalize(a.name)}
                       titleStyle={{ color: "#2189DC" }}
                       subtitle={a.effect}
+                      subtitleProps={{numberOfLines: expanded[a.name] ? null : 5}}
+                      onPress={() => setExpanded({...expanded, [a.name]: !expanded[a.name]})}
                       bottomDivider
                       key={index}
                     ></ListItem>
                   ))}
                 </View>
               </View>}
-              <ListItem
-                title={"Height"}
-                rightTitle={`${pokemon.height/10} m`}
-                bottomDivider
-              ></ListItem>
-              <ListItem
-                title={"Weight"}
-                rightTitle={`${pokemon.weight/10} kg`}
-                bottomDivider
-              ></ListItem>
-              <ListItem
-                title={"Catch Rate"}
-                rightTitle={pokemon.catchRate + " / 255"}
-                bottomDivider
-              ></ListItem>
-              <ListItem
-                title={"Base Friendship"}
-                rightTitle={pokemon.friendship + " / 255"}
-                bottomDivider
-              ></ListItem>
             </View>
             {pokemon.forms.length > 0 && 
                 <View>
@@ -331,133 +312,41 @@ const Details = ({ navigation, route }) => {
                       navigation.push("Details", {
                         name: form.name,
                         pokemon: {...form, abilities: pokemon.abilities, forms: []},
-                        // add boolean to designate a form/variety, so you can't favorite forms or add them to parties
-                        // and to not display catchrate and friendship
-                        // userId: props.userId,
+                        isNested: true
                       });
                     }}
-                    // onPress={() =>
-                    //   navigation.navigate("MegaDetails", {
-                    //     name: capitalize(varieties[1].pokemon.name),
-                    //     pokemon: variantData1,
-                    //     image: variant1,
-                    //     id: variantData1.id,
-                    //     flavor: pokemon.flavor
-                    //   })
-                    // }
                     bottomDivider
                   ></ListItem>
                 ))}
               </View>
             }
-            {/* <View>
-              {varieties.length > 1 && (
-                <Text
-                  style={{
-                    fontSize: 20,
-                    marginLeft: 10,
-                    fontWeight: "bold",
-                    color: "white"
-                  }}
-                >
-                  Forms
-                </Text>
-              )}
-              {varieties.length >= 2 && (
-                <ListItem
-                  leftAvatar={{
-                    source: variant1
-                      ? {
-                          uri: variant1
-                        }
-                      : PokeballSprite
-                  }}
-                  key={0}
-                  title={capitalize(varieties[1].pokemon.name)}
-                  onPress={() =>
-                    navigation.navigate("MegaDetails", {
-                      name: capitalize(varieties[1].pokemon.name),
-                      pokemon: variantData1,
-                      image: variant1,
-                      id: variantData1.id,
-                      flavor: pokemon.flavor
-                    })
-                  }
-                  bottomDivider
-                ></ListItem>
-              )}
-              {varieties.length >= 3 && (
-                <ListItem
-                  leftAvatar={{
-                    source: variant2
-                      ? {
-                          uri: variant2
-                        }
-                      : PokeballSprite
-                  }}
-                  key={1}
-                  title={capitalize(varieties[2].pokemon.name)}
-                  onPress={() =>
-                    navigation.navigate("MegaDetails", {
-                      name: capitalize(varieties[2].pokemon.name),
-                      pokemon: variantData2,
-                      image: variant2,
-                      id: variantData2.id,
-                      flavor: pokemon.flavor
-                    })
-                  }
-                  bottomDivider
-                ></ListItem>
-              )}
-              {varieties.length >= 4 && (
-                <ListItem
-                  leftAvatar={{
-                    source: variant3
-                      ? {
-                          uri: variant3
-                        }
-                      : PokeballSprite
-                  }}
-                  key={1}
-                  title={capitalize(varieties[3].pokemon.name)}
-                  onPress={() =>
-                    navigation.navigate("MegaDetails", {
-                      name: capitalize(varieties[3].pokemon.name),
-                      pokemon: variantData3,
-                      image: variant3,
-                      id: variantData3.id,
-                      flavor: pokemon.flavor
-                    })
-                  }
-                  bottomDivider
-                ></ListItem>
-              )}
-              {varieties.length >= 5 && (
-                <ListItem
-                  leftAvatar={{
-                    source: variant4
-                      ? {
-                          uri: variant4
-                        }
-                      : PokeballSprite
-                  }}
-                  key={1}
-                  title={capitalize(varieties[4].pokemon.name)}
-                  onPress={() =>
-                    navigation.navigate("MegaDetails", {
-                      name: capitalize(varieties[4].pokemon.name),
-                      pokemon: variantData4,
-                      image: variant4,
-                      id: variantData4.id,
-                      flavor: pokemon.flavor
-                    })
-                  }
-                  bottomDivider
-                ></ListItem>
-              )}
-            </View> */}
+            <ListItem
+                title={"Height"}
+                rightTitle={`${pokemon.height/10} m`}
+                bottomDivider
+              ></ListItem>
+              <ListItem
+                title={"Weight"}
+                rightTitle={`${pokemon.weight/10} kg`}
+                bottomDivider
+              ></ListItem>
+              {!isNested && 
+                <View>
+                  <ListItem
+                    title={"Catch Rate"}
+                    rightTitle={pokemon.catchRate + " / 255"}
+                    bottomDivider
+                  ></ListItem>
+                  <ListItem
+                    title={"Base Friendship"}
+                    rightTitle={pokemon.friendship + " / 255"}
+                    bottomDivider
+                  ></ListItem>
+                </View>
+              }
             <ListItem
               title="Competitive Strategies"
+              titleStyle={{color: "#2189DC"}}
               onPress={() => openStrategy(pokemon.generation)}
               rightIcon={
                 <Icon name="chevron-right" size={20} color="#2189DC"></Icon>

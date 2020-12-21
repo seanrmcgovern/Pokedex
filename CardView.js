@@ -64,7 +64,7 @@ const CardView = props => {
   return (
     <View style={styles.wrapper}>
         <FlatList
-          data={pokemon}
+          data={pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
           ref={flatlistRef}
           style={styles.scrollView}
           contentContainerStyle={{
