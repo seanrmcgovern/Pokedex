@@ -17,6 +17,15 @@ import { LogBox } from "react-native";
 
 // PRIORITIES
 // Add images to galarian forms manally, delete hat pikachus and minior forms
+// test ability to flat out load the full json in the expoPokedex project and use that to supply the pokemon data
+// if that does not work then try asyncstorage
+// this project would be for deployment on Expo
+
+// another option is to try native android development, with their core data options
+// this project would deploy onto google play
+
+
+
 // add abilities to forms
 // fix login process to only use core data
 
@@ -34,6 +43,8 @@ import { LogBox } from "react-native";
 //      so users can return to their account after deleting the app
 //      then if they redownload and sign in we can initialize their previously saved parties/favorites
 
+// missing butterfree gmax, spectrier and glastrier, calyrex forms, and a few galarian forms, darmanitan zen galar, cramorant gulping form..
+
 const firebaseConfig = {
   apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",
   authDomain: "pokedex-smcg.firebaseapp.com",
@@ -42,15 +53,6 @@ const firebaseConfig = {
   storageBucket: "pokedex-smcg.appspot.com",
   appId: "1:654908820997:ios:0fb638857d45ca90fc966c"
 };
-// Initialize Firebase
-// const firebaseConfig = {
-//   apiKey: Constants.manifest.extra.REACT_NATIVE_FIREBASE_KEY,
-//   authDomain: Constants.manifest.extra.REACT_NATIVE_FIREBASE_DOMAIN,
-//   databaseURL: Constants.manifest.extra.REACT_NATIVE_FIREBASE_URL,
-//   projectId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_PROJECT_ID,
-//   storageBucket: Constants.manifest.extra.REACT_NATIVE_FIREBASE_BUCKET,
-//   appId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_APP_ID
-// };
 
 firebase.initializeApp(firebaseConfig);
 

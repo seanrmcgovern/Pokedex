@@ -278,7 +278,7 @@ const Settings = ({ navigation, route, userId }) => {
         rightIcon={
           <Button
             onPress={() =>
-              convertToBase64("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/801-original.png")
+              convertToBase64("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/618-galar.png")
             }
             buttonStyle={{
               backgroundColor: "white",
