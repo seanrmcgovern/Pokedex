@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet} from "react-native";
 import { SearchBar } from "react-native-elements";
-import Results from "./Results";
-import ResultsListview from "./ResultsListview";
+import CardView from "./CardView";
+import TableView from "./TableView";
 
 const styles = StyleSheet.create({
   container: {
@@ -33,19 +33,9 @@ const GenerationView = props => {
         inputContainerStyle={styles.input}
       />
       {props.viewCards ? (
-        <Results
-          search={search.toLowerCase()}
-          navigation={props.navigation}
-          generation={props.generation}
-          userId={props.userId}
-        ></Results>
+        <CardView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} pokemon={props.pokemon} userId={props.userId}/>
       ) : (
-        <ResultsListview
-          search={search.toLowerCase()}
-          navigation={props.navigation}
-          generation={props.generation}
-          userId={props.userId}
-        ></ResultsListview>
+        <TableView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} pokemon={props.pokemon} userId={props.userId}/>
       )}
     </View>
   );

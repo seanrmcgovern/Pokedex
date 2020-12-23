@@ -5,6 +5,14 @@ import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Dimensions } from "react-native";
 import { Container, Tab, Tabs, ScrollableTab } from "native-base";
+import kantoData from "./kanto.json";
+import johtoData from "./johto.json";
+import hoennData from "./hoenn.json";
+import sinnohData from "./sinnoh.json";
+import unovaData from "./unova.json";
+import kalosData from "./kalos.json";
+import alolaData from "./alola.json";
+import galarData from "./galar.json";
 
 const width = Dimensions.get("window").width;
 
@@ -26,6 +34,12 @@ const styles = StyleSheet.create({
   },
   headerIcon: {
     paddingRight: 10
+  },
+  activeTab: {
+    color: "#2189DC"
+  },
+  tabLine: {
+    backgroundColor: "#2189DC"
   }
 });
 
@@ -75,65 +89,26 @@ const DashBoard = ({ navigation, route, userId }) => {
 
   const [viewCards, setViewCards] = useState(true);
 
+  const genTabs = [{heading: "Kanto", gen: 1, data: kantoData}, 
+                   {heading: "Johto", gen: 2, data: johtoData}, 
+                   {heading: "Hoenn", gen: 3, data: hoennData}, 
+                   {heading: "Sinnoh", gen: 4, data: sinnohData}, 
+                   {heading: "Unova", gen: 5, data: unovaData}, 
+                   {heading: "Kalos", gen: 6, data: kalosData}, 
+                   {heading: "Alola", gen: 7, data: alolaData}, 
+                   {heading: "Galar", gen: 8, data: galarData}
+                  ];
+
   return (
     <Container>
-      <Tabs renderTabBar={() => <ScrollableTab />}>
-        <Tab heading="Kanto">
-          <GenerationView
-            navigation={navigation}
-            generation={2}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Johto">
-          <GenerationView
-            navigation={navigation}
-            generation={3}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Hoenn">
-          <GenerationView
-            navigation={navigation}
-            generation={4}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Sinnoh">
-          <GenerationView
-            navigation={navigation}
-            generation={5}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Unova">
-          <GenerationView
-            navigation={navigation}
-            generation={8}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Kalos">
-          <GenerationView
-            navigation={navigation}
-            generation={12}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
-        <Tab heading="Alola">
-          <GenerationView
-            navigation={navigation}
-            generation={16}
-            userId={userId}
-            viewCards={viewCards}
-          ></GenerationView>
-        </Tab>
+      <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine} prerenderingSiblingsNumber={7}>
+        {genTabs.map((tab, index) => {
+          return (
+            <Tab heading={tab.heading} activeTextStyle={styles.activeTab} activeTabStyle={styles.activeTab} key={index}>
+              <GenerationView navigation={navigation} generation={tab.gen} pokemon={tab.data} userId={userId} viewCards={viewCards}/>
+            </Tab>
+          );
+        })}
       </Tabs>
     </Container>
   );

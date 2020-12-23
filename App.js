@@ -36,11 +36,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// TODO:
-// Firebase functionalities: rename party, username
-// carousel for details image
-// add moves to details page?
-console.disableYellowBox = true;
+LogBox.ignoreAllLogs();
 
 const Stack = createStackNavigator();
 
