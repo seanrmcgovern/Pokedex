@@ -2,7 +2,6 @@
   "expo": {
     "name": "SeanMcGovern-Pokedex",
     "slug": "pokedex",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",

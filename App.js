@@ -17,13 +17,21 @@ import { Icon } from "react-native-elements";
 import { AppLoading } from "expo";
 
 // Initialize Firebase
+// const firebaseConfig = {
+//   apiKey: Constants.manifest.extra.REACT_NATIVE_FIREBASE_KEY,
+//   authDomain: Constants.manifest.extra.REACT_NATIVE_FIREBASE_DOMAIN,
+//   databaseURL: Constants.manifest.extra.REACT_NATIVE_FIREBASE_URL,
+//   projectId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_PROJECT_ID,
+//   storageBucket: Constants.manifest.extra.REACT_NATIVE_FIREBASE_BUCKET,
+//   appId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_APP_ID
+// };
 const firebaseConfig = {
-  apiKey: Constants.manifest.extra.REACT_NATIVE_FIREBASE_KEY,
-  authDomain: Constants.manifest.extra.REACT_NATIVE_FIREBASE_DOMAIN,
-  databaseURL: Constants.manifest.extra.REACT_NATIVE_FIREBASE_URL,
-  projectId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_PROJECT_ID,
-  storageBucket: Constants.manifest.extra.REACT_NATIVE_FIREBASE_BUCKET,
-  appId: Constants.manifest.extra.REACT_NATIVE_FIREBASE_APP_ID
+  apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",
+  authDomain: "pokedex-smcg.firebaseapp.com",
+  databaseURL: "https://pokedex-smcg.firebaseio.com",
+  projectId: "pokedex-smcg",
+  storageBucket: "pokedex-smcg.appspot.com",
+  appId: "1:654908820997:ios:0fb638857d45ca90fc966c"
 };
 
 firebase.initializeApp(firebaseConfig);
