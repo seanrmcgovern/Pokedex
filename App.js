@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as firebase from "firebase";
-import Constants from "expo-constants";
+// import Constants from "expo-constants";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { View } from "react-native";
 import Login from "./Login";
@@ -14,7 +14,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
-import { AppLoading } from "expo";
+import AppLoading from 'expo-app-loading';
 
 // Initialize Firebase
 // const firebaseConfig = {
