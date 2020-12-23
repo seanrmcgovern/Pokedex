@@ -10,6 +10,10 @@ const Settings = ({ navigation, route, userId }) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  const convertToBase64 = (url) => {
+    NativeModules.CsvDataManager.convertToBase64(url);
+  }
+
   const saveJSON = () => {
     NativeModules.CsvDataManager.saveToJSON();
   }
@@ -17,7 +21,6 @@ const Settings = ({ navigation, route, userId }) => {
   // save each form as a pokecard, with id that matches the original id of the main pokemon form
   // pull those from core data, sort by id, then create new json with all data plus varieties
   // 0 - 899 exclusive
-  // try going 100 at a time
   const saveForms = () => {
     // const forms = []; // array of dictionaries
     // for (let i = 800; i < 899; i++) {
@@ -271,12 +274,27 @@ const Settings = ({ navigation, route, userId }) => {
         backgroundColor: "#DE5C58"
       }}
     >
-      <ListItem title={"Download JSON forms"} 
+      <ListItem title={"Download Image"} 
         rightIcon={
           <Button
             onPress={() =>
+              convertToBase64("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/801-original.png")
+            }
+            buttonStyle={{
+              backgroundColor: "white",
+              borderColor: "#2189DC",
+              borderWidth: 1
+            }}
+            icon={<Icon name="download" size={20} color="#2189DC"></Icon>}
+          ></Button>
+        }></ListItem>
+      <ListItem title={"Download JSON"} 
+        rightIcon={
+          <Button
+            onPress={() =>
+              console.log("downloading")
               // saveJSON()
-              saveForms()
+              // saveForms()
             }
             buttonStyle={{
               backgroundColor: "white",

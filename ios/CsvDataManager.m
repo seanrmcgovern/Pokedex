@@ -15,4 +15,6 @@ RCT_EXTERN_METHOD(saveToJSON)
 
 RCT_EXTERN_METHOD(saveForms)
 
+RCT_EXTERN_METHOD(convertToBase64: (NSString)imageUrl)
+
 @end

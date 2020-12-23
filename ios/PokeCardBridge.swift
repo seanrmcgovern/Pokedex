@@ -90,6 +90,7 @@ class PokeCardBridge:NSObject {
   
   @objc
   func preloadData() -> Void {
+    var count = 0
     if (!defaults.bool(forKey: Keys.coreDataSaved)) {
       do {
         if let jsonURL = Bundle.main.url(forResource: "data", withExtension: "json") {
@@ -111,9 +112,14 @@ class PokeCardBridge:NSObject {
             let stats = item[Card.stats] as! [Int]
             let abilities = item[Card.abilities] as! [NSMutableDictionary]
             let forms = item[Card.forms] as! [NSMutableDictionary]
+            if forms.count > 0 {
+              count += 1
+              print(item[Card.name] as! String)
+            }
             
             saveCardToCoreData(id, generation: generation, name: name, height: height, weight: weight, catchRate: catchRate, friendship: friendship, flavor: flavor, image: image, shiny: shiny, types: types, stats: stats, abilities: abilities, forms: forms)
           }
+          print("Count of pokemon with different forms: ", count)
           defaults.set(true, forKey: Keys.coreDataSaved)
         }
       } catch {
@@ -143,7 +149,7 @@ class PokeCardBridge:NSObject {
     CoreDataManager.shared.saveChanges()
   }
   
-  @objc
+  @objc // for manual saving to json process
   func savePokeCard(_ id: NSNumber, generation: NSNumber, name: NSString, height: NSNumber, weight: NSNumber, catchRate: NSNumber, friendship: NSNumber, flavor: NSString, imageUrl: NSString, shinyUrl: NSString, types: NSArray, stats: NSArray, abilities: NSArray) {
     let mainContext = CoreDataManager.shared.mainContext
     let newCard = PokeCard(context: mainContext)

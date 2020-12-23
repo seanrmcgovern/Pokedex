@@ -155,6 +155,29 @@ class CsvDataManager:NSObject {
     }
   }
   
+  @objc
+  func convertToBase64(_  imageUrl: NSString) {
+    var strBase64:String = ""
+    if imageUrl != "" {
+      if let url = URL(string: imageUrl as String) {
+        if let data = try? Data(contentsOf: url) {
+          if let img = UIImage(data: data) {
+            let png = img.pngData()
+            if png != nil {
+              let imageData = NSData(data: png!)
+              strBase64 = imageData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
+              var pokeArray = [AnyObject]()
+              let dct = NSMutableDictionary()
+              dct.setValue(strBase64, forKey: Card.image)
+              pokeArray.append(dct)
+              createJSON(from: pokeArray)
+            }
+          }
+        }
+      }
+    }
+  }
+  
 //  @objc
 //  func saveForms(_ arr:[[NSMutableDictionary]]) {
 //    var formLists = arr

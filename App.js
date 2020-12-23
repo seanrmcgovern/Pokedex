@@ -15,24 +15,24 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 import { LogBox } from "react-native";
 
-// PRIORITY ONE
-// 1) add abilities and flavor to forms, have to lowercase the names of forms to use them with api
-// 2) fix login process to only use core data?
+// PRIORITIES
+// Add images to galarian forms manally, delete hat pikachus and minior forms
+// add abilities to forms
+// fix login process to only use core data
 
-// PRIORITY TWO
-// Primarily use Core Data
-// Store parties/favorites in core data, sync with firebase
-// Keep Firebase in sync every once in a while, in case user deletes&redownloads the app
-// Still use Firebase for user authentication, 
-//      but we might want to switch to something like google authentication 
-//      so users can return to their account after deleting the app
-//      then if they redownload and sign in we can initialize their previously saved parties/favorites
+// Solely use Core Data
+// Store parties/favorites in core data
 
 // PRIORITY THREE
 // Redo firebase env config for native development, if still using firebase
 // Database functionalities: rename party, username
 // add moves to details page
 // add type filters
+
+// Still use Firebase for user authentication?
+//      but we might want to switch to something like google authentication 
+//      so users can return to their account after deleting the app
+//      then if they redownload and sign in we can initialize their previously saved parties/favorites
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2417qygaMrOPhGx0hd1Fmrtm__zcQYYo",
