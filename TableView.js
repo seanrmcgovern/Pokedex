@@ -75,6 +75,7 @@ const TableView = props => {
           }}
           renderItem={renderRow}
           keyExtractor={keyExtractor}
+          removeClippedSubviews={false}
         ></FlatList>
       </SafeAreaView>
     </View>

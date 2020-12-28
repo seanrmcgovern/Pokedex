@@ -104,7 +104,7 @@ const DashBoard = ({ navigation, route, userId }) => {
       <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine} prerenderingSiblingsNumber={7}>
         {genTabs.map((tab, index) => {
           return (
-            <Tab heading={tab.heading} activeTextStyle={styles.activeTab} activeTabStyle={styles.activeTab} key={index}>
+            <Tab heading={tab.heading} activeTextStyle={styles.activeTab} key={index}>
               <GenerationView navigation={navigation} generation={tab.gen} pokemon={tab.data} userId={userId} viewCards={viewCards}/>
             </Tab>
           );

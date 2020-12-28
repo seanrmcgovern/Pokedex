@@ -1,19 +1,28 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Container, Tab, Tabs } from "native-base";
 import Parties from "./Parties";
 import Favorites from "./Favorites";
 
-const Profile = ({ navigation, route, userId }) => {
+const styles = StyleSheet.create({
+  activeTab: {
+    color: "#2189DC"
+  },
+  tabLine: {
+    backgroundColor: "#2189DC"
+  }
+});
+
+const Profile = ({ navigation, route }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "#DE5C58" }}>
       <Container>
-        <Tabs locked>
-          <Tab heading="Parties">
-            <Parties navigation={navigation} userId={userId}></Parties>
+        <Tabs tabBarUnderlineStyle={styles.tabLine} locked>
+          <Tab heading="Parties" activeTextStyle={styles.activeTab} activeTabStyle={styles.activeTab}>
+            <Parties navigation={navigation}></Parties>
           </Tab>
-          <Tab heading="Favorites">
-            <Favorites navigation={navigation} userId={userId} />
+          <Tab heading="Favorites" activeTextStyle={styles.activeTab}>
+            <Favorites navigation={navigation} />
           </Tab>
         </Tabs>
       </Container>

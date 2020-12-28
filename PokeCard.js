@@ -44,7 +44,6 @@ const PokeCard = props => {
           name: props.pokemon.name,
           pokemon: props.pokemon,
           isNested: false,
-          userId: props.userId,
         });
       }}
       style={styles.card}
@@ -52,12 +51,12 @@ const PokeCard = props => {
         <Text style={styles.number}>{props.pokemon.id}</Text>
         <Image
           resizeMode="cover"
-          source={{uri: `data:image/jpeg;base64,${props.pokemon.image}`}}
+          source={props.pokemon.image === "" ? Pokeball : {uri: `data:image/jpeg;base64,${props.pokemon.image}`}}
           style={{
             width: 100,
             height: 100,
             resizeMode: "contain",
-            marginTop: 0
+            marginTop: props.pokemon.image === "" ? 10 : 0
           }}
         />
         <Text style={styles.title}>{props.pokemon.name}</Text>

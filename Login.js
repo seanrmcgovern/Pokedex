@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
-import { Icon, Input, Button } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import Sequoia from "./assets/sequoia.png";
 
 const styles = StyleSheet.create({
@@ -17,14 +17,8 @@ const Login = props => {
 
   const register = () => {
     setCreatingAccount(true);
+    props.initializeUser(username).then(() => setCreatingAccount(false));
   };
-
-  useEffect(() => {
-    if (creatingAccount) {
-      props.initializeUser(username);
-    }
-    setCreatingAccount(false);
-  }, [creatingAccount]);
 
   return (
     <View style={{ height: "100%" }}>

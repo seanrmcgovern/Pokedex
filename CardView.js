@@ -62,7 +62,7 @@ const CardView = props => {
           numColumns={3}
           renderItem={renderCard}
           keyExtractor={keyExtractor}
-          removeClippedSubviews
+          removeClippedSubviews={false}
         ></FlatList>
     </View>
   );

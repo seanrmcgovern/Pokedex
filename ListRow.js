@@ -10,7 +10,6 @@ const ListRow = props => {
           name: props.pokemon.name,
           pokemon: props.pokemon,
           isNested: false,
-          userId: props.userId,
         })
       }
       title={props.pokemon.name}

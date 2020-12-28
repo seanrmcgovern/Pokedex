@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import * as firebase from "firebase";
 import {
   View,
   TouchableOpacity,
@@ -10,7 +9,6 @@ import {
 } from "react-native";
 import { Text, Card, CardItem, Body } from "native-base";
 import Pokeball from "./assets/pokeball.png";
-import Icon from "react-native-vector-icons/FontAwesome";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Sequoia from "./assets/sequoia.png";
 
@@ -155,14 +153,14 @@ const Favorites = ({ navigation, route, userId }) => {
   };
 
   useEffect(() => {
-    firebase
-      .database()
-      .ref("users/" + userId)
-      .on("value", snapshot => {
-        const curFavs = snapshot.val().favorites;
-        curFavs.shift();
-        setFavorites(curFavs);
-      });
+    // firebase
+    //   .database()
+    //   .ref("users/" + userId)
+    //   .on("value", snapshot => {
+    //     const curFavs = snapshot.val().favorites;
+    //     curFavs.shift();
+    //     setFavorites(curFavs);
+    //   });
   }, []);
 
   return (
