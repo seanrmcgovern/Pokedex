@@ -142,8 +142,6 @@ const Details = ({ navigation, route }) => {
     const value = formattedFavorites.some((item) => item.id == pokemon.id);
     setIsFavorite(value);
     setFavorites(formattedFavorites);
-    console.log({value});
-    console.log(formattedFavorites.length);
   }
 
   React.useLayoutEffect(() => {

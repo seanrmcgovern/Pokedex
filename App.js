@@ -15,7 +15,7 @@ import Details from "./Details";
 import MegaDetails from "./MegaDetails";
 import Profile from "./Profile";
 
-// console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
@@ -191,7 +191,7 @@ const App = () => {
   else { // finished loading and username is null
     return <Login initializeUser={initializeUser} />;
   }
-  
+
 };
 
 export default App;
