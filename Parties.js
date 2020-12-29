@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button, Overlay, Input, ListItem } from "react-native-elements";
-import { Root, Toast, Fab } from "native-base";
+import { Root, Toast } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import PartyList from "./PartyList";
 
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     right: 20,
-    bottom: 30,
+    bottom: 20,
     backgroundColor: "#2189DC",
     borderRadius: 30,
     shadowOffset: { width: 0, height: 1 },
@@ -127,7 +127,7 @@ const Parties = props => {
         </Overlay>
       </View>
       <TouchableOpacity style={styles.buttonFab} onPress={() => setOverlayVisible(!overlayVisible)}>
-        <Icon name="plus" style={{color: "white"}} size={30}/>
+        <Icon name="plus" style={{color: "white"}} size={20}/>
       </TouchableOpacity>
     </Root>
   );

@@ -8,6 +8,7 @@ import {
   ImageBackground,
   TouchableOpacity
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ListItem, Button  } from "react-native-elements";
 import { Root, Toast, Fab, Separator } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -51,42 +52,6 @@ const Details = ({ navigation, route }) => {
   const { isNested } = route.params;
   
   const [isShiny, setIsShiny] = useState(false);
-
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(); // the pokemon's current index in the list of favorites
-  const [favorites, setFavorites] = useState([]);
-  const favorite = () => {
-    // if (!isFavorite) {
-    //   firebase
-    //     .database()
-    //     .ref("users/" + userId + "/favorites")
-    //     .set([...favorites, pokeObject]);
-    //   showToast(`${name} added to favorites`);
-    // } else {
-    //   // already is a favorite...want to unfavorite
-    //   let newFavorites = favorites;
-    //   newFavorites.splice(currentIndex, 1);
-    //   firebase
-    //     .database()
-    //     .ref("users/" + userId + "/favorites")
-    //     .set(newFavorites);
-    //   showToast(`${name} removed from favorites`);
-    //   setIsFavorite(false);
-    // }
-  };
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Icon
-          name={isFavorite ? "star" : "star-o"}
-          size={20}
-          color="white"
-          style={styles.headerIcon}
-        />
-      )
-    });
-  }, [navigation, isFavorite]);
 
   const [activeFab, setActiveFab] = useState(false);
   const [popVisible, setPopVisible] = useState(false);
@@ -141,30 +106,78 @@ const Details = ({ navigation, route }) => {
     }
   };
 
+  // favorites logic
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+
+  const favorite = () => {
+    toggleFavorite().then(() => getFavorites());
+  }
+
+  const toggleFavorite = async () => {
+    if (!isFavorite) {
+      try {
+        let newFavorites = [...favorites, pokemon];
+        await AsyncStorage.setItem("favorites", JSON.stringify(newFavorites));
+        showToast(`${pokemon.name} added to favorites`);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      const index = favorites.findIndex((item) => item.id == pokemon.id);
+      let newFavorites = favorites;
+      newFavorites.splice(index, 1);
+      try {
+        await AsyncStorage.setItem("favorites", JSON.stringify(newFavorites));
+        showToast(`${pokemon.name} removed from favorites`);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  const getFavorites = async () => {
+    const favorites = await AsyncStorage.getItem("favorites");
+    const formattedFavorites = JSON.parse(favorites);
+    const value = formattedFavorites.some((item) => item.id == pokemon.id);
+    setIsFavorite(value);
+    setFavorites(formattedFavorites);
+    console.log({value});
+    console.log(formattedFavorites.length);
+  }
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Icon
+          name={isFavorite ? "star" : "star-o"}
+          size={20}
+          color="white"
+          style={styles.headerIcon}
+        />
+      )
+    });
+  }, [navigation, isFavorite]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // The screen is now focused
+      // refresh parties
+      getFavorites();
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
   const [expanded, setExpanded] = useState({});
 
   useEffect(() => {
+    getFavorites();
     for (const ability in pokemon.abilities) {
       const name = ability.name;
       setExpanded({...expanded, [name]: false});
     }
   }, []);
-
-  // useEffect(() => {
-  //   firebase
-  //     .database()
-  //     .ref("users/" + userId)
-  //     .on("value", snapshot => {
-  //       const curFavs = snapshot.val().favorites;
-  //       setFavorites(curFavs);
-  //       for (let i = 0; i < curFavs.length; i++) {
-  //         if (curFavs[i].name === pokemon.name) {
-  //           setIsFavorite(true);
-  //           setCurrentIndex(i);
-  //         }
-  //       }
-  //     });
-  // }, []);
 
   return (
     <Root>
@@ -256,7 +269,7 @@ const Details = ({ navigation, route }) => {
                     onPress={() => {
                       navigation.push("Details", {
                         name: form.name,
-                        pokemon: {...form, abilities: pokemon.abilities, forms: []},
+                        pokemon: {...form, abilities: pokemon.abilities, id: pokemon.id, forms: []},
                         isNested: true
                       });
                     }}
@@ -306,37 +319,38 @@ const Details = ({ navigation, route }) => {
           navigation={navigation}
         ></Popover>
       </ScrollView>
-      <Fab
-        active={activeFab}
-        direction="up"
-        style={{ backgroundColor: "#2189DC" }}
-        position="bottomRight"
-        onPress={() => setActiveFab(!activeFab)}
-      >
-        <Icon name="crosshairs" />
-        <Button
-          style={{
-            backgroundColor: "#1CA94C",
-            shadowOffset: { width: 0, height: 1 },
-            shadowColor: "black",
-            shadowOpacity: 0.75
-          }}
-          onPress={favorite}
+      {!isNested && 
+        <Fab
+          active={activeFab}
+          direction="up"
+          style={{ backgroundColor: "#2189DC" }}
+          position="bottomRight"
+          onPress={() => setActiveFab(!activeFab)}
         >
-          <Icon name="star-o" />
-        </Button>
-        <Button
-          style={{
-            backgroundColor: "#DE5C58",
-            shadowOffset: { width: 0, height: 1 },
-            shadowColor: "black",
-            shadowOpacity: 0.75
-          }}
-          onPress={togglePopover}
-        >
-          <Icon name="tasks" />
-        </Button>
-      </Fab>
+          <Icon name="crosshairs" />
+          <Button
+            style={{
+              backgroundColor: "#1CA94C",
+              shadowOffset: { width: 0, height: 1 },
+              shadowColor: "black",
+              shadowOpacity: 0.75
+            }}
+            onPress={favorite}
+          >
+            <Icon name="star-o" />
+          </Button>
+          <Button
+            style={{
+              backgroundColor: "#DE5C58",
+              shadowOffset: { width: 0, height: 1 },
+              shadowColor: "black",
+              shadowOpacity: 0.75
+            }}
+            onPress={togglePopover}
+          >
+            <Icon name="tasks" />
+          </Button>
+        </Fab>}
     </Root>
   );
 };

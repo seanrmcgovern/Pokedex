@@ -7,9 +7,10 @@ import {
   ImageBackground,
   StyleSheet
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Card, CardItem, Body } from "native-base";
-import Pokeball from "./assets/pokeball.png";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import Pokeball from "./assets/pokeball.png";
 import Sequoia from "./assets/sequoia.png";
 
 const styles = StyleSheet.create({
@@ -57,8 +58,6 @@ const Favorites = ({ navigation, route, userId }) => {
     }
   ];
 
-  const [favorites, setFavorites] = useState([]);
-
   const [activeIndex, setActiveIndex] = useState(0);
 
   const ref = useRef();
@@ -67,19 +66,13 @@ const Favorites = ({ navigation, route, userId }) => {
     const isPokemon = typeof item.id === "number";
     return (
       <TouchableOpacity
-        onPress={() => {
-          if (isPokemon) {
-            navigation.navigate("Details", {
-              name: capitalize(item.name),
-              pokemon: item.pokemon,
-              image: item.image,
-              id: item.id,
-              gen: item.gen,
-              shiny: item.shiny,
-              userId: userId
-            });
-          }
-        }}
+      onPress={() => {
+        navigation.navigate("Details", {
+          name: item.name,
+          pokemon: item,
+          isNested: false,
+        });
+      }}
       >
         <Card style={{ borderRadius: 40, backgroundColor: "#EDEBED" }}>
           <CardItem
@@ -105,7 +98,7 @@ const Favorites = ({ navigation, route, userId }) => {
               <ImageBackground source={Pokeball} style={styles.image}>
                 <Image
                   resizeMode="cover"
-                  source={{ uri: item.image }}
+                  source={{uri: `data:image/jpeg;base64,${item.image}`}}
                   style={{
                     alignSelf: "center",
                     height: ITEM_HEIGHT,
@@ -152,15 +145,26 @@ const Favorites = ({ navigation, route, userId }) => {
     );
   };
 
+  const [favorites, setFavorites] = useState([]);
+
+  const getFavorites = async () => {
+    const favorites = await AsyncStorage.getItem("favorites");
+    const formattedFavorites = JSON.parse(favorites);
+    setFavorites(formattedFavorites);
+  }
+
   useEffect(() => {
-    // firebase
-    //   .database()
-    //   .ref("users/" + userId)
-    //   .on("value", snapshot => {
-    //     const curFavs = snapshot.val().favorites;
-    //     curFavs.shift();
-    //     setFavorites(curFavs);
-    //   });
+    const unsubscribe = navigation.addListener('focus', () => {
+      // The screen is now focused
+      // refresh parties
+      getFavorites();
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    getFavorites();
   }, []);
 
   return (
