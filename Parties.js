@@ -7,7 +7,7 @@ import {
   StyleSheet
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Button, Overlay, Input } from "react-native-elements";
+import { Button, Overlay, Input, ListItem } from "react-native-elements";
 import { Root, Toast, Fab } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import PartyList from "./PartyList";
@@ -22,7 +22,10 @@ const styles = StyleSheet.create({
     right: 20,
     bottom: 30,
     backgroundColor: "#2189DC",
-    borderRadius: 30
+    borderRadius: 30,
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: "black",
+    shadowOpacity: 0.75
   },
 });
 
@@ -81,12 +84,15 @@ const Parties = props => {
 
   return (
     <Root>
-      <View style={{backgroundColor: "#DE5C58", flex: 1, justifyContent: "center", alignItems: "center"}}>
-        <ScrollView
-          style={{ backgroundColor: "#DE5C58" }}
-          contentContainerStyle={{ paddingBottom: 400 }}
-        >
+      <View style={{backgroundColor: "#DE5C58", flex: 1}}>
+        <ScrollView style={{ backgroundColor: "#DE5C58" }}>
           <View style={{ backgroundColor: "white" }}>
+            {parties.length == 0 && 
+              <ListItem
+                title={"Create parties to plan teams for mainline games, nuzlocke runs, or competitive play!"}
+                bottomDivider
+                containerStyle={{ backgroundColor: "#F4F3F4" }}
+              ></ListItem>}
             {parties.map((party, index) => (
               <PartyList
                 navigation={props.navigation}
@@ -101,26 +107,6 @@ const Parties = props => {
             ))}
           </View>
         </ScrollView>
-        {/* <View style={{ flex: 1, justifyContent: "flex-end" }}>
-          <TouchableOpacity
-            onPress={() => setOverlayVisible(!overlayVisible)}
-            style={{ flex: 1, justifyContent: "flex-end", minHeight: 80 }}
-          >
-            <View
-              style={{
-                backgroundColor: "#2189DC",
-                padding: 15,
-                display: "flex",
-                borderBottomWidth: 0.5,
-                borderBottomColor: "#D3D3D3",
-                alignItems: "center",
-                marginBottom: 0
-              }}
-            >
-              <Icon name="plus-square" size={40} color="white"></Icon>
-            </View>
-          </TouchableOpacity>
-        </View> */}
         <Overlay isVisible={overlayVisible} onBackdropPress={close} overlayStyle={{ width: "70%" }}>
           <Text style={{color: "#2189DC", fontSize: 16, fontWeight: "bold", marginBottom: 10}}>
             Enter Party Info
@@ -140,17 +126,8 @@ const Parties = props => {
           </View>
         </Overlay>
       </View>
-        {/* <Fab
-          style={{ backgroundColor: "#2189DC" }}
-          position="bottomRight"
-          onPress={() => setOverlayVisible(!overlayVisible)}
-        >
-          <TouchableOpacity onPress={() => setOverlayVisible(!overlayVisible)}>
-            <Icon name="plus" style={{color: "white", }} size={30}/>
-          </TouchableOpacity>
-        </Fab> */}
       <TouchableOpacity style={styles.buttonFab} onPress={() => setOverlayVisible(!overlayVisible)}>
-        <Icon name="plus" style={{color: "white", }} size={30}/>
+        <Icon name="plus" style={{color: "white"}} size={30}/>
       </TouchableOpacity>
     </Root>
   );

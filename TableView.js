@@ -57,27 +57,25 @@ const TableView = props => {
 
   return (
     <View style={styles.wrapper}>
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={props.pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
-          style={styles.scrollView}
-          // contentContainerStyle={{
-          //   flexDirection: "row",
-          //   flexWrap: "wrap",
-          //   paddingBottom: 400,
-          //   flexGrow: 1,
-          //   justifyContent: "center"
-          // }}
-          contentContainerStyle={{
-            paddingBottom: 400,
-            marginLeft: 10,
-            marginRight: 10
-          }}
-          renderItem={renderRow}
-          keyExtractor={keyExtractor}
-          removeClippedSubviews={false}
-        ></FlatList>
-      </SafeAreaView>
+      <FlatList
+        data={props.pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
+        style={styles.scrollView}
+        // contentContainerStyle={{
+        //   flexDirection: "row",
+        //   flexWrap: "wrap",
+        //   paddingBottom: 400,
+        //   flexGrow: 1,
+        //   justifyContent: "center"
+        // }}
+        contentContainerStyle={{
+          paddingBottom: 400,
+          marginLeft: 10,
+          marginRight: 10
+        }}
+        renderItem={renderRow}
+        keyExtractor={keyExtractor}
+        removeClippedSubviews={false}
+      ></FlatList>
     </View>
   );
 };

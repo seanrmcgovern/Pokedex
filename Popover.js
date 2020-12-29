@@ -53,6 +53,16 @@ const Popover = props => {
   }
 
   useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      // The screen is now focused
+      // refresh parties
+      getParties();
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [props.navigation]);
+
+  useEffect(() => {
     getParties();
   }, []);
 
@@ -76,6 +86,12 @@ const Popover = props => {
         Add to Party
       </Text>
       <ScrollView>
+        {parties.length == 0 && 
+          <ListItem
+            title={"Create a party to choose from."}
+            bottomDivider
+            topDivider
+          ></ListItem>}
         {parties.map((party, index) => (
           <TouchableOpacity onPress={() => handlePartyChange(index)} key={index}>
             <ListItem

@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
-import { View, Text } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { View, Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ListItem, Button, ButtonGroup } from "react-native-elements";
+import { ListItem, Button, ButtonGroup, Input } from "react-native-elements";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Transition, Transitioning } from "react-native-reanimated";
@@ -18,6 +18,14 @@ const PartyList = props => {
   const [open, setOpen] = useState(false);
   const height = open ? "auto" : 0;
   const ref = useRef();
+
+  const [newTitle, setNewTitle] = useState(props.title);
+
+  const saveChanges = async () => {
+    let newParties = props.parties;
+    newParties[props.partyIndex].title = newTitle;
+    await AsyncStorage.setItem("parties", JSON.stringify(newParties));
+  }
 
   const handleItemDeletion = (index) => {
     deletePartyItem(index).then(() => props.refresh());
@@ -42,11 +50,27 @@ const PartyList = props => {
   const [editActive, setEditActive] = useState(false);
   const handleButtonPress = index => {
     if (index == 0) {
-      deleteParty().then(() => {
-        props.refresh();
-      });
+      Alert.alert(
+        'Do you want to delete this party?',
+        'You cannot undo this action, but you can manually recreate the party later',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel'
+          },
+          { text: 'OK', onPress: () => {
+            deleteParty().then(() => {
+              props.refresh();
+            });
+          } }
+        ],
+        { cancelable: false }
+      );
     } else {
-      setEditActive(!editActive);
+      saveChanges().then(() => {
+        setEditActive(!editActive);
+      });
     }
   };
 
@@ -60,13 +84,20 @@ const PartyList = props => {
     );
   const buttons = [{ element: button1 }, { element: button2 }];
 
+  useEffect(() => {
+    setNewTitle(props.title);
+  }, [props.title]);
+
   return (
     <View>
       <Transitioning.View transition={transition} ref={ref}>
         <TouchableWithoutFeedback
           onPress={() => {
             setOpen(prev => !prev);
-            setEditActive(false);
+            if (editActive) {
+              saveChanges();
+              setEditActive(false);
+            }
             // ref.current.animateNextTransition();
           }}
         >
@@ -81,27 +112,19 @@ const PartyList = props => {
               borderBottomColor: "#D3D3D3"
             }}
           >
-            <Text
-              style={{
-                fontSize: 16,
-                flex: 1,
-                alignItems: "flex-start"
-              }}
-            >
-              {props.title}
-            </Text>
-            <View
-              style={{
-                alignItems: "flex-end",
-                flex: 1
-              }}
-            >
-              {open ? (
+            <Input
+              // label="Username"
+              value={newTitle}
+              onChangeText={text => setNewTitle(text)}
+              disabled={!editActive}
+              inputContainerStyle={editActive ? {} : {borderBottomWidth:0}}
+              inputStyle={{textDecorationLine: "none"}}
+              rightIcon={open ? (
                 <Icon name="chevron-down" size={20} color="#2189DC"></Icon>
               ) : (
                 <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
               )}
-            </View>
+            />
           </View>
         </TouchableWithoutFeedback>
         <View
@@ -110,6 +133,12 @@ const PartyList = props => {
             overflow: "hidden"
           }}
         >
+          {props.party.length == 0 && 
+            <ListItem
+              title={"Party is currently empty."}
+              bottomDivider
+              containerStyle={{ backgroundColor: "#F4F3F4" }}
+            ></ListItem>}
           {props.party.map(
             (item, index) =>
               (
@@ -153,8 +182,6 @@ const PartyList = props => {
           )}
           <ButtonGroup
             onPress={handleButtonPress}
-            // selectedButtonStyle={{ backgroundColor: "#F4F3F4" }}
-            // selectedIndex={selectedButton}
             buttons={buttons}
             containerStyle={{
               marginTop: 0,

@@ -16,7 +16,7 @@ import MegaDetails from "./MegaDetails";
 import Profile from "./Profile";
 
 // TODO
-// 1) Convert favorites/parties to use AsyncStorage
+// 1) Convert favorites to use AsyncStorage
 
 console.disableYellowBox = true;
 
@@ -51,13 +51,6 @@ const App = () => {
           name="Details"
           component={Details}
           options={({ navigation, route }) => ({
-            title: route.params.name
-          })}
-        />
-        <Stack.Screen
-          name="MegaDetails"
-          component={MegaDetails}
-          options={({ route }) => ({
             title: route.params.name
           })}
         />
@@ -114,7 +107,7 @@ const App = () => {
   const initializeUser = async (name) => {
     try {
       const user = ["username", name];
-      const parties = ["parties", JSON.stringify([])];
+      const parties = ["parties", JSON.stringify([{title: "Party 1", items: []}, {title: "Party 2", items: []}, {title: "Party 3", items: []}])];
       const favorites = ["favorites", JSON.stringify([])];
       // await AsyncStorage.setItem("username", name);
       await AsyncStorage.multiSet([user, parties, favorites]);
@@ -164,7 +157,7 @@ const App = () => {
                 if (focused) {
                   return <Icon name="th" type="font-awesome" color="#2189DC" />;
                 }
-                return <Icon name="th" type="font-awesome" color="#DE5C58" />;
+                return <Icon name="th" type="font-awesome" color="#8e8e93" />;
               } else {
                 if (focused) {
                   return (
@@ -179,7 +172,7 @@ const App = () => {
                   <Icon
                     name="user-circle"
                     type="font-awesome"
-                    color="#DE5C58"
+                    color="#8e8e93"
                   />
                 );
               }
@@ -187,7 +180,6 @@ const App = () => {
           })}
           tabBarOptions={{
             activeTintColor: "#2189DC",
-            inactiveTintColor: "#DE5C58",
             style: {
               backgroundColor: "white"
             }

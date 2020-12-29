@@ -303,6 +303,7 @@ const Details = ({ navigation, route }) => {
           close={togglePopover}
           pokemon={pokemon}
           showToast={showToast}
+          navigation={navigation}
         ></Popover>
       </ScrollView>
       <Fab
