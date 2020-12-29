@@ -15,10 +15,7 @@ import Details from "./Details";
 import MegaDetails from "./MegaDetails";
 import Profile from "./Profile";
 
-// TODO
-// 1) Convert favorites to use AsyncStorage
-
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
@@ -194,68 +191,7 @@ const App = () => {
   else { // finished loading and username is null
     return <Login initializeUser={initializeUser} />;
   }
-
-  // if (loading === 2) {
-  //   return (
-  //     <NavigationContainer>
-  //       <Tab.Navigator
-  //         screenOptions={({ route }) => ({
-  //           tabBarIcon: ({ focused, color, size }) => {
-  //             if (route.name === "Pokedex") {
-  //               if (focused) {
-  //                 return <Icon name="th" type="font-awesome" color="#2189DC" />;
-  //               }
-  //               return <Icon name="th" type="font-awesome" color="#DE5C58" />;
-  //             } else {
-  //               if (focused) {
-  //                 return (
-  //                   <Icon
-  //                     name="user-circle"
-  //                     type="font-awesome"
-  //                     color="#2189DC"
-  //                   />
-  //                 );
-  //               }
-  //               return (
-  //                 <Icon
-  //                   name="user-circle"
-  //                   type="font-awesome"
-  //                   color="#DE5C58"
-  //                 />
-  //               );
-  //             }
-  //           }
-  //         })}
-  //         tabBarOptions={{
-  //           activeTintColor: "#2189DC",
-  //           inactiveTintColor: "#DE5C58",
-  //           style: {
-  //             backgroundColor: "white"
-  //           }
-  //         }}
-  //       >
-  //         <Tab.Screen name={"Pokedex"} component={Pokedex} />
-  //         <Tab.Screen name={"Profile"} component={ProfileTab} />
-  //       </Tab.Navigator>
-  //     </NavigationContainer>
-  //   );
-  // } else if (loading === 1) {
-  //   return <Login initializeUser={initializeUser} />;
-  // }
-
-  // return (
-  //   <View style={{ height: "100%" }}>
-  //     <View
-  //       style={{
-  //         flex: 1,
-  //         flexDirection: "column",
-  //         justifyContent: "center"
-  //       }}
-  //     >
-  //       <AppLoading></AppLoading>
-  //     </View>
-  //   </View>
-  // );
+  
 };
 
 export default App;
