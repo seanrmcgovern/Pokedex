@@ -8,9 +8,9 @@ import { Transition, Transitioning } from "react-native-reanimated";
 
 const transition = (
   <Transition.Together>
-    <Transition.In type="fade" durationMs={200}></Transition.In>
+    <Transition.In type="slide-top" durationMs={100}></Transition.In>
     <Transition.Change></Transition.Change>
-    <Transition.Out type="fade" durationMs={200}></Transition.Out>
+    <Transition.Out type="slide-bottom" durationMs={100}></Transition.Out>
   </Transition.Together>
 );
 
@@ -98,7 +98,7 @@ const PartyList = props => {
               saveChanges();
               setEditActive(false);
             }
-            // ref.current.animateNextTransition();
+            ref.current.animateNextTransition();
           }}
         >
           <View
@@ -113,7 +113,6 @@ const PartyList = props => {
             }}
           >
             <Input
-              // label="Username"
               value={newTitle}
               onChangeText={text => setNewTitle(text)}
               disabled={!editActive}

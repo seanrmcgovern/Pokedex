@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppLoading from 'expo-app-loading';
 import * as ScreenOrientation from "expo-screen-orientation";
 import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
-import AppLoading from 'expo-app-loading';
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import Results from "./Results";

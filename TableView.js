@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useCallback } from "react";
 import {
   StyleSheet,
   View,
-  SafeAreaView,
   FlatList
 } from "react-native";
 import { Dimensions } from "react-native";
@@ -60,13 +59,6 @@ const TableView = props => {
       <FlatList
         data={props.pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
         style={styles.scrollView}
-        // contentContainerStyle={{
-        //   flexDirection: "row",
-        //   flexWrap: "wrap",
-        //   paddingBottom: 400,
-        //   flexGrow: 1,
-        //   justifyContent: "center"
-        // }}
         contentContainerStyle={{
           paddingBottom: 400,
           marginLeft: 10,
