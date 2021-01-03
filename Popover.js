@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, ScrollView} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ListItem, Overlay, Input, Button } from "react-native-elements";
-// import { ScrollView } from "react-native-gesture-handler";
 
 const Popover = props => {
   const [parties, setParties] = useState([]);
@@ -69,7 +68,7 @@ const Popover = props => {
         setNewPartyName("");
         props.close();
       }}
-      overlayStyle={{ width: "80%", maxHeight: "60%", flex: 1 }}
+      overlayStyle={{ width: "80%", maxHeight: "50%", flex: 1 }}
     >
       <View style={{flex: 1}}>
         <Text

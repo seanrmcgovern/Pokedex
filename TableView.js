@@ -4,18 +4,11 @@ import {
   View,
   FlatList
 } from "react-native";
-import { Dimensions } from "react-native";
 import ListRow from "./ListRow";
-
-const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1
-  },
-  container: {
-    flex: 1,
-    width: width
   },
   scrollView: {
     backgroundColor: "#DE5C58",
@@ -59,7 +52,7 @@ const TableView = props => {
         data={props.pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
         style={styles.scrollView}
         contentContainerStyle={{
-          paddingBottom: 500,
+          paddingBottom: Platform.OS === 'ios' ? 400 : 500,
           marginLeft: 10,
           marginRight: 10
         }}

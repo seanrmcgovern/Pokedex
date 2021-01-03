@@ -3,26 +3,16 @@ import PokeCard from "./PokeCard";
 import {
   StyleSheet,
   View,
-  FlatList
+  FlatList,
+  Platform
 } from "react-native";
-import { Dimensions } from "react-native";
-
-const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
   },
-  container: {
-    flex: 1,
-    width: width
-    //width: "100%",
-    //margin: 14
-    // marginHorizontal: "2%"
-  },
   scrollView: {
     backgroundColor: "#DE5C58",
-    //marginHorizontal: 20,
     borderTopWidth: 0,
     height: 1000,
     position: "absolute",
@@ -55,7 +45,7 @@ const CardView = props => {
           data={props.pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
           style={styles.scrollView}
           contentContainerStyle={{
-            paddingBottom: 500,
+            paddingBottom: Platform.OS === 'ios' ? 400 : 500,
             justifyContent: "center",
             alignItems:'center',
           }}

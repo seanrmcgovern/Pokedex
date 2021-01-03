@@ -273,6 +273,7 @@ const Details = ({ navigation, route }) => {
                       }}
                       bottomDivider
                       topDivider
+                      rightIcon={<Icon name="chevron-right" size={20} color="#2189DC"></Icon>}
                     ></ListItem>
                   ))}
               </View>
@@ -300,16 +301,16 @@ const Details = ({ navigation, route }) => {
                     rightTitle={pokemon.friendship + " / 255"}
                     bottomDivider
                   ></ListItem>
+                  <ListItem
+                    title="Competitive Strategies"
+                    titleStyle={{color: "#2189DC"}}
+                    onPress={() => openStrategy(pokemon.generation)}
+                    rightIcon={
+                      <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
+                    }
+                  ></ListItem>
                 </View>
               }
-            <ListItem
-              title="Competitive Strategies"
-              titleStyle={{color: "#2189DC"}}
-              onPress={() => openStrategy(pokemon.generation)}
-              rightIcon={
-                <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
-              }
-            ></ListItem>
           </View>
         <Popover
           visible={popVisible}

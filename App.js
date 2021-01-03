@@ -12,14 +12,9 @@ import Dashboard from "./Dashboard";
 import Results from "./Results";
 import PokeCard from "./PokeCard";
 import Details from "./Details";
-import MegaDetails from "./MegaDetails";
 import Profile from "./Profile";
 
-// edit readme to mention axios and api change
-// get andriod emulator and check compatibility
 // add detox tests
-
-// console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
@@ -88,13 +83,6 @@ const App = () => {
           name="Details"
           component={Details}
           options={({ navigation, route }) => ({
-            title: route.params.name
-          })}
-        />
-        <Stack.Screen
-          name="MegaDetails"
-          component={MegaDetails}
-          options={({ route }) => ({
             title: route.params.name
           })}
         />
