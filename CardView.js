@@ -11,8 +11,7 @@ const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: "#DE5C58",
-    width: width
+    flex: 1,
   },
   container: {
     flex: 1,
@@ -24,6 +23,7 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#DE5C58",
     //marginHorizontal: 20,
+    borderTopWidth: 0,
     height: 1000,
     position: "absolute",
     top: 0,
@@ -47,7 +47,7 @@ const CardView = props => {
     }
   );
 
-  const keyExtractor = useCallback((item) => item.id.toString(), []);
+  const keyExtractor = useCallback((item) => item.id, []);
 
   return (
     <View style={styles.wrapper}>
@@ -55,14 +55,15 @@ const CardView = props => {
           data={props.pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
           style={styles.scrollView}
           contentContainerStyle={{
-            paddingBottom: 400,
+            paddingBottom: 500,
             justifyContent: "center",
-            alignItems:'center'
+            alignItems:'center',
           }}
           numColumns={3}
           renderItem={renderCard}
           keyExtractor={keyExtractor}
           removeClippedSubviews={false}
+          bounces={true}
         ></FlatList>
     </View>
   );

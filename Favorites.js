@@ -46,10 +46,6 @@ const Favorites = ({ navigation, route, userId }) => {
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
   const ITEM_HEIGHT = Math.round(Dimensions.get("screen").height * 0.3);
 
-  const capitalize = str => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
   const emptyFavorites = [
     {
       id: "Pokemon you favorite will be listed here.",
@@ -66,13 +62,13 @@ const Favorites = ({ navigation, route, userId }) => {
     const isPokemon = typeof item.id === "number";
     return (
       <TouchableOpacity
-      onPress={() => {
-        navigation.navigate("Details", {
-          name: item.name,
-          pokemon: item,
-          isNested: false,
-        });
-      }}
+        onPress={() => {
+          navigation.navigate("Details", {
+            name: item.name,
+            pokemon: item,
+            isNested: false,
+          });
+        }}
       >
         <Card style={{ borderRadius: 40, backgroundColor: "#EDEBED" }}>
           <CardItem
@@ -81,7 +77,7 @@ const Favorites = ({ navigation, route, userId }) => {
             <Body style={{ alignItems: "center", paddingTop: 10 }}>
               <Text
                 style={{
-                  fontFamily: "PingFangHK-Semibold",
+                  // fontFamily: "PingFangHK-Semibold",
                   color: "#2189DC",
                   fontSize: isPokemon ? 25 : 18
                 }}
@@ -132,7 +128,7 @@ const Favorites = ({ navigation, route, userId }) => {
             <Body style={{ alignItems: "center", color: "" }}>
               <Text
                 style={{
-                  fontFamily: "PingFangHK-Semibold",
+                  // fontFamily: "PingFangHK-Semibold",
                   color: "#2189DC"
                 }}
               >
@@ -172,7 +168,7 @@ const Favorites = ({ navigation, route, userId }) => {
       style={{
         flex: 1,
         backgroundColor: "#DE5C58",
-        paddingTop: 100
+        paddingTop: "15%"
       }}
     >
       <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>

@@ -7,8 +7,11 @@ import TableView from "./TableView";
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#DE5C58",
-    borderTopColor: "transparent",
-    borderBottomColor: "transparent"
+    // borderTopColor: "transparent",
+    // borderBottomColor: "transparent",
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    margin: 0
   },
   input: {
     backgroundColor: "white"

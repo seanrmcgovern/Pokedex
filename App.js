@@ -15,7 +15,11 @@ import Details from "./Details";
 import MegaDetails from "./MegaDetails";
 import Profile from "./Profile";
 
-console.disableYellowBox = true;
+// edit readme to mention axios and api change
+// get andriod emulator and check compatibility
+// add detox tests
+
+// console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 

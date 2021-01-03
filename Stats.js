@@ -10,7 +10,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     borderBottomWidth: 0.5,
-    borderBottomColor: "#D3D3D3"
+    borderBottomColor: "#D3D3D3",
+    borderTopWidth: 0.5,
+    borderTopColor: "#D3D3D3"
   },
   num: {
     marginTop: 16,

@@ -101,10 +101,11 @@ const DashBoard = ({ navigation, route, userId }) => {
 
   return (
     <Container>
-      <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine} prerenderingSiblingsNumber={7}>
+      {/* // change prerendered siblings number to depend on the OS, 7 for iOS, 0 for Android */}
+      <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine} prerenderingSiblingsNumber={7} tabContainerStyle={{backgroundColor: "white"}}>
         {genTabs.map((tab, index) => {
           return (
-            <Tab heading={tab.heading} activeTextStyle={styles.activeTab} key={index}>
+            <Tab heading={tab.heading} tabStyle={{backgroundColor: 'white'}} activeTabStyle={{backgroundColor: "white"}} activeTextStyle={styles.activeTab} key={index}>
               <GenerationView navigation={navigation} generation={tab.gen} pokemon={tab.data} userId={userId} viewCards={viewCards}/>
             </Tab>
           );
