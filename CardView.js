@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useCallback } from "react";
 import PokeCard from "./PokeCard";
 import {
   StyleSheet,

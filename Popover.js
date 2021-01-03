@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ListItem, Overlay, Input, Button } from "react-native-elements";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+// import { ScrollView } from "react-native-gesture-handler";
 
 const Popover = props => {
   const [parties, setParties] = useState([]);
@@ -82,7 +82,7 @@ const Popover = props => {
         >
           Add to Party
         </Text>
-        <ScrollView contentContainerStyle={{flexGrow: 1}} >
+        <ScrollView>
           {parties.length == 0 && 
             <ListItem
               title={"Create a party to choose from."}

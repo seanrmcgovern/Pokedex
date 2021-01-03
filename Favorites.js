@@ -5,7 +5,8 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Card, CardItem, Body } from "native-base";
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
 });
 
 const Favorites = ({ navigation, route, userId }) => {
+  const padding = Platform.OS === 'ios' ? "25%" : "15%";
   const SLIDER_WIDTH = Dimensions.get("window").width;
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
   const ITEM_HEIGHT = Math.round(Dimensions.get("screen").height * 0.3);
@@ -168,7 +170,7 @@ const Favorites = ({ navigation, route, userId }) => {
       style={{
         flex: 1,
         backgroundColor: "#DE5C58",
-        paddingTop: "15%"
+        paddingTop: padding
       }}
     >
       <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
