@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Container, Header, Content, Icon, Picker, Form } from "native-base";
 import { ListItem, Overlay, Input, Button } from "react-native-elements";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { screensEnabled } from "react-native-screens";
 
 const Popover = props => {
-  // add subscriber to refresh parties here too
-
   const [parties, setParties] = useState([]);
   const [newPartyName, setNewPartyName] = useState("");
 
@@ -73,59 +68,60 @@ const Popover = props => {
         setNewPartyName("");
         props.close();
       }}
-      overlayStyle={{ width: "80%", maxHeight: "60%" }}
+      overlayStyle={{ width: "80%", maxHeight: "50%", flex: 1 }}
     >
-      <Text
-        style={{
-          color: "#2189DC",
-          fontSize: 16,
-          fontWeight: "bold",
-          marginBottom: 10
-        }}
-      >
-        Add to Party
-      </Text>
-      <ScrollView>
-        {parties.length == 0 && 
-          <ListItem
-            title={"Create a party to choose from."}
-            bottomDivider
-            topDivider
-          ></ListItem>}
-        {parties.map((party, index) => (
-          <TouchableOpacity onPress={() => handlePartyChange(index)} key={index}>
+      <View style={{flex: 1}}>
+        <Text
+          style={{
+            color: "#2189DC",
+            fontSize: 16,
+            fontWeight: "bold",
+            marginBottom: 10
+          }}
+        >
+          Add to Party
+        </Text>
+        <ScrollView>
+          {parties.length == 0 && 
             <ListItem
-              title={party.title}
+              title={"Create a party to choose from."}
               bottomDivider
               topDivider
-            ></ListItem>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      <Text
-        style={{
-          color: "#2189DC",
-          fontSize: 16,
-          fontWeight: "bold",
-          marginBottom: 10,
-          marginTop: 10
-        }}
-      >
-        Create New Party
-      </Text>
-      <Input
-        placeholder="Ex: New-Party-Name"
-        label="Name"
-        onChangeText={text => setNewPartyName(text)}
-        value={newPartyName}
-      />
-      <View>
-        <Button
-          onPress={createParty}
-          title={"Create Party"}
-          disabled={newPartyName === ""}
-          // disabled={newPartyName === "" || creatingParty}
+            ></ListItem>}
+          {parties.map((party, index) => (
+            <TouchableOpacity onPress={() => handlePartyChange(index)} key={index}>
+              <ListItem
+                title={party.title}
+                bottomDivider
+                topDivider
+              ></ListItem>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        <Text
+          style={{
+            color: "#2189DC",
+            fontSize: 16,
+            fontWeight: "bold",
+            marginBottom: 10,
+            marginTop: 10
+          }}
+        >
+          Create New Party
+        </Text>
+        <Input
+          placeholder="Ex: New-Party-Name"
+          label="Name"
+          onChangeText={text => setNewPartyName(text)}
+          value={newPartyName}
         />
+        <View>
+          <Button
+            onPress={createParty}
+            title={"Create Party"}
+            disabled={newPartyName === ""}
+          />
+        </View>
       </View>
     </Overlay>
   );

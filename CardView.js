@@ -1,29 +1,19 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useCallback } from "react";
 import PokeCard from "./PokeCard";
 import {
   StyleSheet,
   View,
-  FlatList
+  FlatList,
+  Platform
 } from "react-native";
-import { Dimensions } from "react-native";
-
-const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: "#DE5C58",
-    width: width
-  },
-  container: {
     flex: 1,
-    width: width
-    //width: "100%",
-    //margin: 14
-    // marginHorizontal: "2%"
   },
   scrollView: {
     backgroundColor: "#DE5C58",
-    //marginHorizontal: 20,
+    borderTopWidth: 0,
     height: 1000,
     position: "absolute",
     top: 0,
@@ -47,7 +37,7 @@ const CardView = props => {
     }
   );
 
-  const keyExtractor = useCallback((item) => item.id.toString(), []);
+  const keyExtractor = useCallback((item) => item.id, []);
 
   return (
     <View style={styles.wrapper}>
@@ -55,14 +45,15 @@ const CardView = props => {
           data={props.pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
           style={styles.scrollView}
           contentContainerStyle={{
-            paddingBottom: 400,
+            paddingBottom: Platform.OS === 'ios' ? 400 : 500,
             justifyContent: "center",
-            alignItems:'center'
+            alignItems:'center',
           }}
           numColumns={3}
           renderItem={renderCard}
           keyExtractor={keyExtractor}
           removeClippedSubviews={false}
+          bounces={true}
         ></FlatList>
     </View>
   );

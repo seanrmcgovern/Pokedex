@@ -18,10 +18,10 @@ const Profile = ({ navigation, route }) => {
     <View style={{ flex: 1, backgroundColor: "#DE5C58" }}>
       <Container>
         <Tabs tabBarUnderlineStyle={styles.tabLine} locked>
-          <Tab heading="Parties" activeTextStyle={styles.activeTab} activeTabStyle={styles.activeTab}>
+          <Tab heading="Parties" tabStyle={{backgroundColor: 'white'}} activeTabStyle={{backgroundColor: "white"}} activeTextStyle={styles.activeTab}>
             <Parties navigation={navigation}></Parties>
           </Tab>
-          <Tab heading="Favorites" activeTextStyle={styles.activeTab}>
+          <Tab heading="Favorites" tabStyle={{backgroundColor: 'white'}} activeTabStyle={{backgroundColor: "white"}} activeTextStyle={styles.activeTab}>
             <Favorites navigation={navigation} />
           </Tab>
         </Tabs>

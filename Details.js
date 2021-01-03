@@ -256,30 +256,33 @@ const Details = ({ navigation, route }) => {
             </View>
             {pokemon.forms.length > 0 && 
                 <View>
-                <Separator >
-                  <Text style={{fontSize: 16}}>Forms</Text>
-                </Separator>
-                {pokemon.forms.map((form, index) => (
-                  <ListItem
-                    leftAvatar={{source: form.image? {uri: `data:image/jpeg;base64,${form.image}`}: PokeballSprite}}
-                    key={index}
-                    title={form.name}
-                    onPress={() => {
-                      navigation.push("Details", {
-                        name: form.name,
-                        pokemon: {...form, abilities: pokemon.abilities, id: pokemon.id, forms: []},
-                        isNested: true
-                      });
-                    }}
-                    bottomDivider
-                  ></ListItem>
-                ))}
+                  <Separator>
+                    <Text style={{fontSize: 16}}>Forms</Text>
+                  </Separator>
+                  {pokemon.forms.map((form, index) => (
+                    <ListItem
+                      leftAvatar={{source: form.image? {uri: `data:image/jpeg;base64,${form.image}`}: PokeballSprite}}
+                      key={index}
+                      title={form.name}
+                      onPress={() => {
+                        navigation.push("Details", {
+                          name: form.name,
+                          pokemon: {...form, abilities: pokemon.abilities, id: pokemon.id, forms: []},
+                          isNested: true
+                        });
+                      }}
+                      bottomDivider
+                      topDivider
+                      rightIcon={<Icon name="chevron-right" size={20} color="#2189DC"></Icon>}
+                    ></ListItem>
+                  ))}
               </View>
             }
             <ListItem
                 title={"Height"}
                 rightTitle={`${pokemon.height/10} m`}
                 bottomDivider
+                topDivider
               ></ListItem>
               <ListItem
                 title={"Weight"}
@@ -298,16 +301,16 @@ const Details = ({ navigation, route }) => {
                     rightTitle={pokemon.friendship + " / 255"}
                     bottomDivider
                   ></ListItem>
+                  <ListItem
+                    title="Competitive Strategies"
+                    titleStyle={{color: "#2189DC"}}
+                    onPress={() => openStrategy(pokemon.generation)}
+                    rightIcon={
+                      <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
+                    }
+                  ></ListItem>
                 </View>
               }
-            <ListItem
-              title="Competitive Strategies"
-              titleStyle={{color: "#2189DC"}}
-              onPress={() => openStrategy(pokemon.generation)}
-              rightIcon={
-                <Icon name="chevron-right" size={20} color="#2189DC"></Icon>
-              }
-            ></ListItem>
           </View>
         <Popover
           visible={popVisible}

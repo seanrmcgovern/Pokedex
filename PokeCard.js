@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, Image } from "react-native";
-import PokeballSprite from "./assets/pokeballSprite.png";
 import Pokeball from "./assets/pokeball.png";
 
 const styles = StyleSheet.create({
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
     margin: 0
   },
   title: {
-    fontFamily: "PingFangHK-Semibold",
+    // fontFamily: "PingFangHK-Semibold",
     color: "#2189DC"
   },
   number: {
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
     left: 10,
     right: 0,
     bottom: 0,
-    fontFamily: "PingFangHK-Semibold"
+    // fontFamily: "PingFangHK-Semibold"
   }
 });
 

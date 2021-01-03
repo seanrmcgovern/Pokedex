@@ -12,10 +12,9 @@ import Dashboard from "./Dashboard";
 import Results from "./Results";
 import PokeCard from "./PokeCard";
 import Details from "./Details";
-import MegaDetails from "./MegaDetails";
 import Profile from "./Profile";
 
-console.disableYellowBox = true;
+// add detox tests
 
 const Stack = createStackNavigator();
 
@@ -84,13 +83,6 @@ const App = () => {
           name="Details"
           component={Details}
           options={({ navigation, route }) => ({
-            title: route.params.name
-          })}
-        />
-        <Stack.Screen
-          name="MegaDetails"
-          component={MegaDetails}
-          options={({ route }) => ({
             title: route.params.name
           })}
         />

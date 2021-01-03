@@ -5,7 +5,7 @@ import Sequoia from "./assets/sequoia.png";
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: "PingFangHK-Semibold",
+    // fontFamily: "PingFangHK-Semibold",
     color: "#2189DC"
   }
 });

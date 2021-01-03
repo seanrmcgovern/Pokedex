@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import GenerationView from "./GenerationView";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -98,13 +98,15 @@ const DashBoard = ({ navigation, route, userId }) => {
                    {heading: "Alola", gen: 7, data: alolaData}, 
                    {heading: "Galar", gen: 8, data: galarData}
                   ];
+            
+  const prerenderCount = Platform.OS === 'ios' ? 7 : 0;
 
   return (
     <Container>
-      <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine} prerenderingSiblingsNumber={7}>
+      <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine} prerenderingSiblingsNumber={prerenderCount} tabContainerStyle={{backgroundColor: "white"}}>
         {genTabs.map((tab, index) => {
           return (
-            <Tab heading={tab.heading} activeTextStyle={styles.activeTab} key={index}>
+            <Tab heading={tab.heading} tabStyle={{backgroundColor: 'white'}} activeTabStyle={{backgroundColor: "white"}} activeTextStyle={styles.activeTab} key={index}>
               <GenerationView navigation={navigation} generation={tab.gen} pokemon={tab.data} userId={userId} viewCards={viewCards}/>
             </Tab>
           );
