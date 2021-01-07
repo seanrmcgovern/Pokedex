@@ -8,6 +8,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import Login from "./Login";
 import Home from "./Home";
 import BerriesScreen from "./BerriesScreen";
+import BerryStack from "./BerryStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -61,9 +62,9 @@ const App = () => {
   if (username !== null) {
     return (
       <NavigationContainer>
-        <Drawer.Navigator>
+        <Drawer.Navigator drawerPosition="left" drawerType="slide">
           <Drawer.Screen name="Home" children={() => <Home username={username}/>}/>
-          <Drawer.Screen name="Berries" component={BerriesScreen}/>
+          <Drawer.Screen name="Berries" component={BerryStack}/>
         </Drawer.Navigator>
       </NavigationContainer>
     );

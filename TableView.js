@@ -2,7 +2,8 @@ import React, { useCallback } from "react";
 import {
   StyleSheet,
   View,
-  FlatList
+  FlatList,
+  Platform
 } from "react-native";
 import ListRow from "./ListRow";
 
