@@ -38,7 +38,7 @@ const BerriesScreen = ({ navigation }) => {
         <View>
             <Text style={{fontWeight: "bold", fontSize: 20, color: "#2189DC"}}>{selectedBerry.name}{` Berry`}</Text>
         </View>
-    )
+    );
 
     const SheetContent = () => (
         <View style={{padding: 15, paddingTop: 0}}>
@@ -47,7 +47,7 @@ const BerriesScreen = ({ navigation }) => {
             <Text style={{fontSize: 16, color: "#2189DC", fontWeight: "bold", marginBottom: 2}}>Effect</Text>
             <Text>{selectedBerry.effect}</Text>
         </View>
-    )
+    );
 
     const renderRow = useCallback(
         ({ item }) => {
@@ -99,7 +99,6 @@ const BerriesScreen = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1, paddingTop: 100 }}>
-            <Button onPress={() => console.log(berries)} title="Go back home" />
             <FlatList 
                 data={berries} 
                 renderItem={renderRow} 

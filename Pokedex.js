@@ -18,7 +18,9 @@ const Pokedex = () => {
           },
           headerTintColor: "white",
           headerTitleStyle: {
-            fontWeight: "bold"
+            fontWeight: "bold",
+            alignSelf: 'center',
+            textAlign: "center",
           }
         }}
       >

@@ -32,11 +32,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#DE5C58",
     width: width
   },
-  headerIcon: {
+  leftHeaderIcon: {
+    paddingLeft: 10
+  },
+  rightHeaderIcon: {
     paddingRight: 10
   },
   activeTab: {
     color: "#2189DC"
+  },
+  inactiveTab: {
+    color: "#2189DC",
+    opacity: 0.6
   },
   tabLine: {
     backgroundColor: "#2189DC"
@@ -46,6 +53,22 @@ const styles = StyleSheet.create({
 const DashBoard = ({ navigation, route, userId }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerLeft: () => (
+        <Button
+          onPress={() => {
+            navigation.toggleDrawer()
+          }}
+          title=""
+          icon={
+            <Icon
+              name={"angle-double-right"}
+              size={28}
+              color="white"
+              style={styles.leftHeaderIcon}
+            />
+          }
+        />
+      ),
       headerRight: () => (
         <Button
           onPress={() => {
@@ -57,7 +80,7 @@ const DashBoard = ({ navigation, route, userId }) => {
               name={viewCards ? "list-ul" : "th-large"}
               size={26}
               color="white"
-              style={styles.headerIcon}
+              style={styles.rightHeaderIcon}
             />
           }
         />
@@ -79,7 +102,7 @@ const DashBoard = ({ navigation, route, userId }) => {
               name={currentViewisCards ? "th-large" : "list-ul"}
               size={26}
               color="white"
-              style={styles.headerIcon}
+              style={styles.rightHeaderIcon}
             />
           }
         />
@@ -89,14 +112,15 @@ const DashBoard = ({ navigation, route, userId }) => {
 
   const [viewCards, setViewCards] = useState(true);
 
-  const genTabs = [{heading: "Kanto", gen: 1, data: kantoData}, 
-                   {heading: "Johto", gen: 2, data: johtoData}, 
-                   {heading: "Hoenn", gen: 3, data: hoennData}, 
-                   {heading: "Sinnoh", gen: 4, data: sinnohData}, 
-                   {heading: "Unova", gen: 5, data: unovaData}, 
-                   {heading: "Kalos", gen: 6, data: kalosData}, 
-                   {heading: "Alola", gen: 7, data: alolaData}, 
-                   {heading: "Galar", gen: 8, data: galarData}
+  const genTabs = [
+                  {heading: "Kanto", gen: 1, data: kantoData}, 
+                  {heading: "Johto", gen: 2, data: johtoData}, 
+                  {heading: "Hoenn", gen: 3, data: hoennData}, 
+                  {heading: "Sinnoh", gen: 4, data: sinnohData}, 
+                  {heading: "Unova", gen: 5, data: unovaData}, 
+                  {heading: "Kalos", gen: 6, data: kalosData}, 
+                  {heading: "Alola", gen: 7, data: alolaData}, 
+                  {heading: "Galar", gen: 8, data: galarData}
                   ];
             
   const prerenderCount = Platform.OS === 'ios' ? 7 : 0;
@@ -106,7 +130,7 @@ const DashBoard = ({ navigation, route, userId }) => {
       <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine} prerenderingSiblingsNumber={prerenderCount} tabContainerStyle={{backgroundColor: "white"}}>
         {genTabs.map((tab, index) => {
           return (
-            <Tab heading={tab.heading} tabStyle={{backgroundColor: 'white'}} activeTabStyle={{backgroundColor: "white"}} activeTextStyle={styles.activeTab} key={index}>
+            <Tab heading={tab.heading} tabStyle={{backgroundColor: 'white'}} activeTabStyle={{backgroundColor: "white"}} activeTextStyle={styles.activeTab} textStyle={styles.inactiveTab} key={index}>
               <GenerationView navigation={navigation} generation={tab.gen} pokemon={tab.data} userId={userId} viewCards={viewCards}/>
             </Tab>
           );

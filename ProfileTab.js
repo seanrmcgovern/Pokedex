@@ -18,7 +18,10 @@ const ProfileTab = (props) => {
           },
           headerTintColor: "white",
           headerTitleStyle: {
-            fontWeight: "bold"
+            fontWeight: "bold",
+            fontWeight: "bold",
+            alignSelf: 'center',
+            textAlign: "center",
           }
         }}
       >
