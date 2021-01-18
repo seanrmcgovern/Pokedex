@@ -12,21 +12,15 @@ const Home = (props) => {
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               if (route.name === "Pokedex") {
-                if (focused) {
-                  return <Icon name="th" type="font-awesome" color="#2189DC" />;
-                }
-                return <Icon name="th" type="font-awesome" color="#8e8e93" />;
+                return <Icon name="th" type="font-awesome" color="#2189DC" style={{opacity: focused ? 1 : 0.5}}/>;
               } else {
-                if (focused) {
-                  return (<Icon name="user-circle" type="font-awesome" color="#2189DC"/>);
-                }
-                return (<Icon name="user-circle" type="font-awesome" color="#8e8e93"/>);
+                return (<Icon name="user-circle" type="font-awesome" color="#2189DC" style={{opacity: focused ? 1 : 0.5}}/>);
               }
             }
           })}
-          tabBarOptions={{activeTintColor: "#2189DC",style: {backgroundColor: "white"}}}
+          tabBarOptions={{activeTintColor: "#2189DC", inactiveTintColor: "#2189DC", style: {backgroundColor: "white"}}}
         >
-          <Tab.Screen name={"Pokedex"} component={Pokedex} />
+          <Tab.Screen name={"Pokedex"} component={Pokedex}/>
           <Tab.Screen name={"Profile"} children={() => <ProfileTab username={props.username}/>}/>
       </Tab.Navigator>
     )

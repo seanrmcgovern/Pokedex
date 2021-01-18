@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     backgroundColor: "#DE5C58",
-    height: 1000,
     position: "absolute",
     top: 0,
     left: 0,
@@ -53,7 +52,7 @@ const TableView = props => {
         data={props.pokemon.filter(item => item.name.toLowerCase().includes(props.search))}
         style={styles.scrollView}
         contentContainerStyle={{
-          paddingBottom: Platform.OS === 'ios' ? 400 : 500,
+          // paddingBottom: Platform.OS === 'ios' ? 400 : 500,
           marginLeft: 10,
           marginRight: 10
         }}
