@@ -26,7 +26,7 @@ const GenerationView = props => {
   };
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <SearchBar
         lightTheme={true}
         placeholder="Search"
