@@ -13,6 +13,7 @@ import { Text, Card, CardItem, Body } from "native-base";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Pokeball from "./assets/pokeball.png";
 import Sequoia from "./assets/sequoia.png";
+import RadarChart from "./RadarChart";
 
 const styles = StyleSheet.create({
   buffer: {
@@ -43,10 +44,10 @@ const styles = StyleSheet.create({
 });
 
 const Favorites = ({ navigation, route, userId }) => {
-  const padding = Platform.OS === 'ios' ? "25%" : "15%";
+  const padding = Platform.OS === 'ios' ? "5%" : "5%";
   const SLIDER_WIDTH = Dimensions.get("window").width;
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
-  const ITEM_HEIGHT = Math.round(Dimensions.get("screen").height * 0.3);
+  const ITEM_HEIGHT = Math.round(Dimensions.get("screen").height * 0.15);
 
   const emptyFavorites = [
     {
@@ -55,8 +56,6 @@ const Favorites = ({ navigation, route, userId }) => {
       image: Sequoia
     }
   ];
-
-  const [activeIndex, setActiveIndex] = useState(0);
 
   const ref = useRef();
 
@@ -72,14 +71,13 @@ const Favorites = ({ navigation, route, userId }) => {
           });
         }}
       >
-        <Card style={{ borderRadius: 40, backgroundColor: "#EDEBED" }}>
+        <Card style={{ borderRadius: 20, backgroundColor: "#EDEBED" }}>
           <CardItem
-            style={{ borderTopLeftRadius: 40, borderTopRightRadius: 40 }}
+            style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
           >
-            <Body style={{ alignItems: "center", paddingTop: 10 }}>
+            <Body style={{ alignItems: "center" }}>
               <Text
                 style={{
-                  // fontFamily: "PingFangHK-Semibold",
                   color: "#2189DC",
                   fontSize: isPokemon ? 25 : 18
                 }}
@@ -99,8 +97,10 @@ const Favorites = ({ navigation, route, userId }) => {
                   source={{uri: `data:image/jpeg;base64,${item.image}`}}
                   style={{
                     alignSelf: "center",
-                    height: ITEM_HEIGHT,
-                    width: ITEM_WIDTH * 0.75,
+                    // height: ITEM_HEIGHT,
+                    // width: ITEM_WIDTH,
+                    height: 150,
+                    width: 150,
                     resizeMode: "contain"
                   }}
                 />
@@ -122,18 +122,12 @@ const Favorites = ({ navigation, route, userId }) => {
           </CardItem>
           <CardItem
             style={{
-              borderBottomLeftRadius: 40,
-              borderBottomRightRadius: 40,
-              paddingTop: 50
+              borderBottomLeftRadius: 20,
+              borderBottomRightRadius: 20,
             }}
           >
             <Body style={{ alignItems: "center", color: "" }}>
-              <Text
-                style={{
-                  // fontFamily: "PingFangHK-Semibold",
-                  color: "#2189DC"
-                }}
-              >
+              <Text style={{color: "#2189DC"}}>
                 {isPokemon ? `No. ${item.id}` : `${item.id}`}
               </Text>
             </Body>
@@ -161,8 +155,20 @@ const Favorites = ({ navigation, route, userId }) => {
     return unsubscribe;
   }, [navigation]);
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const [activeStats, setActiveStats] = useState([]);
+
+  useEffect(() => {
+    if (favorites.length > 0) {
+      const activePokemon = favorites[activeIndex];
+      setActiveStats(activePokemon.stats);
+    }
+  }, [activeIndex, favorites]);
+
   useEffect(() => {
     getFavorites();
+    setActiveIndex(0);
   }, []);
 
   return (
@@ -173,33 +179,33 @@ const Favorites = ({ navigation, route, userId }) => {
         paddingTop: padding
       }}
     >
-      <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
-        <Carousel
-          ref={ref}
-          data={favorites.length > 0 ? favorites : emptyFavorites}
-          sliderWidth={SLIDER_WIDTH}
-          itemWidth={ITEM_WIDTH}
-          renderItem={renderCard}
-          onSnapToItem={index => setActiveIndex(index)}
+      <View style={{flex: 1}}>
+        <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
+          <Carousel
+            ref={ref}
+            data={favorites.length > 0 ? favorites : emptyFavorites}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+            renderItem={renderCard}
+            onSnapToItem={index => setActiveIndex(index)}
+          />
+        </View>
+        <Pagination
+          carouselRef={ref}
+          tappableDots
+          dotsLength={favorites.length}
+          activeDotIndex={activeIndex}
+          dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            backgroundColor: "rgba(255, 255, 255, 0.92)"
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
         />
       </View>
-      <Pagination
-        carouselRef={ref}
-        tappableDots
-        dotsLength={favorites.length}
-        activeDotIndex={activeIndex}
-        containerStyle={{
-          backgroundColor: "#2189DC"
-        }}
-        dotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 5,
-          backgroundColor: "rgba(255, 255, 255, 0.92)"
-        }}
-        inactiveDotOpacity={0.4}
-        inactiveDotScale={0.6}
-      />
+      <RadarChart size={200} data={activeStats}/>
     </View>
   );
 };
