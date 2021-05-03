@@ -1,11 +1,10 @@
 import React, { useCallback } from "react";
-import PokeCard from "./PokeCard";
 import {
   StyleSheet,
   View,
   FlatList,
-  Platform
 } from "react-native";
+import PokeCard from "./PokeCard";
 
 const styles = StyleSheet.create({
   wrapper: {

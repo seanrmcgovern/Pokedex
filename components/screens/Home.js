@@ -1,8 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
-import Pokedex from "./Pokedex";
-import ProfileTab from "./ProfileTab";
+import Pokedex from "../Pokedex";
+import ProfileTab from "../ProfileTab";
 
 const Tab = createBottomTabNavigator();
 

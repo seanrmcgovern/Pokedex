@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, Image } from "react-native";
-import Pokeball from "./assets/pokeball.png";
+import Pokeball from "../assets/pokeball.png";
 
 const styles = StyleSheet.create({
   card: {

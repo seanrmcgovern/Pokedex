@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { Platform, StyleSheet } from "react-native";
-import GenerationView from "./GenerationView";
+import { Platform, StyleSheet, Dimensions } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Dimensions } from "react-native";
 import { Container, Tab, Tabs, ScrollableTab } from "native-base";
-import kantoData from "./kanto.json";
-import johtoData from "./johto.json";
-import hoennData from "./hoenn.json";
-import sinnohData from "./sinnoh.json";
-import unovaData from "./unova.json";
-import kalosData from "./kalos.json";
-import alolaData from "./alola.json";
-import galarData from "./galar.json";
+import kantoData from "../data/kanto.json"
+import johtoData from "../data/johto.json";
+import hoennData from "../data/hoenn.json";
+import sinnohData from "../data/sinnoh.json";
+import unovaData from "../data/unova.json";
+import kalosData from "../data/kalos.json";
+import alolaData from "../data/alola.json";
+import galarData from "../data/galar.json";
+import GenerationView from "./GenerationView";
 
 const width = Dimensions.get("window").width;
 

@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   FlatList,
-  Platform
 } from "react-native";
 import ListRow from "./ListRow";
 

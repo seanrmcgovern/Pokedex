@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     }
   });
 
-const BerriesScreen = ({ navigation }) => {
+const Berries = ({ navigation }) => {
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -128,4 +128,4 @@ const BerriesScreen = ({ navigation }) => {
     )
 };
 
-export default BerriesScreen;
+export default Berries;
