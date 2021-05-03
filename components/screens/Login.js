@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { Input, Button } from "react-native-elements";
-import Sequoia from "./assets/sequoia.png";
+import Sequoia from "../../assets/sequoia.png";
 
 const styles = StyleSheet.create({
   title: {

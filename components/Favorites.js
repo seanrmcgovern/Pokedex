@@ -11,8 +11,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Card, CardItem, Body } from "native-base";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import Pokeball from "./assets/pokeball.png";
-import Sequoia from "./assets/sequoia.png";
+import Pokeball from "../assets/pokeball.png";
+import Sequoia from "../assets/sequoia.png";
 import RadarChart from "./RadarChart";
 
 const styles = StyleSheet.create({

@@ -1,10 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import BerriesScreen from "./BerriesScreen";
+import Berries from "../Berries";
 
 const Stack = createStackNavigator();
 
-const BerryStack = (props) => {
+const BerryView = () => {
 
     return (
         <Stack.Navigator
@@ -22,10 +22,10 @@ const BerryStack = (props) => {
                 }
             }}
         >
-            <Stack.Screen name="Berries" component={BerriesScreen}/>
+            <Stack.Screen name="Berries" component={Berries}/>
         </Stack.Navigator>
     )
 
 }
 
-export default BerryStack;
+export default BerryView;

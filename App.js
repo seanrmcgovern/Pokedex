@@ -5,9 +5,9 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import * as ScreenOrientation from "expo-screen-orientation";
-import Login from "./Login";
-import Home from "./Home";
-import BerryStack from "./BerryStack";
+import Login from "./components/screens/Login";
+import Home from "./components/screens/Home";
+import BerryView from "./components/screens/BerryView";
 
 const Drawer = createDrawerNavigator();
 
@@ -63,7 +63,7 @@ const App = () => {
       <NavigationContainer>
         <Drawer.Navigator drawerPosition="left">
           <Drawer.Screen name="Home" children={() => <Home username={username}/>}/>
-          <Drawer.Screen name="Berries" component={BerryStack}/>
+          <Drawer.Screen name="Berries" component={BerryView}/>
         </Drawer.Navigator>
       </NavigationContainer>
     );

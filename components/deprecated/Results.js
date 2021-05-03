@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import PokeCard from "./PokeCard";
+import PokeCard from "../PokeCard";
 import axios from "axios";
 import {
   StyleSheet,

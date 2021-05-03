@@ -12,7 +12,7 @@ import {
   Image
 } from "react-native";
 import { Dimensions } from "react-native";
-import ListRow from "./ListRow";
+import ListRow from "../ListRow";
 
 const width = Dimensions.get("window").width;
 
