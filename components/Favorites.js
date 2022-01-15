@@ -6,9 +6,9 @@ import {
   Image,
   ImageBackground,
   StyleSheet,
-  Platform
+  Platform,
 } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Text, Card, CardItem, Body } from "native-base";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Pokeball from "../assets/pokeball.png";
@@ -18,33 +18,33 @@ import RadarChart from "./RadarChart";
 const styles = StyleSheet.create({
   buffer: {
     height: 30,
-    backgroundColor: "#DE5C58"
+    backgroundColor: "#DE5C58",
   },
   header: {
     alignItems: "center",
     padding: 0,
     margin: 0,
     backgroundColor: "#3F4448",
-    backgroundColor: "#DE5C58"
+    backgroundColor: "#DE5C58",
   },
   headerIcon: {
-    paddingRight: 10
+    paddingRight: 10,
   },
   title: {
     fontFamily: "Verdana-Bold",
     fontSize: 30,
-    color: "white"
+    color: "white",
   },
   image: {
     flex: 1,
     width: "100%",
     resizeMode: "cover",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 
 const Favorites = ({ navigation, route, userId }) => {
-  const padding = Platform.OS === 'ios' ? "5%" : "5%";
+  const padding = Platform.OS === "ios" ? "5%" : "5%";
   const SLIDER_WIDTH = Dimensions.get("window").width;
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
   const ITEM_HEIGHT = Math.round(Dimensions.get("screen").height * 0.15);
@@ -53,8 +53,8 @@ const Favorites = ({ navigation, route, userId }) => {
     {
       id: "Pokemon you favorite will be listed here.",
       name: "Professor Sequoia here!",
-      image: Sequoia
-    }
+      image: Sequoia,
+    },
   ];
 
   const ref = useRef();
@@ -63,12 +63,15 @@ const Favorites = ({ navigation, route, userId }) => {
     const isPokemon = typeof item.id === "number";
     return (
       <TouchableOpacity
+        activeOpacity={isPokemon ? 0.75 : 1}
         onPress={() => {
-          navigation.navigate("Details", {
-            name: item.name,
-            pokemon: item,
-            isNested: false,
-          });
+          if (isPokemon) {
+            navigation.navigate("Details", {
+              name: item.name,
+              pokemon: item,
+              isNested: false,
+            });
+          }
         }}
       >
         <Card style={{ borderRadius: 20, backgroundColor: "#EDEBED" }}>
@@ -79,7 +82,7 @@ const Favorites = ({ navigation, route, userId }) => {
               <Text
                 style={{
                   color: "#2189DC",
-                  fontSize: isPokemon ? 25 : 18
+                  fontSize: isPokemon ? 25 : 18,
                 }}
               >
                 {item.name}
@@ -94,14 +97,14 @@ const Favorites = ({ navigation, route, userId }) => {
               <ImageBackground source={Pokeball} style={styles.image}>
                 <Image
                   resizeMode="cover"
-                  source={{uri: `data:image/jpeg;base64,${item.image}`}}
+                  source={{ uri: `data:image/jpeg;base64,${item.image}` }}
                   style={{
                     alignSelf: "center",
                     // height: ITEM_HEIGHT,
                     // width: ITEM_WIDTH,
                     height: 150,
                     width: 150,
-                    resizeMode: "contain"
+                    resizeMode: "contain",
                   }}
                 />
               </ImageBackground>
@@ -114,7 +117,7 @@ const Favorites = ({ navigation, route, userId }) => {
                     alignSelf: "center",
                     height: ITEM_HEIGHT,
                     width: ITEM_WIDTH * 0.75,
-                    resizeMode: "contain"
+                    resizeMode: "contain",
                   }}
                 />
               </View>
@@ -127,7 +130,7 @@ const Favorites = ({ navigation, route, userId }) => {
             }}
           >
             <Body style={{ alignItems: "center", color: "" }}>
-              <Text style={{color: "#2189DC"}}>
+              <Text style={{ color: "#2189DC" }}>
                 {isPokemon ? `No. ${item.id}` : `${item.id}`}
               </Text>
             </Body>
@@ -143,10 +146,10 @@ const Favorites = ({ navigation, route, userId }) => {
     const favorites = await AsyncStorage.getItem("favorites");
     const formattedFavorites = JSON.parse(favorites);
     setFavorites(formattedFavorites);
-  }
+  };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       // The screen is now focused
       // refresh parties
       getFavorites();
@@ -176,18 +179,20 @@ const Favorites = ({ navigation, route, userId }) => {
       style={{
         flex: 1,
         backgroundColor: "#DE5C58",
-        paddingTop: padding
+        paddingTop: padding,
       }}
     >
-      <View style={{flex: 1}}>
-        <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
+      <View style={{ flex: 1 }}>
+        <View
+          style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}
+        >
           <Carousel
             ref={ref}
             data={favorites.length > 0 ? favorites : emptyFavorites}
             sliderWidth={SLIDER_WIDTH}
             itemWidth={ITEM_WIDTH}
             renderItem={renderCard}
-            onSnapToItem={index => setActiveIndex(index)}
+            onSnapToItem={(index) => setActiveIndex(index)}
           />
         </View>
         <Pagination
@@ -199,13 +204,13 @@ const Favorites = ({ navigation, route, userId }) => {
             width: 10,
             height: 10,
             borderRadius: 5,
-            backgroundColor: "rgba(255, 255, 255, 0.92)"
+            backgroundColor: "rgba(255, 255, 255, 0.92)",
           }}
           inactiveDotOpacity={0.4}
           inactiveDotScale={0.6}
         />
       </View>
-      <RadarChart size={200} data={activeStats}/>
+      <RadarChart size={200} data={activeStats} />
     </View>
   );
 };

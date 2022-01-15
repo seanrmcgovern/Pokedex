@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Dimensions } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Container, Tab, Tabs, ScrollableTab } from "native-base";
-import kantoData from "../data/kanto.json"
+import kantoData from "../data/kanto.json";
 import johtoData from "../data/johto.json";
 import hoennData from "../data/hoenn.json";
 import sinnohData from "../data/sinnoh.json";
@@ -18,35 +18,35 @@ const width = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   buffer: {
     height: 30,
-    backgroundColor: "#DE5C58"
+    backgroundColor: "#DE5C58",
   },
   container: {
     borderTopColor: "transparent",
-    borderBottomColor: "transparent"
+    borderBottomColor: "transparent",
   },
   input: {
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   wrapper: {
     backgroundColor: "#DE5C58",
-    width: width
+    width: width,
   },
   leftHeaderIcon: {
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   rightHeaderIcon: {
-    paddingRight: 10
+    paddingRight: 10,
   },
   activeTab: {
-    color: "#2189DC"
+    color: "#2189DC",
   },
   inactiveTab: {
     color: "#2189DC",
-    opacity: 0.6
+    opacity: 0.6,
   },
   tabLine: {
-    backgroundColor: "#2189DC"
-  }
+    backgroundColor: "#2189DC",
+  },
 });
 
 const DashBoard = ({ navigation, route, userId }) => {
@@ -55,7 +55,7 @@ const DashBoard = ({ navigation, route, userId }) => {
       headerLeft: () => (
         <Button
           onPress={() => {
-            navigation.toggleDrawer()
+            navigation.toggleDrawer();
           }}
           title=""
           icon={
@@ -83,12 +83,12 @@ const DashBoard = ({ navigation, route, userId }) => {
             />
           }
         />
-      )
+      ),
     });
   }, [navigation]);
 
-  const toggleIcon = currentViewisCards => {
-    setViewCards(viewCards => !viewCards);
+  const toggleIcon = (currentViewisCards) => {
+    setViewCards((viewCards) => !viewCards);
     navigation.setOptions({
       headerRight: () => (
         <Button
@@ -105,32 +105,50 @@ const DashBoard = ({ navigation, route, userId }) => {
             />
           }
         />
-      )
+      ),
     });
   };
 
   const [viewCards, setViewCards] = useState(true);
 
   const genTabs = [
-                  {heading: "Kanto", gen: 1, data: kantoData}, 
-                  {heading: "Johto", gen: 2, data: johtoData}, 
-                  {heading: "Hoenn", gen: 3, data: hoennData}, 
-                  {heading: "Sinnoh", gen: 4, data: sinnohData}, 
-                  {heading: "Unova", gen: 5, data: unovaData}, 
-                  {heading: "Kalos", gen: 6, data: kalosData}, 
-                  {heading: "Alola", gen: 7, data: alolaData}, 
-                  {heading: "Galar", gen: 8, data: galarData}
-                  ];
-            
-  const prerenderCount = Platform.OS === 'ios' ? 7 : 0;
+    { heading: "Kanto", gen: 1, data: kantoData },
+    { heading: "Johto", gen: 2, data: johtoData },
+    { heading: "Hoenn", gen: 3, data: hoennData },
+    { heading: "Sinnoh", gen: 4, data: sinnohData },
+    { heading: "Unova", gen: 5, data: unovaData },
+    { heading: "Kalos", gen: 6, data: kalosData },
+    { heading: "Alola", gen: 7, data: alolaData },
+    { heading: "Galar", gen: 8, data: galarData },
+  ];
+
+  const prerenderCount = Platform.OS === "ios" ? 7 : 0;
 
   return (
     <Container>
-      <Tabs renderTabBar={() => <ScrollableTab/>} tabBarUnderlineStyle={styles.tabLine} prerenderingSiblingsNumber={prerenderCount} tabContainerStyle={{backgroundColor: "white"}}>
+      <Tabs
+        renderTabBar={() => <ScrollableTab />}
+        tabBarUnderlineStyle={styles.tabLine}
+        prerenderingSiblingsNumber={prerenderCount}
+        tabContainerStyle={{ backgroundColor: "white" }}
+      >
         {genTabs.map((tab, index) => {
           return (
-            <Tab heading={tab.heading} tabStyle={{backgroundColor: 'white'}} activeTabStyle={{backgroundColor: "white"}} activeTextStyle={styles.activeTab} textStyle={styles.inactiveTab} key={index}>
-              <GenerationView navigation={navigation} generation={tab.gen} pokemon={tab.data} userId={userId} viewCards={viewCards}/>
+            <Tab
+              heading={tab.heading}
+              tabStyle={{ backgroundColor: "white" }}
+              activeTabStyle={{ backgroundColor: "white" }}
+              activeTextStyle={styles.activeTab}
+              textStyle={styles.inactiveTab}
+              key={index}
+            >
+              <GenerationView
+                navigation={navigation}
+                generation={tab.gen}
+                pokemon={tab.data}
+                userId={userId}
+                viewCards={viewCards}
+              />
             </Tab>
           );
         })}
