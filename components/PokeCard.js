@@ -13,15 +13,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 5,
     paddingRight: 5,
-    backgroundColor: "#EDEBED"
+    backgroundColor: "#EDEBED",
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: "black",
+    shadowOpacity: 0.75,
   },
   button: {
     padding: 0,
-    margin: 0
+    margin: 0,
   },
   title: {
     // fontFamily: "PingFangHK-Semibold",
-    color: "#2189DC"
+    color: "#2189DC",
   },
   number: {
     color: "#DE5C58",
@@ -31,11 +34,10 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     // fontFamily: "PingFangHK-Semibold"
-  }
+  },
 });
 
-const PokeCard = props => {
-
+const PokeCard = (props) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -47,18 +49,22 @@ const PokeCard = props => {
       }}
       style={styles.card}
     >
-        <Text style={styles.number}>{props.pokemon.id}</Text>
-        <Image
-          resizeMode="cover"
-          source={props.pokemon.image === "" ? Pokeball : {uri: `data:image/jpeg;base64,${props.pokemon.image}`}}
-          style={{
-            width: 100,
-            height: 100,
-            resizeMode: "contain",
-            marginTop: props.pokemon.image === "" ? 10 : 0
-          }}
-        />
-        <Text style={styles.title}>{props.pokemon.name}</Text>
+      <Text style={styles.number}>{props.pokemon.id}</Text>
+      <Image
+        resizeMode="cover"
+        source={
+          props.pokemon.image === ""
+            ? Pokeball
+            : { uri: `data:image/jpeg;base64,${props.pokemon.image}` }
+        }
+        style={{
+          width: 100,
+          height: 100,
+          resizeMode: "contain",
+          marginTop: props.pokemon.image === "" ? 10 : 0,
+        }}
+      />
+      <Text style={styles.title}>{props.pokemon.name}</Text>
     </TouchableOpacity>
   );
 };
