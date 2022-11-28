@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   VirtualizedList,
   FlatList,
-  Button
+  Button,
 } from "react-native";
 import { Dimensions } from "react-native";
 
@@ -19,11 +19,11 @@ const width = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: "#DE5C58",
-    width: width
+    width: width,
   },
   container: {
     flex: 1,
-    width: width
+    width: width,
     //width: "100%",
     //margin: 14
     // marginHorizontal: "2%"
@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
-  }
+    bottom: 0,
+  },
 });
 
-const Results = props => {
+const Results = (props) => {
   const [pokemon, setPokemon] = useState([]);
 
   // axios/fetching is asynchronous, so while fetch is running, react will keep executing code, meaning console.log will run before we actually give response a value
@@ -55,23 +55,25 @@ const Results = props => {
       // gen 6 odd edge case with pokedex separation in pokeapi
       let pokeList = [];
       for (let i = 12; i < 15; i++) {
-        axios.get("https://pokeapi.co/api/v2/pokedex/" + i + "/").then(res => {
-          for (let i = 0; i < res.data.pokemon_entries.length; i++) {
-            const entryId = parseInt(
-              res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
-            );
-            if (entryId > 649) {
-              pokeList.push({
-                ...res.data.pokemon_entries[i],
-                entryId: entryId
-              });
+        axios
+          .get("https://pokeapi.co/api/v2/pokedex/" + i + "/")
+          .then((res) => {
+            for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+              const entryId = parseInt(
+                res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+              );
+              if (entryId > 649) {
+                pokeList.push({
+                  ...res.data.pokemon_entries[i],
+                  entryId: entryId,
+                });
+              }
             }
-          }
-        });
+          });
       }
       setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
     } else {
-      axios.get(url).then(res => {
+      axios.get(url).then((res) => {
         if (props.generation === 3) {
           // gen 2
           let pokeList = [];
@@ -82,7 +84,7 @@ const Results = props => {
             if (entryId > 151) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -97,7 +99,7 @@ const Results = props => {
             if (entryId > 251) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -112,7 +114,7 @@ const Results = props => {
             if (entryId > 386) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -120,22 +122,22 @@ const Results = props => {
             entryId: 491,
             pokemon_species: {
               name: "Darkrai",
-              url: "https://pokeapi.co/api/v2/pokemon-species/491/"
-            }
+              url: "https://pokeapi.co/api/v2/pokemon-species/491/",
+            },
           };
           const shaymin = {
             entryId: 492,
             pokemon_species: {
               name: "Shaymin",
-              url: "https://pokeapi.co/api/v2/pokemon-species/492/"
-            }
+              url: "https://pokeapi.co/api/v2/pokemon-species/492/",
+            },
           };
           const arceus = {
             entryId: 493,
             pokemon_species: {
               name: "Arceus",
-              url: "https://pokeapi.co/api/v2/pokemon-species/493/"
-            }
+              url: "https://pokeapi.co/api/v2/pokemon-species/493/",
+            },
           };
           setPokemon(
             [...pokeList, darkrai, shaymin, arceus].sort((a, b) =>
@@ -152,7 +154,7 @@ const Results = props => {
             if (entryId > 494) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -167,7 +169,7 @@ const Results = props => {
             if (entryId > 721) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -195,7 +197,7 @@ const Results = props => {
             flexWrap: "wrap",
             paddingBottom: 400,
             flexGrow: 1,
-            justifyContent: "center"
+            justifyContent: "center",
           }}
           renderItem={({ item, index }) => {
             if (item.pokemon_species.name.includes(props.search))
@@ -210,11 +212,10 @@ const Results = props => {
                   key={index}
                   gen={props.generation}
                   search={props.search}
-                  userId={props.userId}
                 ></PokeCard>
               );
           }}
-          keyExtractor={item => item.pokemon_species.name}
+          keyExtractor={(item) => item.pokemon_species.name}
         ></FlatList>
       </SafeAreaView>
     </View>

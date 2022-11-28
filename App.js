@@ -8,6 +8,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import Login from "./components/screens/Login";
 import Home from "./components/screens/Home";
 import BerryView from "./components/screens/BerryView";
+import TechnicalMachineView from "./components/screens/TechnicalMachineView";
 
 const Drawer = createDrawerNavigator();
 
@@ -72,6 +73,7 @@ const App = () => {
             name="Home"
             children={() => <Home username={username} />}
           />
+          <Drawer.Screen name="TMs" component={TechnicalMachineView} />
           <Drawer.Screen name="Berries" component={BerryView} />
         </Drawer.Navigator>
       </NavigationContainer>

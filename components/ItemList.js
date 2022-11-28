@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { View, FlatList, StyleSheet, Text } from "react-native";
-import axios from "axios";
 import { ListItem, Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BottomSheet from "react-native-bottomsheet-reanimated";
@@ -17,14 +16,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const Berries = ({ navigation }) => {
+const ItemList = (props) => {
+  // firstHeader, secondHeader props
   React.useLayoutEffect(() => {
-    navigation.setOptions({
+    props.navigation.setOptions({
       headerLeft: () => (
         <Button
           title="Back"
           titleStyle={{ marginTop: 5 }}
-          onPress={() => navigation.goBack()}
+          onPress={() => props.navigation.goBack()}
           icon={
             <Icon
               name={"angle-left"}
@@ -36,15 +36,14 @@ const Berries = ({ navigation }) => {
         />
       ),
     });
-  }, [navigation]);
+  }, [props.navigation]);
 
   const sheetRef = useRef(null);
 
   const SheetHeader = () => (
     <View>
       <Text style={{ fontWeight: "bold", fontSize: 20, color: "#2189DC" }}>
-        {selectedBerry.name}
-        {` Berry`}
+        {`${selectedItem.name} ${selectedItem.suffix}`}
       </Text>
     </View>
   );
@@ -59,9 +58,9 @@ const Berries = ({ navigation }) => {
           marginBottom: 2,
         }}
       >
-        Category
+        {selectedItem.firstHeader}
       </Text>
-      <Text style={{ marginBottom: 10 }}>{selectedBerry.category}</Text>
+      <Text style={{ marginBottom: 10 }}>{selectedItem.category}</Text>
       <Text
         style={{
           fontSize: 16,
@@ -70,9 +69,9 @@ const Berries = ({ navigation }) => {
           marginBottom: 2,
         }}
       >
-        Effect
+        {selectedItem.secondHeader}
       </Text>
-      <Text>{selectedBerry.effect}</Text>
+      <Text>{selectedItem.effect}</Text>
     </View>
   );
 
@@ -81,69 +80,28 @@ const Berries = ({ navigation }) => {
       <ListItem
         topDivider
         bottomDivider
-        title={item.name + ` Berry`}
+        title={item.name + " " + item.suffix}
         leftAvatar={{
           source: { uri: item.sprite },
         }}
         containerStyle={{ borderRadius: 35, marginBottom: 3 }}
         underlayColor={"#DE5C58"}
         onPress={() => {
-          setSelectedBerry(item);
+          setSelectedItem(item);
           sheetRef.current.snapTo(1);
         }}
       />
     );
   });
 
-  const keyExtractor = useCallback((item) => item.name, []);
+  const keyExtractor = useCallback((item) => item.id, []);
 
-  const [berries, setBerries] = useState([]);
-
-  const [selectedBerry, setSelectedBerry] = useState("");
-
-  const capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-  const fetchBerries = async () => {
-    // items/ 126 - 189
-    const berryIds = range(126, 189);
-    const berries = await fetchBerriesUsingIdList(berryIds);
-    setBerries(berries);
-  };
-
-  const fetchBerriesUsingIdList = (list) => {
-    return Promise.all(
-      list.map(async (id) => {
-        let res = await axios.get("https://pokeapi.co/api/v2/item/" + id);
-        return {
-          name: capitalize(
-            res.data.name.substring(0, res.data.name.indexOf("-"))
-          ),
-          category: capitalize(res.data.category.name.replace("-", " ")),
-          effect: res.data.effect_entries[0].effect.replace(
-            /(\r\n|\n|\r|\f)/gm,
-            " "
-          ),
-          sprite: res.data.sprites.default,
-        };
-      })
-    );
-  };
-
-  const range = (start, end) =>
-    Array(end - start + 1)
-      .fill()
-      .map((_, idx) => start + idx);
-
-  useEffect(() => {
-    fetchBerries();
-  }, []);
+  const [selectedItem, setSelectedItem] = useState({ id: 0 });
 
   return (
     <View style={{ flex: 1, paddingTop: 100 }}>
       <FlatList
-        data={berries}
+        data={props.items}
         renderItem={renderRow}
         contentContainerStyle={{
           paddingTop: 5,
@@ -171,4 +129,4 @@ const Berries = ({ navigation }) => {
   );
 };
 
-export default Berries;
+export default ItemList;

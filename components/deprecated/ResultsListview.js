@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   VirtualizedList,
   FlatList,
-  Image
+  Image,
 } from "react-native";
 import { Dimensions } from "react-native";
 import ListRow from "../ListRow";
@@ -19,11 +19,11 @@ const width = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: "#DE5C58",
-    width: width
+    width: width,
   },
   container: {
     flex: 1,
-    width: width
+    width: width,
   },
   scrollView: {
     backgroundColor: "#DE5C58",
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   row: {
     width: "100%",
@@ -41,16 +41,16 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     borderBottomWidth: 0.5,
-    borderBottomColor: "#D3D3D3"
-  }
+    borderBottomColor: "#D3D3D3",
+  },
 });
 
-const ResultsListview = props => {
+const ResultsListview = (props) => {
   const [pokemon, setPokemon] = useState([]);
 
   const url = "https://pokeapi.co/api/v2/pokedex/" + props.generation + "/";
 
-  const capitalize = str => {
+  const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
@@ -61,24 +61,26 @@ const ResultsListview = props => {
       // gen 6 odd edge case with pokedex separation in pokeapi
       let pokeList = [];
       for (let i = 12; i < 15; i++) {
-        axios.get("https://pokeapi.co/api/v2/pokedex/" + i + "/").then(res => {
-          for (let i = 0; i < res.data.pokemon_entries.length; i++) {
-            const entryId = parseInt(
-              res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
-            );
-            if (entryId > 649) {
-              pokeList.push({
-                ...res.data.pokemon_entries[i],
-                entryId: entryId
-              });
+        axios
+          .get("https://pokeapi.co/api/v2/pokedex/" + i + "/")
+          .then((res) => {
+            for (let i = 0; i < res.data.pokemon_entries.length; i++) {
+              const entryId = parseInt(
+                res.data.pokemon_entries[i].pokemon_species.url.slice(42, -1)
+              );
+              if (entryId > 649) {
+                pokeList.push({
+                  ...res.data.pokemon_entries[i],
+                  entryId: entryId,
+                });
+              }
+              pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1));
             }
-            pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1));
-          }
-        });
+          });
       }
       setPokemon(pokeList.sort((a, b) => (a.entryId > b.entryId ? 1 : -1)));
     } else {
-      axios.get(url).then(res => {
+      axios.get(url).then((res) => {
         if (props.generation === 3) {
           // gen 2
           let pokeList = [];
@@ -89,7 +91,7 @@ const ResultsListview = props => {
             if (entryId > 151) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -104,7 +106,7 @@ const ResultsListview = props => {
             if (entryId > 251) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -119,7 +121,7 @@ const ResultsListview = props => {
             if (entryId > 386) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -127,22 +129,22 @@ const ResultsListview = props => {
             entryId: 491,
             pokemon_species: {
               name: "Darkrai",
-              url: "https://pokeapi.co/api/v2/pokemon-species/491/"
-            }
+              url: "https://pokeapi.co/api/v2/pokemon-species/491/",
+            },
           };
           const shaymin = {
             entryId: 492,
             pokemon_species: {
               name: "Shaymin",
-              url: "https://pokeapi.co/api/v2/pokemon-species/492/"
-            }
+              url: "https://pokeapi.co/api/v2/pokemon-species/492/",
+            },
           };
           const arceus = {
             entryId: 493,
             pokemon_species: {
               name: "Arceus",
-              url: "https://pokeapi.co/api/v2/pokemon-species/493/"
-            }
+              url: "https://pokeapi.co/api/v2/pokemon-species/493/",
+            },
           };
           setPokemon(
             [...pokeList, darkrai, shaymin, arceus].sort((a, b) =>
@@ -159,7 +161,7 @@ const ResultsListview = props => {
             if (entryId > 494) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -174,7 +176,7 @@ const ResultsListview = props => {
             if (entryId > 721) {
               pokeList.push({
                 ...res.data.pokemon_entries[i],
-                entryId: entryId
+                entryId: entryId,
               });
             }
           }
@@ -206,7 +208,7 @@ const ResultsListview = props => {
           contentContainerStyle={{
             paddingBottom: 370,
             marginLeft: 10,
-            marginRight: 10
+            marginRight: 10,
           }}
           renderItem={({ item, index }) => {
             if (item.pokemon_species.name.includes(props.search))
@@ -220,11 +222,10 @@ const ResultsListview = props => {
                   navigation={props.navigation}
                   gen={props.generation}
                   key={index}
-                  userId={props.userId}
                 ></ListRow>
               );
           }}
-          keyExtractor={item => item.pokemon_species.name}
+          keyExtractor={(item) => item.pokemon_species.name}
         ></FlatList>
       </SafeAreaView>
     </View>

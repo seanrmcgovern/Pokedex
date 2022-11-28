@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet} from "react-native";
+import { View, StyleSheet } from "react-native";
 import { SearchBar } from "react-native-elements";
 import CardView from "./CardView";
 import TableView from "./TableView";
@@ -11,22 +11,22 @@ const styles = StyleSheet.create({
     // borderBottomColor: "transparent",
     borderTopWidth: 0,
     borderBottomWidth: 0,
-    margin: 0
+    margin: 0,
   },
   input: {
-    backgroundColor: "white"
-  }
+    backgroundColor: "white",
+  },
 });
 
-const GenerationView = props => {
+const GenerationView = (props) => {
   const [search, setSearch] = useState("");
 
-  const updateSearch = search => {
+  const updateSearch = (search) => {
     setSearch(search);
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SearchBar
         lightTheme={true}
         placeholder="Search"
@@ -36,9 +36,19 @@ const GenerationView = props => {
         inputContainerStyle={styles.input}
       />
       {props.viewCards ? (
-        <CardView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} pokemon={props.pokemon} userId={props.userId}/>
+        <CardView
+          search={search.toLowerCase()}
+          navigation={props.navigation}
+          generation={props.generation}
+          pokemon={props.pokemon}
+        />
       ) : (
-        <TableView search={search.toLowerCase()} navigation={props.navigation} generation={props.generation} pokemon={props.pokemon} userId={props.userId}/>
+        <TableView
+          search={search.toLowerCase()}
+          navigation={props.navigation}
+          generation={props.generation}
+          pokemon={props.pokemon}
+        />
       )}
     </View>
   );

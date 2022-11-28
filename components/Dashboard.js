@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Platform, StyleSheet, Dimensions } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const DashBoard = ({ navigation, route, userId }) => {
+const DashBoard = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -146,7 +146,6 @@ const DashBoard = ({ navigation, route, userId }) => {
                 navigation={navigation}
                 generation={tab.gen}
                 pokemon={tab.data}
-                userId={userId}
                 viewCards={viewCards}
               />
             </Tab>

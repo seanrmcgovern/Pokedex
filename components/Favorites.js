@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Favorites = ({ navigation, route, userId }) => {
+const Favorites = ({ navigation }) => {
   const padding = Platform.OS === "ios" ? "5%" : "5%";
   const SLIDER_WIDTH = Dimensions.get("window").width;
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
